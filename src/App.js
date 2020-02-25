@@ -1,29 +1,9 @@
 import React from "react";
-import logo from "./logo.svg";
+import { SearchInput } from "evergreen-ui";
 import styled from "styled-components";
 import "./App.css";
+import Search from "./Components/Search";
 
-/* const search = async message => {
-  const url = "http://localhost:5000/test";
-  const req = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    headers: { "Content-Type": "application/json" },
-    body: message, // body data type must match "Content-Type" header
-  });
-  const body = await req.json();
-  console.log(body);
-}; */
-/* const search = async message => {
-  const url = "http://localhost:5000/search";
-  const req = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    headers: { "Content-Type": "application/json" },
-    body: message, // body data type must match "Content-Type" header
-  });
-  const body = await req.json();
-  console.log(body);
-};
- */
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +11,9 @@ export default class App extends React.Component {
       name: "myname",
       searchResults: [""],
       username: "aaspinwall",
+      keywords: "",
+      maxPrice: 1500,
+      maxResults: 20,
     };
   }
   search = async message => {
@@ -60,7 +43,10 @@ export default class App extends React.Component {
   };
 
   clicked = e => {
-    const message = { keywords: this.state.keywords };
+    const message = {
+      params: { keywords: this.state.keywords, maxPrice: this.state.maxPrice },
+      options: { maxResults: parseInt(this.state.maxResults) },
+    };
     this.search(JSON.stringify(message));
     console.log("You sent the message", message);
   };
@@ -78,15 +64,13 @@ export default class App extends React.Component {
     return (
       <div className='App'>
         <header className='App-header'>
-          {/* <img src={logo} className='App-logo' alt='logo' /> */}
-
           <label>Neighbourhood</label>
-          <input
+          <SearchInput
             id='keywords'
             type='text'
             value={this.state.keywords}
             onChange={this.handleChange}
-          ></input>
+          ></SearchInput>
           <label>Max price</label>
           <input
             id='maxPrice'
@@ -96,7 +80,8 @@ export default class App extends React.Component {
           ></input>
           <label>Max results</label>
           <input
-            type='maxResults'
+            id='maxResults'
+            type='number'
             value={this.state.maxResults}
             onChange={this.handleChange}
           ></input>
@@ -116,6 +101,11 @@ export default class App extends React.Component {
                         ? element.description.slice(0, 100) + "..."
                         : ""}
                     </p>
+                    <div className='price'>
+                      {element.attributes
+                        ? element.attributes.price
+                        : "Search for something to see results"}
+                    </div>
                   </div>
                 </div>
               );
