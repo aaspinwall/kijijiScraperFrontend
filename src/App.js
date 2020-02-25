@@ -3,6 +3,7 @@ import { SearchInput } from "evergreen-ui";
 import styled from "styled-components";
 import "./App.css";
 import Search from "./Components/Search";
+import Result from "./Components/Result";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -91,24 +92,7 @@ export default class App extends React.Component {
           </button>
           <Results>
             {this.state.searchResults.map(element => {
-              return (
-                <div>
-                  <img src={element.image}></img>
-                  <div>
-                    <a href={element.url}>{element.title}</a>
-                    <p>
-                      {element.description
-                        ? element.description.slice(0, 100) + "..."
-                        : ""}
-                    </p>
-                    <div className='price'>
-                      {element.attributes
-                        ? element.attributes.price
-                        : "Search for something to see results"}
-                    </div>
-                  </div>
-                </div>
-              );
+              return <Result ad={element} />;
             })}
           </Results>
         </header>
@@ -119,31 +103,4 @@ export default class App extends React.Component {
 
 const Results = styled.div`
   display: grid;
-  > div {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    width: 100%;
-    padding: 1rem;
-    > div {
-      display: grid;
-    }
-  }
-
-  img {
-    object-fit: cover;
-    width: 200px;
-    height: 120px;
-    border-radius: 20px;
-    padding: 0.7rem;
-  }
-  a,
-  a:visited {
-    color: white;
-    font-size: 1rem;
-  }
-  p {
-    font-size: 1rem;
-    text-align: left;
-  }
 `;
