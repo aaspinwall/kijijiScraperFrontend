@@ -5,6 +5,7 @@ import Filters from "./Filters";
 import Search from "./Search";
 import Result from "./Result";
 import Map from "./Map";
+import { checkIfEmptyObject } from "../Utilities/utilityFunctions";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class Main extends React.Component {
       username: "aaspinwall",
       keywords: "",
       maxPrice: 1500,
-      maxResults: 20,
+      maxResults: 50,
       filteredWords: [
         "recherch",
         "office",
@@ -47,8 +48,6 @@ export default class Main extends React.Component {
     const body = await req.json();
     this.setState({ searchResults: body });
     console.log(body);
-    //const resBody = await req.json();
-    //console.log("The response was: ", resBody);
   };
 
   clicked = e => {
@@ -64,6 +63,20 @@ export default class Main extends React.Component {
     const id = e.target.id;
     this.setState({ [id]: text });
   };
+
+  getResultsArray = () => {
+    return this.state.searchResults.map((element, i) => {
+      const title = element.title;
+      const filters = this.state.filteredWords;
+      const passesFilters = filters.every(word => {
+        const noWordFound = title.toLowerCase().search(word) === -1;
+        return noWordFound;
+      });
+      console.log(title);
+      return passesFilters ? <Result ad={element} key={i} /> : undefined;
+    });
+  };
+
   componentDidMount() {
     console.log("This runs as page connects...", this.state.username);
     this.connect(this.state.username);
@@ -71,53 +84,33 @@ export default class Main extends React.Component {
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
-          {/* //TODO ADD MAP
-            <Map /> */}
-          <label>Neighbourhood</label>
-          <SearchInput
-            id='keywords'
-            type='text'
-            value={this.state.keywords}
-            onChange={this.handleChange}
-          ></SearchInput>
-          <Filters input={this.state.filteredWords} />
-          <label>Max price</label>
-          <input
-            id='maxPrice'
-            type='number'
-            value={this.state.maxPrice}
-            onChange={this.handleChange}
-          ></input>
-          <label>Max results</label>
-          <input
-            id='maxResults'
-            type='number'
-            value={this.state.maxResults}
-            onChange={this.handleChange}
-          ></input>
+        <SearchInput
+          id='keywords'
+          type='text'
+          value={this.state.keywords}
+          onChange={this.handleChange}
+        ></SearchInput>
+        <Filters input={this.state.filteredWords} />
 
-          <button name='getButton' onClick={this.clicked}>
-            Search
-          </button>
-          <Spinner />
-          <Results>
-            {this.state.searchResults.map((element, i) => {
-              const title = element.title;
-              const filters = this.state.filteredWords;
-              const passesFilters = filters.every(word => {
-                const noWordFound = title.toLowerCase().search(word) === -1;
-                return noWordFound;
-              });
-              console.log(title);
-              return passesFilters ? (
-                <Result ad={element} key={i} />
-              ) : (
-                undefined
-              );
-            })}
-          </Results>
-        </header>
+        <label>Max price</label>
+        <input
+          id='maxPrice'
+          type='number'
+          value={this.state.maxPrice}
+          onChange={this.handleChange}
+        ></input>
+        <label>Max results</label>
+        <input
+          id='maxResults'
+          type='number'
+          value={this.state.maxResults}
+          onChange={this.handleChange}
+        ></input>
+        <button name='getButton' onClick={this.clicked}>
+          Search
+        </button>
+        <Spinner />
+        <Results>{this.getResultsArray()}</Results>
       </div>
     );
   }

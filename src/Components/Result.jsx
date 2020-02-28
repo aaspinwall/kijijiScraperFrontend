@@ -15,9 +15,7 @@ export default class Result extends Component {
           </Description>
         </Info>
         <More className='price'>
-          {this.props.ad.attributes
-            ? "$" + this.props.ad.attributes.price
-            : "Search for something to see results"}
+          {this.props.ad.attributes ? "$" + this.props.ad.attributes.price : ""}
         </More>
       </Container>
     );
