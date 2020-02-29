@@ -1,13 +1,14 @@
 import React from "react";
 import { SearchInput } from "evergreen-ui";
 import styled from "styled-components";
-import { Block } from "../Styles/styled-components";
 import Filters from "./Filters";
-import Search from "./Search";
 import Result from "./Result";
-import Map from "./Map";
 import Loading from "./Loading";
 import { checkIfEmptyObject } from "../Utilities/utilityFunctions";
+import {
+  readLocalStorage,
+  writeToLocalStorage,
+} from "../Utilities/utilityFunctions";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class Main extends React.Component {
     const body = await req.json();
     this.setState({ searchResults: body });
     console.log("The response was: ", body);
+    writeToLocalStorage(body);
   };
   connect = async username => {
     const url = "http://localhost:5000/users";
@@ -49,6 +51,7 @@ export default class Main extends React.Component {
     });
     const body = await req.json();
     this.setState({ searchResults: body });
+    writeToLocalStorage(body);
     console.log(body);
   };
 
@@ -74,14 +77,21 @@ export default class Main extends React.Component {
         const noWordFound = title.toLowerCase().search(word) === -1;
         return noWordFound;
       });
-      console.log(title);
+      //console.log(title);
       return passesFilters ? <Result ad={element} key={i} /> : undefined;
     });
   };
 
   componentDidMount() {
-    console.log("This runs as page connects...", this.state.username);
-    this.connect(this.state.username);
+    const localStorage = readLocalStorage();
+    if (localStorage) {
+      this.setState((this.state.searchResults = localStorage), () =>
+        console.log("Read from local storage")
+      );
+    } else {
+      console.log("This runs as page connects...", this.state.username);
+      this.connect(this.state.username);
+    }
   }
   render() {
     return (

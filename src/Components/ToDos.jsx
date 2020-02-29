@@ -6,9 +6,12 @@ export default function ToDos() {
   return (
     <Debugger>
       <div>
-        <h4>Front end</h4>
+        <h3>Front end</h3>
+        <h4>Result display</h4>
         <div>Remove duplicates</div>
         <p>Compare titles and descriptions</p>
+        <div>Sort by price</div>
+        <div>Extract keywords</div>
         <div>Loading screen</div>
         <div>Error loading results</div>
         <div>Map</div>
@@ -16,12 +19,12 @@ export default function ToDos() {
         <div>Local storage for fetched results</div>
       </div>
       <div>
-        <h4>Back end</h4>
+        <h3>Back end</h3>
         <div>Authentication endpoint</div>
         <div>Write cookies for quick login</div>
       </div>
       <div>
-        <h4>Database</h4>
+        <h3>Database</h3>
         <div>Define data structure</div>
       </div>
     </Debugger>
