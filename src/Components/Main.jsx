@@ -1,10 +1,12 @@
 import React from "react";
-import { SearchInput, Spinner } from "evergreen-ui";
+import { SearchInput } from "evergreen-ui";
 import styled from "styled-components";
+import { Block } from "../Styles/styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
 import Result from "./Result";
 import Map from "./Map";
+import Loading from "./Loading";
 import { checkIfEmptyObject } from "../Utilities/utilityFunctions";
 
 export default class Main extends React.Component {
@@ -83,14 +85,23 @@ export default class Main extends React.Component {
   }
   render() {
     return (
-      <div className='App'>
+      <AppContainer id='appContainer'>
         <SearchInput
           id='keywords'
           type='text'
           value={this.state.keywords}
           onChange={this.handleChange}
         ></SearchInput>
-        <Filters input={this.state.filteredWords} />
+        <Filters
+          input={this.state.filteredWords}
+          maxPrice={{
+            id: "maxPrice",
+            title: "Max Price",
+            type: "number",
+            value: this.state.maxPrice,
+            onChange: this.handleChange,
+          }}
+        />
 
         <label>Max price</label>
         <input
@@ -109,12 +120,16 @@ export default class Main extends React.Component {
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-        <Spinner />
-        <Results>{this.getResultsArray()}</Results>
-      </div>
+        <Loading />
+        <div>{this.getResultsArray()}</div>
+      </AppContainer>
     );
   }
 }
 const Results = styled.div`
   display: grid;
+`;
+
+const AppContainer = styled.div`
+  width: 100vw;
 `;

@@ -7,6 +7,8 @@ export default function ToDos() {
     <Debugger>
       <div>
         <h4>Front end</h4>
+        <div>Remove duplicates</div>
+        <p>Compare titles and descriptions</p>
         <div>Loading screen</div>
         <div>Error loading results</div>
         <div>Map</div>

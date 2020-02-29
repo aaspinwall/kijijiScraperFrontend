@@ -23,7 +23,7 @@ export default class Bubble extends React.Component {
           <Text>{this.props.text}</Text>
           <Arrow></Arrow>
         </ButtonBody>
-        <Dropdown visible={this.state.dropdownVisible} />
+        <Dropdown visible={this.state.dropdownVisible} data={this.props.data} />
       </Container>
     );
   }
@@ -38,6 +38,8 @@ const ButtonBody = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${outsidePadding} 2.4rem ${outsidePadding} ${outsidePadding};
+  border-radius: 20px;
+  border: solid #2222 1px;
 `;
 
 const Container = styled.div`
@@ -53,12 +55,13 @@ const Container = styled.div`
     background-color: rgba(255, 255, 255, 0.8);
   }
 `;
+const ArrowSize = ".35rem";
 const Arrow = styled.div`
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid black;
+  border-left: ${ArrowSize} solid transparent;
+  border-right: ${ArrowSize} solid transparent;
+  border-top: ${ArrowSize} solid black;
 /*   position: absolute;
   right: ${outsidePadding};
   top: 50%; */

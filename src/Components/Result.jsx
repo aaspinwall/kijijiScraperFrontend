@@ -10,8 +10,9 @@ export default class Result extends Component {
           <Title href={this.props.ad.url}>{this.props.ad.title}</Title>
           <Description>
             {this.props.ad.description
-              ? this.props.ad.description.slice(0, 100) + "..."
-              : ""}
+              ? this.props.ad.description.slice(0, 700) + "..."
+              : /* ? this.props.ad.description.slice(0, 200) + "..." */
+                ""}
           </Description>
         </Info>
         <More className='price'>
@@ -23,25 +24,36 @@ export default class Result extends Component {
 }
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: auto auto auto;
-  padding: 0.3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 1rem;
+  border-top: solid 1px #2222;
+  margin: 0.5rem;
 `;
 const Image = styled.img`
   object-fit: cover;
   background-origin: border-box;
-  width: 20vw;
-  height: 120px;
+  width: 300px;
+  height: 200px;
   border-radius: 20px;
   padding: 0.7rem;
 `;
 const Info = styled.div`
+  padding: 0 2rem 0 1rem;
   font-size: 1rem;
   text-align: left;
+  flex: 2;
 `;
 const Title = styled.a`
-  color: white;
+  color: #2222;
+  color: black;
   font-size: 1rem;
+  font-style: none;
+  :visited {
+    color: black;
+    font-style: none;
+  }
 `;
 const Description = styled.div``;
 const More = styled.div``;

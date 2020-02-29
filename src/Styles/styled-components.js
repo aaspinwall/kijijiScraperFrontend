@@ -6,4 +6,12 @@ const Debugger = styled.div`
   padding: 2rem;
 `;
 
-export { SearchInput, Debugger };
+const Block = styled.div`
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export { SearchInput, Debugger, Block };

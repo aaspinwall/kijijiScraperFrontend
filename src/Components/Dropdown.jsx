@@ -5,8 +5,8 @@ export default function Dropdown(props) {
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
       <div>
+        <div>{props.data ? props.data.id : ""}</div>
         <div>Filtered words</div>
-        <input></input>
       </div>
       <div>Maybe a bar and stuff</div>
       <span>More of that shit</span>
