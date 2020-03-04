@@ -19,9 +19,7 @@ function mapDispatch(dispatch) {
 }
 
 const Dropdown = props => {
-  useEffect(() => {
-    console.log(props);
-  });
+  useEffect(() => {});
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
       <div>

@@ -9,25 +9,11 @@ import {
   readLocalStorage,
   writeToLocalStorage,
 } from "../Utilities/utilityFunctions";
+import { connect } from "react-redux";
 
-export default class Main extends React.Component {
+class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "myname",
-      searchResults: [{ title: "Nothing here" }],
-      username: "aaspinwall",
-      keywords: "",
-      maxPrice: 1500,
-      maxResults: 50,
-      filteredWords: [
-        "recherch",
-        "office",
-        "bureau",
-        "stationnement",
-        "parking",
-      ],
-    };
   }
   search = async message => {
     const url = "http://localhost:5000/search";
@@ -37,11 +23,11 @@ export default class Main extends React.Component {
       body: message, // body data type must match "Content-Type" header
     });
     const body = await req.json();
-    this.setState({ searchResults: body });
+    this.props.writeSearchResults(body);
     console.log("The response was: ", body);
     writeToLocalStorage(body);
   };
-  connect = async username => {
+  connectToDB = async username => {
     const url = "http://localhost:5000/users";
     const reqBody = JSON.stringify({ username: username });
     const req = await fetch(url, {
@@ -50,34 +36,29 @@ export default class Main extends React.Component {
       body: reqBody, // body data type must match "Content-Type" header
     });
     const body = await req.json();
-    this.setState({ searchResults: body });
+    this.props.writeSearchResults(body);
+    //this.setState({ searchResults: body });
     writeToLocalStorage(body);
     console.log(body);
   };
 
   clicked = e => {
     const message = {
-      params: { keywords: this.state.keywords, maxPrice: this.state.maxPrice },
-      options: { maxResults: parseInt(this.state.maxResults) },
+      params: { keywords: this.props.keywords, maxPrice: this.props.maxPrice },
+      options: { maxResults: parseInt(this.props.maxResults) },
     };
     this.search(JSON.stringify(message));
     console.log("You sent the message", message);
   };
-  handleChange = e => {
-    const text = e.target.value;
-    const id = e.target.id;
-    this.setState({ [id]: text });
-  };
 
   getResultsArray = () => {
-    return this.state.searchResults.map((element, i) => {
+    return this.props.searchResults.map((element, i) => {
       const title = element.title;
-      const filters = this.state.filteredWords;
+      const filters = this.props.filteredWords;
       const passesFilters = filters.every(word => {
         const noWordFound = title.toLowerCase().search(word) === -1;
         return noWordFound;
       });
-      //console.log(title);
       return passesFilters ? <Result ad={element} key={i} /> : undefined;
     });
   };
@@ -85,12 +66,10 @@ export default class Main extends React.Component {
   componentDidMount() {
     const localStorage = readLocalStorage();
     if (localStorage) {
-      this.setState((this.state.searchResults = localStorage), () =>
-        console.log("Read from local storage")
-      );
+      this.props.writeSearchResults(localStorage);
     } else {
-      console.log("This runs as page connects...", this.state.username);
-      this.connect(this.state.username);
+      console.log("This runs as page connects...", this.props.username);
+      this.connectToDB(this.props.username);
     }
   }
   render() {
@@ -99,17 +78,17 @@ export default class Main extends React.Component {
         <SearchInput
           id='keywords'
           type='text'
-          value={this.state.keywords}
-          onChange={this.handleChange}
+          value={this.props.keywords}
+          onChange={this.props.userInput}
         ></SearchInput>
         <Filters
-          input={this.state.filteredWords}
+          input={this.props.filteredWords}
           maxPrice={{
             id: "maxPrice",
             title: "Max Price",
             type: "number",
-            value: this.state.maxPrice,
-            onChange: this.handleChange,
+            value: this.props.maxPrice,
+            onChange: this.props.userInput,
           }}
         />
 
@@ -117,15 +96,15 @@ export default class Main extends React.Component {
         <input
           id='maxPrice'
           type='number'
-          value={this.state.maxPrice}
-          onChange={this.handleChange}
+          value={this.props.maxPrice}
+          onChange={this.props.userInput}
         ></input>
         <label>Max results</label>
         <input
           id='maxResults'
           type='number'
-          value={this.state.maxResults}
-          onChange={this.handleChange}
+          value={this.props.maxResults}
+          onChange={this.props.userInput}
         ></input>
         <button name='getButton' onClick={this.clicked}>
           Search
@@ -143,3 +122,42 @@ const Results = styled.div`
 const AppContainer = styled.div`
   width: 100vw;
 `;
+// Maps `state` to `props`:
+// These will be added as props to the component.
+function mapState(state) {
+  const {
+    keywords,
+    maxPrice,
+    maxResults,
+    searchResults,
+    filteredWords,
+    username,
+  } = state;
+  return {
+    keywords: keywords,
+    maxPrice: maxPrice,
+    maxResults: maxResults,
+    searchResults: searchResults,
+    filteredWords: filteredWords,
+    username: username,
+  };
+}
+
+// Maps `dispatch` to `props`:
+function mapDispatch(dispatch) {
+  return {
+    onMessageClick(payload) {
+      dispatch({ type: "add", payload });
+    },
+    userInput(e) {
+      const value = e.target.value;
+      const id = e.target.id;
+      dispatch({ type: "input", payload: value, id: id });
+    },
+    writeSearchResults(results) {
+      dispatch({ type: "results", payload: results });
+    },
+  };
+}
+
+export default connect(mapState, mapDispatch)(Main);

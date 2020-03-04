@@ -1,17 +1,28 @@
 // Reducer
 function reducer(state, action) {
+  const payload = action.payload;
   switch (action.type) {
-    case "add":
+    case "input":
+      const id = action.id;
       return {
         ...state,
-        score: state.score + 1,
-        counter: state.counter + action.payload,
+        [id]: payload,
+      };
+    case "keywords":
+      return {
+        ...state,
+        keywords: payload,
+      };
+    case "results":
+      return {
+        ...state,
+        searchResults: payload,
       };
     case "subtract":
       return {
         ...state,
         score: state.score - 1,
-        counter: state.counter + action.payload,
+        counter: state.counter + payload,
       };
     default:
       return state;
