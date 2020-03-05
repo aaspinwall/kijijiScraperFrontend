@@ -54,18 +54,6 @@ class Main extends React.Component {
 
   getResultsArray = () => {
     const searchResults = this.props.searchResults;
-    /*     if (checkIfEmptyObject(searchResults)) {
-      return <Loading></Loading>;
-    }
-    return searchResults.map((element, i) => {
-      const title = element.title;
-      const filters = this.props.filteredWords;
-      const passesFilters = filters.every(word => {
-        const noWordFound = title.toLowerCase().search(word) === -1;
-        return noWordFound;
-      });
-      return passesFilters ? <Result ad={element} key={i} /> : undefined;
-    }); */
     return checkIfEmptyObject(searchResults) ? (
       <Loading></Loading>
     ) : (
@@ -110,13 +98,13 @@ class Main extends React.Component {
           }}
         />
 
-        <label>Max price</label>
+        {/* <label>Max price</label>
         <input
           id='maxPrice'
           type='number'
           value={this.props.maxPrice}
           onChange={this.props.userInput}
-        ></input>
+        ></input> */}
         <label>Max results</label>
         <input
           id='maxResults'
@@ -138,7 +126,10 @@ const Results = styled.div`
 
 const AppContainer = styled.div`
   /* width: 100vw; */
-  margin: 0 15%;
+  /* margin: 0 15%; */
+  :focus {
+    display: none;
+  }
 `;
 // Maps `state` to `props`:
 // These will be added as props to the component.

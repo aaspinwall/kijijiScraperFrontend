@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 // Maps `state` to `props`:
 // These will be added as props to the component.
 function mapState(state) {
-  const { counter, score } = state;
-  return { score: score, counter: counter };
+  return state;
 }
 
 // Maps `dispatch` to `props`:
@@ -15,23 +14,34 @@ function mapDispatch(dispatch) {
     onMessageClick(payload) {
       dispatch({ type: "add", payload });
     },
+    userInput(e) {
+      const value = e.target.value;
+      const id = e.target.id;
+      dispatch({ type: "input", payload: value, id: id });
+    },
   };
 }
 
 const Dropdown = props => {
   useEffect(() => {
     console.log("This runs when the component mounts");
+    console.log(props);
   }, []);
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
-      <div>
-        <button onClick={() => props.onMessageClick()}>Test redux</button>
-        <div>{props.data ? props.data.id : ""}</div>
-        <div>{props.score}</div>
-        <div>Filtered words</div>
-      </div>
-      <div>Maybe a bar and stuff</div>
-      <span>More of that shit</span>
+      {props.content.map(obj => {
+        return (
+          <div>
+            <div>{obj.text}</div>
+            <input
+              id={obj.id}
+              type={props.type}
+              value={props[obj.id]}
+              onChange={props.userInput}
+            ></input>
+          </div>
+        );
+      })}
     </Container>
   );
 };

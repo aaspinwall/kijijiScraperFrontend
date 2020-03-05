@@ -8,6 +8,7 @@ const initialState = {
   username: "aaspinwall",
   keywords: "",
   maxPrice: 1500,
+  minPrice: 300,
   maxResults: 50,
   filteredWords: ["recherch", "office", "bureau", "stationnement", "parking"],
 };

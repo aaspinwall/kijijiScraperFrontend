@@ -13,17 +13,20 @@ export default class Bubble extends React.Component {
         open: !this.state.open,
         dropdownVisible: !this.state.dropdownVisible,
       })
-      //() => console.log(this.state)
     );
   };
   render() {
     return (
       <Container>
         <ButtonBody onClick={this.clicked}>
-          <Text>{this.props.text}</Text>
+          <Text>{this.props.label}</Text>
           <Arrow></Arrow>
         </ButtonBody>
-        <Dropdown visible={this.state.dropdownVisible} data={this.props.data} />
+        <Dropdown
+          visible={this.state.dropdownVisible}
+          content={this.props.content}
+          type={this.props.type}
+        />
       </Container>
     );
   }
@@ -62,8 +65,5 @@ const Arrow = styled.div`
   border-left: ${ArrowSize} solid transparent;
   border-right: ${ArrowSize} solid transparent;
   border-top: ${ArrowSize} solid black;
-/*   position: absolute;
-  right: ${outsidePadding};
-  top: 50%; */
-  transform: translate(100%,0%);
+  transform: translate(100%, 0%);
 `;

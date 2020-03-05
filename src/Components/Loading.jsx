@@ -38,12 +38,7 @@ const Container = styled(Block)`
   width: 100%;
 `;
 
-const SpinnerContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+const SpinnerContainer = styled.div``;
 
 const Text = styled.div`
   padding: 1rem 0;

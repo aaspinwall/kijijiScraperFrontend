@@ -5,10 +5,24 @@ import Bubble from "./Bubble";
 export default function Filters(props) {
   return (
     <Container>
-      <Bubble text='Price' value='1500' type='input' data={props.maxPrice} />
-      <Bubble text='Max results ' value='50' type='input' />
-      <Bubble text='More' value='1500' type='multiple' />
-      {/* <Input value={props.input.join("+")}></Input> */}
+      <Bubble
+        label='Price'
+        type='input'
+        content={[
+          {
+            text: "Max price",
+
+            type: "number",
+            id: "maxPrice",
+          },
+          {
+            text: "Min price",
+
+            type: "number",
+            id: "minPrice",
+          },
+        ]}
+      />
     </Container>
   );
 }
