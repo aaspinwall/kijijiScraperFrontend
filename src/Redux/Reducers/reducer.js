@@ -21,11 +21,10 @@ function reducer(state, action) {
         ...state,
         searchResults: payload,
       };
-    case "subtract":
+    case "test":
       return {
         ...state,
-        score: state.score - 1,
-        counter: state.counter + payload,
+        test: payload,
       };
     default:
       return state;

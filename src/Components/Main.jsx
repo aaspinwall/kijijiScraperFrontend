@@ -84,6 +84,12 @@ class Main extends React.Component {
         <SearchInput
           id='keywords'
           type='text'
+          value={this.props.test}
+          onChange={this.props.testText}
+        ></SearchInput>
+        <SearchInput
+          id='keywords'
+          type='text'
           value={this.props.keywords}
           onChange={this.props.userInput}
         ></SearchInput>
@@ -97,14 +103,6 @@ class Main extends React.Component {
             onChange: this.props.userInput,
           }}
         />
-
-        {/* <label>Max price</label>
-        <input
-          id='maxPrice'
-          type='number'
-          value={this.props.maxPrice}
-          onChange={this.props.userInput}
-        ></input> */}
         <label>Max results</label>
         <input
           id='maxResults'
@@ -125,8 +123,6 @@ const Results = styled.div`
 `;
 
 const AppContainer = styled.div`
-  /* width: 100vw; */
-  /* margin: 0 15%; */
   :focus {
     display: none;
   }
@@ -155,8 +151,9 @@ function mapState(state) {
 // Maps `dispatch` to `props`:
 function mapDispatch(dispatch) {
   return {
-    onMessageClick(payload) {
-      dispatch({ type: "add", payload });
+    testText(e) {
+      const value = e.target.value;
+      dispatch({ type: "test", payload: value });
     },
     userInput(e) {
       const value = e.target.value;

@@ -1,6 +1,7 @@
 import { createStore } from "redux";
 import reducer from "./Reducers/reducer";
 const initialState = {
+  test: "",
   score: 0,
   counter: 0,
   name: "myname",
