@@ -12,8 +12,8 @@ export default class Bubble extends React.Component {
       (this.state = {
         open: !this.state.open,
         dropdownVisible: !this.state.dropdownVisible,
-      }),
-      () => console.log(this.state)
+      })
+      //() => console.log(this.state)
     );
   };
   render() {

@@ -43,6 +43,7 @@ class Main extends React.Component {
   };
 
   clicked = e => {
+    this.props.newSearch();
     const message = {
       params: { keywords: this.props.keywords, maxPrice: this.props.maxPrice },
       options: { maxResults: parseInt(this.props.maxResults) },
@@ -52,7 +53,11 @@ class Main extends React.Component {
   };
 
   getResultsArray = () => {
-    return this.props.searchResults.map((element, i) => {
+    const searchResults = this.props.searchResults;
+    /*     if (checkIfEmptyObject(searchResults)) {
+      return <Loading></Loading>;
+    }
+    return searchResults.map((element, i) => {
       const title = element.title;
       const filters = this.props.filteredWords;
       const passesFilters = filters.every(word => {
@@ -60,7 +65,20 @@ class Main extends React.Component {
         return noWordFound;
       });
       return passesFilters ? <Result ad={element} key={i} /> : undefined;
-    });
+    }); */
+    return checkIfEmptyObject(searchResults) ? (
+      <Loading></Loading>
+    ) : (
+      searchResults.map((element, i) => {
+        const title = element.title;
+        const filters = this.props.filteredWords;
+        const passesFilters = filters.every(word => {
+          const noWordFound = title.toLowerCase().search(word) === -1;
+          return noWordFound;
+        });
+        return passesFilters ? <Result ad={element} key={i} /> : undefined;
+      })
+    );
   };
 
   componentDidMount() {
@@ -109,8 +127,7 @@ class Main extends React.Component {
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-        <Loading />
-        <div>{this.getResultsArray()}</div>
+        <Results>{this.getResultsArray()}</Results>
       </AppContainer>
     );
   }
@@ -120,7 +137,8 @@ const Results = styled.div`
 `;
 
 const AppContainer = styled.div`
-  width: 100vw;
+  /* width: 100vw; */
+  margin: 0 15%;
 `;
 // Maps `state` to `props`:
 // These will be added as props to the component.
@@ -156,6 +174,9 @@ function mapDispatch(dispatch) {
     },
     writeSearchResults(results) {
       dispatch({ type: "results", payload: results });
+    },
+    newSearch() {
+      dispatch({ type: "clearResults" });
     },
   };
 }

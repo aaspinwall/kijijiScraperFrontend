@@ -13,6 +13,9 @@ function reducer(state, action) {
         ...state,
         keywords: payload,
       };
+    case "clearResults":
+      return { ...state, searchResults: {} };
+
     case "results":
       return {
         ...state,

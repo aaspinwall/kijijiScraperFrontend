@@ -10,7 +10,7 @@ export default class Result extends Component {
           <Title href={this.props.ad.url}>{this.props.ad.title}</Title>
           <Description>
             {this.props.ad.description
-              ? this.props.ad.description.slice(0, 700) + "..."
+              ? this.props.ad.description.slice(0, 450) + "..."
               : /* ? this.props.ad.description.slice(0, 200) + "..." */
                 ""}
           </Description>

@@ -19,7 +19,9 @@ function mapDispatch(dispatch) {
 }
 
 const Dropdown = props => {
-  useEffect(() => {});
+  useEffect(() => {
+    console.log("This runs when the component mounts");
+  }, []);
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
       <div>
