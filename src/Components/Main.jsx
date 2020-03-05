@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Filters from "./Filters";
 import Result from "./Result";
 import Loading from "./Loading";
+import Search from "./Search";
 import { checkIfEmptyObject } from "../Utilities/utilityFunctions";
 import {
   readLocalStorage,
@@ -81,18 +82,7 @@ class Main extends React.Component {
   render() {
     return (
       <AppContainer id='appContainer'>
-        <SearchInput
-          id='keywords'
-          type='text'
-          value={this.props.test}
-          onChange={this.props.testText}
-        ></SearchInput>
-        <SearchInput
-          id='keywords'
-          type='text'
-          value={this.props.keywords}
-          onChange={this.props.userInput}
-        ></SearchInput>
+        <Search></Search>
         <Filters
           input={this.props.filteredWords}
           maxPrice={{
