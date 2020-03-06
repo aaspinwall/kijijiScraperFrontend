@@ -7,17 +7,15 @@ export default function Filters(props) {
     <Container>
       <Bubble
         label='Price'
-        type='input'
+        type='number'
         content={[
           {
             text: "Max price",
-
             type: "number",
             id: "maxPrice",
           },
           {
             text: "Min price",
-
             type: "number",
             id: "minPrice",
           },

@@ -4,6 +4,7 @@ import "./Styles/Style.css";
 import ToDos from "./Components/ToDos";
 import Main from "./Components/Main";
 import Loading from "./Components/Loading";
+import InputBox from "./Components/InputBox";
 
 export default class App extends React.Component {
   render() {
@@ -17,7 +18,12 @@ export default class App extends React.Component {
             <ToDos />
           </Route>
           <Route exact path='/debug'>
-            <Loading />
+            <InputBox
+              id='test'
+              type='text'
+              value='write something here'
+              writeToState={e => console.log("this goes out into the world", e)}
+            />
           </Route>
         </Switch>
       </Router>

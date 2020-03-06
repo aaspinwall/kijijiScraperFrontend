@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import InputBox from "./InputBox";
 
 // Maps `state` to `props`:
 // These will be added as props to the component.
-function mapState(state) {
-  return state;
+function mapState(state, ownProps) {
+  const selectFromState = {};
+  ownProps.content.forEach(element => {
+    selectFromState[element.id] = state[element.id];
+  });
+  return selectFromState;
 }
 
 // Maps `dispatch` to `props`:
@@ -25,20 +30,19 @@ function mapDispatch(dispatch) {
 const Dropdown = props => {
   useEffect(() => {
     console.log("This runs when the component mounts");
-    console.log(props);
   }, []);
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
-      {props.content.map(obj => {
+      {props.content.map((obj, i) => {
         return (
-          <div>
+          <div key={"dropdown-" + i}>
             <div>{obj.text}</div>
-            <input
+            <InputBox
               id={obj.id}
               type={props.type}
               value={props[obj.id]}
-              onChange={props.userInput}
-            ></input>
+              writeToState={props.userInput}
+            />
           </div>
         );
       })}
@@ -57,6 +61,7 @@ const Container = styled.div`
   margin: 0.2rem;
   width: 200px;
   border-radius: 10px;
+  border: 1px grey solid;
 `;
 
 export default connect(mapState, mapDispatch)(Dropdown);

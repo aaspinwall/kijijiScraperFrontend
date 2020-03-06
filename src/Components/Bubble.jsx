@@ -23,9 +23,9 @@ export default class Bubble extends React.Component {
           <Arrow></Arrow>
         </ButtonBody>
         <Dropdown
-          visible={this.state.dropdownVisible}
-          content={this.props.content}
           type={this.props.type}
+          content={this.props.content}
+          visible={this.state.dropdownVisible}
         />
       </Container>
     );
