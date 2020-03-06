@@ -1,11 +1,8 @@
 import React from "react";
-import { SearchInput } from "evergreen-ui";
 import styled from "styled-components";
 import Filters from "./Filters";
-import Result from "./Result";
-import Loading from "./Loading";
 import Search from "./Search";
-import { checkIfEmptyObject } from "../Utilities/utilityFunctions";
+import Results from "./Results";
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -46,28 +43,15 @@ class Main extends React.Component {
   clicked = e => {
     this.props.newSearch();
     const message = {
-      params: { keywords: this.props.keywords, maxPrice: this.props.maxPrice },
+      params: {
+        keywords: this.props.keywords,
+        maxPrice: this.props.maxPrice,
+        minPrice: this.props.minPrice,
+      },
       options: { maxResults: parseInt(this.props.maxResults) },
     };
     this.search(JSON.stringify(message));
     console.log("You sent the message", message);
-  };
-
-  getResultsArray = () => {
-    const searchResults = this.props.searchResults;
-    return checkIfEmptyObject(searchResults) ? (
-      <Loading></Loading>
-    ) : (
-      searchResults.map((element, i) => {
-        const title = element.title;
-        const filters = this.props.filteredWords;
-        const passesFilters = filters.every(word => {
-          const noWordFound = title.toLowerCase().search(word) === -1;
-          return noWordFound;
-        });
-        return passesFilters ? <Result ad={element} key={i} /> : undefined;
-      })
-    );
   };
 
   componentDidMount() {
@@ -103,14 +87,11 @@ class Main extends React.Component {
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-        <Results>{this.getResultsArray()}</Results>
+        <Results />
       </AppContainer>
     );
   }
 }
-const Results = styled.div`
-  display: grid;
-`;
 
 const AppContainer = styled.div`
   :focus {
@@ -123,6 +104,7 @@ function mapState(state) {
   const {
     keywords,
     maxPrice,
+    minPrice,
     maxResults,
     searchResults,
     filteredWords,
@@ -131,6 +113,7 @@ function mapState(state) {
   return {
     keywords: keywords,
     maxPrice: maxPrice,
+    minPrice: minPrice,
     maxResults: maxResults,
     searchResults: searchResults,
     filteredWords: filteredWords,
