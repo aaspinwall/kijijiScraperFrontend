@@ -7,16 +7,17 @@ export default function ToDos() {
     <Debugger>
       <div>
         <h3>Front end</h3>
+        <h4>Filter buttons</h4>
+        <p>InputBox should process data types correctly</p>
+        <p>Arrays don't work</p>
         <h4>Result display</h4>
         <div>Remove duplicates</div>
         <p>Compare titles and descriptions</p>
         <div>Sort by price</div>
         <div>Extract keywords</div>
-        <div>Loading screen</div>
         <div>Error loading results</div>
         <div>Map</div>
         <div>Authentication screen</div>
-        <div>Local storage for fetched results</div>
       </div>
       <div>
         <h3>Back end</h3>

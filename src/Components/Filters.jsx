@@ -21,6 +21,22 @@ export default function Filters(props) {
           },
         ]}
       />
+      {/* <Bubble
+        label='Filters'
+        type='text'
+        content={[
+          {
+            text: "Filter words",
+            type: "text",
+            id: "filteredWords",
+          },
+        ]}
+      /> */}
+      <Bubble
+        label='More'
+        type='number'
+        content={[{ text: "Max results", type: "number", id: "maxResults" }]}
+      />
     </Container>
   );
 }

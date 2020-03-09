@@ -34,6 +34,23 @@ export default function InputBox(props) {
     }
   };
 
+  const checkInputType = input => {
+    //Check the type of value
+    let isArray = input instanceof Array && input.constructor === Array;
+    if (isArray) {
+      console.log("That is an array, fix input component");
+      setValue(input.join("+"));
+    }
+    return input;
+  };
+
+  const checkOutputType = output => {
+    let isArray = output instanceof Array && output.constructor === Array;
+    return output;
+  };
+
+  checkInputType(value);
+
   return (
     <input
       id={props.id}
@@ -42,6 +59,7 @@ export default function InputBox(props) {
       placeholder={initialValue}
       onChange={handleInput}
       onFocus={isIn}
+      //Once focus is off
       onBlur={e => {
         isOut(e);
       }}

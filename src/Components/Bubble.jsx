@@ -15,9 +15,23 @@ export default class Bubble extends React.Component {
       })
     );
   };
+  handleClickOutside = e => {
+    const clickedOutside = !this.node.contains(e.target);
+    if (clickedOutside) {
+      this.setState({ open: false, dropdownVisible: false });
+    }
+  };
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+    console.log("Component mounted");
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
   render() {
     return (
-      <Container>
+      <Container ref={node => (this.node = node)}>
         <ButtonBody onClick={this.clicked}>
           <Text>{this.props.label}</Text>
           <Arrow></Arrow>

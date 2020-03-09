@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-//import { Spinner } from "evergreen-ui";
 import { Block } from "../Styles/styled-components";
 import styled from "styled-components";
 import { Spinner } from "evergreen-ui";
@@ -22,7 +21,7 @@ export default function Loading() {
     </SpinnerContainer>
   );
   useEffect(() => {
-    console.log(loaded);
+    console.log(`Kitty gif has been loaded? ${loaded}`);
   });
   return (
     <Container>

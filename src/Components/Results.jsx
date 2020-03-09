@@ -40,10 +40,6 @@ function mapState(state) {
 // Maps `dispatch` to `props`:
 function mapDispatch(dispatch) {
   return {
-    testText(e) {
-      const value = e.target.value;
-      dispatch({ type: "test", payload: value });
-    },
     userInput(e) {
       const value = e.target.value;
       const id = e.target.id;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
+import Error from "./Error";
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -12,32 +13,47 @@ import { connect } from "react-redux";
 class Main extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { scraperIsLive: true };
   }
   search = async message => {
     const url = "http://localhost:5000/search";
-    const req = await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: { "Content-Type": "application/json" },
-      body: message, // body data type must match "Content-Type" header
-    });
-    const body = await req.json();
-    this.props.writeSearchResults(body);
-    console.log("The response was: ", body);
-    writeToLocalStorage(body);
+    try {
+      const req = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: { "Content-Type": "application/json" },
+        body: message, // body data type must match "Content-Type" header
+      });
+      const body = await req.json();
+      this.props.writeSearchResults(body);
+      console.log("The response was: ", body);
+      writeToLocalStorage(body);
+    } catch (error) {
+      console.log(
+        `Error connecting to ${url} / Search operation triggered this error`
+      );
+      this.setState({ scraperIsLive: false });
+    }
   };
   connectToDB = async username => {
     const url = "http://localhost:5000/users";
     const reqBody = JSON.stringify({ username: username });
-    const req = await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: { "Content-Type": "application/json" },
-      body: reqBody, // body data type must match "Content-Type" header
-    });
-    const body = await req.json();
-    this.props.writeSearchResults(body);
-    //this.setState({ searchResults: body });
-    writeToLocalStorage(body);
-    console.log(body);
+    try {
+      const req = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: { "Content-Type": "application/json" },
+        body: reqBody, // body data type must match "Content-Type" header
+      });
+      const body = await req.json();
+      this.props.writeSearchResults(body);
+      //this.setState({ searchResults: body });
+      writeToLocalStorage(body);
+      console.log(body);
+    } catch (error) {
+      console.log(
+        `Error connecting to ${url} / Database operation triggered this error`
+      );
+      this.setState({ scraperIsLive: false });
+    }
   };
 
   clicked = e => {
@@ -55,18 +71,26 @@ class Main extends React.Component {
   };
 
   componentDidMount() {
+    //Check if local storage exists to load the previous search
     const localStorage = readLocalStorage();
     if (localStorage) {
+      //Load previous search
       this.props.writeSearchResults(localStorage);
+      console.log("Local storage found and loaded");
     } else {
-      console.log("This runs as page connects...", this.props.username);
+      //If no local storage, query database
+      console.log("No local storage");
+      console.log(
+        "This runs as page connects. Username: ",
+        this.props.username
+      );
       this.connectToDB(this.props.username);
     }
   }
   render() {
     return (
       <AppContainer id='appContainer'>
-        <Search></Search>
+        <Search />
         <Filters
           input={this.props.filteredWords}
           maxPrice={{
@@ -77,17 +101,10 @@ class Main extends React.Component {
             onChange: this.props.userInput,
           }}
         />
-        <label>Max results</label>
-        <input
-          id='maxResults'
-          type='number'
-          value={this.props.maxResults}
-          onChange={this.props.userInput}
-        ></input>
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-        <Results />
+        {this.state.scraperIsLive ? <Results /> : <Error />}
       </AppContainer>
     );
   }

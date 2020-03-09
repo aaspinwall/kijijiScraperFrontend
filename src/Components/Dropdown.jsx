@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import InputBox from "./InputBox";
@@ -22,15 +22,15 @@ function mapDispatch(dispatch) {
     userInput(e) {
       const value = e.target.value;
       const id = e.target.id;
+      if (typeof value === "Object") {
+        console.log("Caught an object type");
+      }
       dispatch({ type: "input", payload: value, id: id });
     },
   };
 }
 
 const Dropdown = props => {
-  useEffect(() => {
-    console.log("This runs when the component mounts");
-  }, []);
   return (
     <Container visible={props.visible} className='dropdownWrapper'>
       {props.content.map((obj, i) => {

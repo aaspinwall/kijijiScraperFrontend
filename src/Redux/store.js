@@ -10,7 +10,7 @@ const initialState = {
   keywords: "",
   maxPrice: 1500,
   minPrice: 300,
-  maxResults: 50,
+  maxResults: 80,
   filteredWords: ["recherch", "office", "bureau", "stationnement", "parking"],
 };
 
