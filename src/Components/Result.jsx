@@ -1,26 +1,48 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 
-export default class Result extends Component {
-  render() {
-    return (
-      <Container>
-        <Image src={this.props.ad.image}></Image>
-        <Info>
-          <Title href={this.props.ad.url}>{this.props.ad.title}</Title>
-          <Description>
-            {this.props.ad.description
-              ? this.props.ad.description.slice(0, 450) + "..."
-              : /* ? this.props.ad.description.slice(0, 200) + "..." */
-                ""}
-          </Description>
-        </Info>
-        <More className='price'>
-          {this.props.ad.attributes ? "$" + this.props.ad.attributes.price : ""}
-        </More>
-      </Container>
-    );
+export default function Result(props) {
+  const adObject = props.ad;
+  const textAttributes = [];
+  const numberAttributes = [];
+  const location = adObject.attributes.location;
+  for (const key in adObject.attributes) {
+    if (adObject.attributes.hasOwnProperty(key)) {
+      const element = adObject.attributes[key];
+      //Text attributes
+      if (typeof element !== "number" && typeof element != "object")
+        textAttributes.push(key + "=>" + element);
+      //Binary attributes
+      if (typeof element === "number" && element !== 0)
+        numberAttributes.push(key + "=>" + element);
+    }
   }
+  console.log(location);
+  //console.log(textAttributes);
+  return (
+    <Container>
+      <Image src={adObject.image}></Image>
+      <Info>
+        <Title href={adObject.url}>{adObject.title}</Title>
+        <Description>
+          {adObject.description
+            ? adObject.description.slice(0, 450) + "..."
+            : /* ? adObject.description.slice(0, 200) + "..." */
+              ""}
+        </Description>
+      </Info>
+
+      <More>
+        <div className='price'>{"$" + adObject.attributes.price}</div>
+        <Details>
+          {numberAttributes.map((attribute, i) => (
+            <div key={"attr-" + i}>{attribute}</div>
+          ))}
+          <div>{location.mapAddress}</div>
+        </Details>
+      </More>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -44,6 +66,9 @@ const Info = styled.div`
   font-size: 1rem;
   text-align: left;
   flex: 2;
+`;
+const Details = styled.div`
+  font-size: 0.7rem;
 `;
 const Title = styled.a`
   color: #2222;

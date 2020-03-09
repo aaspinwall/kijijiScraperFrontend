@@ -5,7 +5,20 @@ const initialState = {
   score: 0,
   counter: 0,
   name: "myname",
-  searchResults: [{ title: "Nothing here" }],
+  searchResults: [
+    {
+      title: "Nothing here",
+      attributes: {
+        location: {
+          latitude: 0,
+          longitude: 0,
+          mapAddress: "",
+          province: "",
+          mapRadius: 0,
+        },
+      },
+    },
+  ],
   username: "aaspinwall",
   keywords: "",
   maxPrice: 1500,

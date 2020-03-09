@@ -31,6 +31,8 @@ export default function InputBox(props) {
       if (e.key === "Enter") {
         submit(e);
       }
+    } else {
+      props.writeToState(e);
     }
   };
 
