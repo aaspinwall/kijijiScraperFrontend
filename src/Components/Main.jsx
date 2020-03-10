@@ -26,6 +26,7 @@ class Main extends React.Component {
       const body = await req.json();
       this.props.writeSearchResults(body);
       console.log("The response was: ", body);
+      this.setState({ scraperIsLive: true });
       writeToLocalStorage(body);
     } catch (error) {
       console.log(
@@ -70,7 +71,9 @@ class Main extends React.Component {
     console.log("You sent the message", message);
   };
 
-  componentDidMount() {
+  localStorageCheck(flags) {
+    //TODO add flags
+
     //Check if local storage exists to load the previous search
     const localStorage = readLocalStorage();
     if (localStorage) {
@@ -87,10 +90,14 @@ class Main extends React.Component {
       this.connectToDB(this.props.username);
     }
   }
+
+  componentDidMount() {
+    this.localStorageCheck();
+  }
   render() {
     return (
       <AppContainer id='appContainer'>
-        <Search />
+        <Search submit={this.clicked} />
         <Filters
           input={this.props.filteredWords}
           maxPrice={{

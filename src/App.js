@@ -4,6 +4,7 @@ import "./Styles/Style.css";
 import ToDos from "./Components/ToDos";
 import Main from "./Components/Main";
 import Results from "./Components/Results";
+import Debug from "./Components/Debug";
 
 export default class App extends React.Component {
   render() {
@@ -17,7 +18,7 @@ export default class App extends React.Component {
             <ToDos />
           </Route>
           <Route exact path='/debug'>
-            <Results></Results>
+            <Debug></Debug>
           </Route>
         </Switch>
       </Router>

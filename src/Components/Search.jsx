@@ -12,15 +12,18 @@ class Search extends Component {
       <SearchInput
         id='keywords'
         type='text'
+        submit={this.state.submit}
         value={this.state.input}
         onChange={e => this.setState({ input: e.target.value })}
         onBlur={e => {
           this.props.userInput(e);
         }}
         onKeyDown={e => {
-          console.log(e.key);
           if (e.key === "Enter" || e.key === "Tab") {
             this.props.userInput(e);
+            if (e.key === "Enter") {
+              this.props.submit(e);
+            }
           }
         }}
       ></SearchInput>

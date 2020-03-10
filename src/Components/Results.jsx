@@ -45,12 +45,6 @@ function mapDispatch(dispatch) {
       const id = e.target.id;
       dispatch({ type: "input", payload: value, id: id });
     },
-    writeSearchResults(results) {
-      dispatch({ type: "results", payload: results });
-    },
-    newSearch() {
-      dispatch({ type: "clearResults" });
-    },
   };
 }
 

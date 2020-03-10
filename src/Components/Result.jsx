@@ -5,6 +5,10 @@ export default function Result(props) {
   const adObject = props.ad;
   const textAttributes = [];
   const numberAttributes = [];
+  const images = adObject.images;
+  const imagesArray = images.map(img => {
+    return { original: img };
+  });
   const location = adObject.attributes.location;
   for (const key in adObject.attributes) {
     if (adObject.attributes.hasOwnProperty(key)) {
@@ -14,10 +18,12 @@ export default function Result(props) {
         textAttributes.push(key + "=>" + element);
       //Binary attributes
       if (typeof element === "number" && element !== 0)
-        numberAttributes.push(key + "=>" + element);
+        numberAttributes.push(key + ": " + element);
+      //numberAttributes.push(key + "=>" + element);
     }
   }
-  console.log(location);
+
+  console.log(images.length);
   //console.log(textAttributes);
   return (
     <Container>

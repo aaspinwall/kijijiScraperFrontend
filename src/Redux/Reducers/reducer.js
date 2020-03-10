@@ -17,6 +17,7 @@ function reducer(state, action) {
       return { ...state, searchResults: {} };
 
     case "results":
+      console.log("Writing results to global state", payload);
       return {
         ...state,
         searchResults: payload,

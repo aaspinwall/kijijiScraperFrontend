@@ -5,9 +5,11 @@ const initialState = {
   score: 0,
   counter: 0,
   name: "myname",
+
   searchResults: [
     {
       title: "Nothing here",
+      images: [],
       attributes: {
         location: {
           latitude: 0,
@@ -19,6 +21,9 @@ const initialState = {
       },
     },
   ],
+  resultAnalysis: {
+    locationAverage: { x: 0, y: 0 },
+  },
   username: "aaspinwall",
   keywords: "",
   maxPrice: 1500,
