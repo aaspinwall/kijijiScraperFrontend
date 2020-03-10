@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Block } from "../Styles/styled-components";
-import { useInterval } from "../Utilities/customHooks";
+
 const errorGif = `https://media.giphy.com/media/3ohzdFY0tJg8GVkad2/source.gif`;
 
 export default function Error() {
