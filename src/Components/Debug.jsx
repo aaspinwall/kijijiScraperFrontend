@@ -34,31 +34,6 @@ function mapDispatch(dispatch) {
   };
 }
 
-const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
-const defaultProps = {
-  center: {
-    lat: 59.95,
-    lng: 30.33,
-  },
-  zoom: 11,
-};
-
-const Pin = styled.div`
-  font-size: 2rem;
-  display: flex;
-  span {
-    font-size: 1rem;
-    width: 200px;
-    display: block;
-  }
-  :hover {
-    filter: opacity(0.5);
-  }
-  :hover span {
-    display: block;
-  }
-`;
-
 function localStorageCheck(props) {
   //TODO add flags
   //Check if local storage exists to load the previous search
@@ -78,17 +53,27 @@ function localStorageCheck(props) {
 const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 //const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
+const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
+const defaultProps = {
+  center: {
+    lat: 59.95,
+    lng: 30.33,
+  },
+  zoom: 11,
+};
+
 function Debug(props) {
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
   useEffect(() => {
     localStorageCheck(props);
   }, []);
+
   useEffect(() => {
     const latitudeArray = [];
     const longitudeArray = [];
     if (props.searchResults.length > 2) {
-      console.log("State changed");
+      //console.log("State changed");
       console.log(props.searchResults);
       for (const {
         attributes: {
@@ -100,38 +85,74 @@ function Debug(props) {
       }
       const longitudeAvg = arrAvg(longitudeArray);
       const latitudeAvg = arrAvg(latitudeArray);
-      console.log(longitudeAvg, latitudeAvg);
       changeLong(longitudeAvg);
       changeLat(latitudeAvg);
-      console.log(longAvg, latAvg);
     }
   }, [props.searchResults]);
+
+  const testLat = props.searchResults[0].attributes.location.latitude;
+  const testlong = props.searchResults[0].attributes.location.longitude;
   return (
     <div>
       <div>
-        {props.searchResults.map(result => {
-          return (
-            <div>
-              <div>{result.attributes.location.latitude}</div>
-              <div>{result.attributes.location.longitude}</div>
-            </div>
-          );
-        })}
+        <div>{longAvg}</div>
+        <div>{latAvg}</div>
       </div>
-      <div style={{ height: "400px", width: "400px" }}>
+      <div style={{ height: "600px", width: "100vw" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
+          defaultCenter={{
+            lat: latAvg,
+            lng: longAvg,
+          }}
+          defaultZoom={15}
         >
-          <Pin lat={59.955413} lng={30.337844} text='My Marker'>
-            <div>📍</div>
-            <span>This is a pin</span>
-          </Pin>
+          {/* <div lat={testLat} lng={testlong} text='My Marker'>
+            <div>.📍</div>
+            <span className='label'>1</span>
+          </div> */}
+          {props.searchResults.map((result, i) => {
+            const testLat = result.attributes.location.latitude;
+            const testlong = result.attributes.location.longitude;
+            const title = result.title;
+            return (
+              <Pin lat={testLat} lng={testlong} key={"pin" + i}>
+                <div className='pin'>📍</div>
+                <span className='label'>{title}</span>
+              </Pin>
+            );
+          })}
         </GoogleMapReact>
       </div>
     </div>
   );
 }
+
+const Pin = styled.div`
+  .pin {
+    font-size: 2rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  filter: opacity(0.5);
+  .label {
+    display: none;
+    padding-left: 2rem;
+    font-size: 1rem;
+    text-align: left;
+    width: 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  :hover {
+    filter: opacity(1);
+  }
+  :hover .label {
+    display: block;
+  }
+`;
 
 export default connect(mapState, mapDispatch)(Debug);
