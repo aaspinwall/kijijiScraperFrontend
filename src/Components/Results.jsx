@@ -27,6 +27,8 @@ function Results(props) {
 
 const Container = styled.div`
   display: grid;
+  overflow: scroll;
+  height: 100vh;
 `;
 
 function mapState(state) {

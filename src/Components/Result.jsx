@@ -28,17 +28,15 @@ export default function Result(props) {
   return (
     <Container>
       <Image src={adObject.image}></Image>
-      <Info>
-        <Title href={adObject.url}>{adObject.title}</Title>
-        <Description>
-          {adObject.description
-            ? adObject.description.slice(0, 450) + "..."
-            : /* ? adObject.description.slice(0, 200) + "..." */
-              ""}
-        </Description>
-      </Info>
-
       <More>
+        <Info>
+          <Title href={adObject.url}>{adObject.title}</Title>
+          <Description>
+            {adObject.description
+              ? adObject.description.slice(0, 450) + "..."
+              : ""}
+          </Description>
+        </Info>
         <div className='price'>{"$" + adObject.attributes.price}</div>
         <Details>
           {numberAttributes.map((attribute, i) => (
@@ -52,9 +50,8 @@ export default function Result(props) {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
   padding: 1rem;
   border-top: solid 1px #2222;
   margin: 0.5rem;
@@ -62,16 +59,13 @@ const Container = styled.div`
 const Image = styled.img`
   object-fit: cover;
   background-origin: border-box;
-  width: 300px;
+  width: 100%;
   height: 200px;
   border-radius: 20px;
-  padding: 0.7rem;
 `;
 const Info = styled.div`
-  padding: 0 2rem 0 1rem;
   font-size: 1rem;
   text-align: left;
-  flex: 2;
 `;
 const Details = styled.div`
   font-size: 0.7rem;
@@ -87,4 +81,7 @@ const Title = styled.a`
   }
 `;
 const Description = styled.div``;
-const More = styled.div``;
+const More = styled.div`
+  margin: 1rem;
+  text-align: right;
+`;

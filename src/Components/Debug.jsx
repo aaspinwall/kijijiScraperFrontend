@@ -50,8 +50,12 @@ function localStorageCheck(props) {
   }
 }
 
-const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
-//const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+const median = arr => {
+  const mid = Math.floor(arr.length / 2),
+    nums = [...arr].sort((a, b) => a - b);
+  return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+};
+//const median = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 const defaultProps = {
@@ -83,8 +87,8 @@ function Debug(props) {
         longitudeArray.push(longitude);
         latitudeArray.push(latitude);
       }
-      const longitudeAvg = arrAvg(longitudeArray);
-      const latitudeAvg = arrAvg(latitudeArray);
+      const longitudeAvg = median(longitudeArray);
+      const latitudeAvg = median(latitudeArray);
       changeLong(longitudeAvg);
       changeLat(latitudeAvg);
     }
@@ -95,8 +99,7 @@ function Debug(props) {
   return (
     <div>
       <div>
-        <div>{longAvg}</div>
-        <div>{latAvg}</div>
+        <div>{props.keywords}</div>
       </div>
       <div style={{ height: "600px", width: "100vw" }}>
         <GoogleMapReact

@@ -4,6 +4,7 @@ import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
 import Error from "./Error";
+import Map from "./Map";
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -13,7 +14,7 @@ import { connect } from "react-redux";
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { scraperIsLive: true };
+    this.state = { scraperIsLive: true, showMap: false };
   }
   search = async message => {
     const url = "http://localhost:5000/search";
@@ -97,6 +98,13 @@ class Main extends React.Component {
   render() {
     return (
       <AppContainer id='appContainer'>
+        <input
+          type='checkbox'
+          id='mapToggle'
+          name='mapToggle'
+          value='mapToggle'
+          onClick={() => this.setState({ showMap: !this.state.showMap })}
+        />
         <Search submit={this.clicked} />
         <Filters
           input={this.props.filteredWords}
@@ -111,13 +119,37 @@ class Main extends React.Component {
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-        {this.state.scraperIsLive ? <Results /> : <Error />}
+
+        {this.state.scraperIsLive ? (
+          <div className={this.state.showMap ? "resultsContainer" : ""}>
+            <Results className={"results"} />
+            {this.state.showMap ? <Map /> : ""}
+          </div>
+        ) : (
+          <Error />
+        )}
+        <div
+          style={{
+            height: "200px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "grey",
+            color: "white",
+          }}
+        >
+          Here is a footer
+        </div>
       </AppContainer>
     );
   }
 }
 
 const AppContainer = styled.div`
+  .resultsContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
   :focus {
     display: none;
   }
