@@ -1,54 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import GoogleMapReact from "google-map-react";
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { readLocalStorage } from "../Utilities/utilityFunctions";
-
-// Maps `state` to `props`:
-// These will be added as props to the component.
-function mapState(state) {
-  const { filteredSearch } = state;
-  return {
-    filteredSearch,
-  };
-}
-
-// Maps `dispatch` to `props`:
-function mapDispatch(dispatch) {
-  return {
-    testText(e) {
-      const value = e.target.value;
-      dispatch({ type: "test", payload: value });
-    },
-    userInput(e) {
-      const value = e.target.value;
-      const id = e.target.id;
-      dispatch({ type: "input", payload: value, id: id });
-    },
-    writeSearchResults(results) {
-      dispatch({ type: "results", payload: results });
-    },
-    newSearch() {
-      dispatch({ type: "clearResults" });
-    },
-  };
-}
-
-function localStorageCheck(props) {
-  //TODO add flags
-  //Check if local storage exists to load the previous search
-  const localStorage = readLocalStorage();
-  if (localStorage) {
-    //Load previous search
-    props.writeSearchResults(localStorage);
-    console.log("Local storage found and loaded");
-  } else {
-    //If no local storage, query database
-    console.log("No local storage");
-    console.log("This runs as page connects. Username: ", props.username);
-    //connectToDB(props.username);
-  }
-}
+import { useSelector } from "react-redux";
 
 const median = arr => {
   const mid = Math.floor(arr.length / 2),
@@ -59,10 +12,11 @@ const median = arr => {
 
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
-function Map(props) {
+function Map() {
+  const selectedData = useSelector(state => state);
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
-  const { filteredSearch } = props;
+  const { filteredSearch } = selectedData;
   const mapElement = useRef(null);
 
   useEffect(() => {
@@ -157,4 +111,4 @@ const Pin = styled.div`
   }
 `;
 
-export default connect(mapState, mapDispatch)(Map);
+export default Map;
