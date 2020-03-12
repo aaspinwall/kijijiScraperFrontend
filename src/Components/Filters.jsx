@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Bubble from "./Bubble";
 
-export default function Filters(props) {
+export default function Filters() {
   return (
     <Container>
       <Bubble
@@ -21,17 +21,6 @@ export default function Filters(props) {
           },
         ]}
       />
-      {/* <Bubble
-        label='Filters'
-        type='text'
-        content={[
-          {
-            text: "Filter words",
-            type: "text",
-            id: "filteredWords",
-          },
-        ]}
-      /> */}
       <Bubble
         label='More'
         type='number'
@@ -46,5 +35,3 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const Input = styled.input``;

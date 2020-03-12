@@ -7,9 +7,9 @@ import { readLocalStorage } from "../Utilities/utilityFunctions";
 // Maps `state` to `props`:
 // These will be added as props to the component.
 function mapState(state) {
-  const { searchResults } = state;
+  const { filteredSearch } = state;
   return {
-    searchResults: searchResults,
+    filteredSearch: filteredSearch,
   };
 }
 
@@ -79,14 +79,14 @@ function Map(props) {
   useEffect(() => {
     const latitudeArray = [];
     const longitudeArray = [];
-    if (props.searchResults.length > 2) {
+    if (props.filteredSearch.length > 2) {
       //console.log("State changed");
-      console.log(props.searchResults);
+      console.log(props.filteredSearch);
       for (const {
         attributes: {
           location: { latitude: latitude, longitude: longitude },
         },
-      } of props.searchResults) {
+      } of props.filteredSearch) {
         longitudeArray.push(longitude);
         latitudeArray.push(latitude);
       }
@@ -95,10 +95,10 @@ function Map(props) {
       changeLong(longitudeAvg);
       changeLat(latitudeAvg);
     }
-  }, [props.searchResults]);
+  }, [props.filteredSearch]);
 
-  //const testLat = props.searchResults[0].attributes.location.latitude;
-  //const testlong = props.searchResults[0].attributes.location.longitude;
+  //const testLat = props.filteredSearch[0].attributes.location.latitude;
+  //const testlong = props.filteredSearch[0].attributes.location.longitude;
   return (
     <Container>
       <div
@@ -114,7 +114,7 @@ function Map(props) {
           }}
           defaultZoom={15}
         >
-          {props.searchResults.map((result, i) => {
+          {props.filteredSearch.map((result, i) => {
             const testLat = result.attributes.location.latitude;
             const testlong = result.attributes.location.longitude;
             const title = result.title;
@@ -131,6 +131,7 @@ function Map(props) {
   );
 }
 const Container = styled.div`
+  z-index: -999;
   .mapContainer {
     top: 0;
     width: 100%;

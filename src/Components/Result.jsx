@@ -69,6 +69,8 @@ const Info = styled.div`
 `;
 const Details = styled.div`
   font-size: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
 `;
 const Title = styled.a`
   color: #2222;

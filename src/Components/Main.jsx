@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
-import Error from "./Error";
-import Map from "./Map";
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -29,11 +27,13 @@ class Main extends React.Component {
       console.log("The response was: ", body);
       this.setState({ scraperIsLive: true });
       writeToLocalStorage(body);
+      this.props.lifeCycle("static");
     } catch (error) {
       console.log(
         `Error connecting to ${url} / Search operation triggered this error`
       );
       this.setState({ scraperIsLive: false });
+      this.props.lifeCycle("error");
     }
   };
   connectToDB = async username => {
@@ -59,7 +59,7 @@ class Main extends React.Component {
   };
 
   clicked = e => {
-    this.props.newSearch();
+    this.props.lifeCycle("loading");
     const message = {
       params: {
         keywords: this.props.keywords,
@@ -94,6 +94,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     this.localStorageCheck();
+    this.props.lifeCycle("static");
   }
   render() {
     return (
@@ -103,31 +104,15 @@ class Main extends React.Component {
           id='mapToggle'
           name='mapToggle'
           value='mapToggle'
-          onClick={() => this.setState({ showMap: !this.state.showMap })}
+          checked={this.props.showMap}
+          onClick={() => this.props.toggleMap()}
         />
         <Search submit={this.clicked} />
-        <Filters
-          input={this.props.filteredWords}
-          maxPrice={{
-            id: "maxPrice",
-            title: "Max Price",
-            type: "number",
-            value: this.props.maxPrice,
-            onChange: this.props.userInput,
-          }}
-        />
+        <Filters />
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
-
-        {this.state.scraperIsLive ? (
-          <div className={this.state.showMap ? "resultsContainer" : ""}>
-            <Results className={"results"} />
-            {this.state.showMap ? <Map /> : ""}
-          </div>
-        ) : (
-          <Error />
-        )}
+        <Results></Results>
         <div
           style={{
             height: "200px",
@@ -159,21 +144,23 @@ const AppContainer = styled.div`
 function mapState(state) {
   const {
     keywords,
-    maxPrice,
-    minPrice,
+
     maxResults,
     searchResults,
     filteredWords,
     username,
+    lifeCycle,
+    showMap,
   } = state;
   return {
     keywords: keywords,
-    maxPrice: maxPrice,
-    minPrice: minPrice,
+
     maxResults: maxResults,
     searchResults: searchResults,
     filteredWords: filteredWords,
     username: username,
+    lifeCycle: lifeCycle,
+    showMap: showMap,
   };
 }
 
@@ -192,8 +179,12 @@ function mapDispatch(dispatch) {
     writeSearchResults(results) {
       dispatch({ type: "results", payload: results });
     },
-    newSearch() {
-      dispatch({ type: "clearResults" });
+
+    lifeCycle(flag) {
+      dispatch({ type: "lifeCycle", payload: flag });
+    },
+    toggleMap() {
+      dispatch({ type: "toggleMap" });
     },
   };
 }

@@ -5,8 +5,25 @@ const initialState = {
   score: 0,
   counter: 0,
   name: "myname",
+  lifeCycle: "",
+  showMap: false,
 
   searchResults: [
+    {
+      title: "Nothing here",
+      images: [],
+      attributes: {
+        location: {
+          latitude: 0,
+          longitude: 0,
+          mapAddress: "",
+          province: "",
+          mapRadius: 0,
+        },
+      },
+    },
+  ],
+  filteredSearch: [
     {
       title: "Nothing here",
       images: [],

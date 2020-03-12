@@ -51,6 +51,7 @@ const Dropdown = props => {
 };
 
 const Container = styled.div`
+  z-index: 999;
   display: ${props => (props.visible ? "grid" : "none")};
   position: absolute;
   background: white;

@@ -23,7 +23,6 @@ export default function ToDos() {
         <div>Remove duplicates</div>
         <p>Compare titles and descriptions</p>
         <div>Sort by price</div>
-        <div>Map</div>
       </Issue>
       <Issue>
         <h5>Authentication screen</h5>

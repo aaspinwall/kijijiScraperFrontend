@@ -21,10 +21,24 @@ function reducer(state, action) {
         ...state,
         searchResults: payload,
       };
-    case "test":
+    case "filtered":
       return {
         ...state,
-        test: payload,
+        filteredSearch: payload,
+      };
+    //Life Cycle states tell the components when to render. Available options are:
+    //Static - App is running with results on display
+    //Loading - Results are being fetched
+    //Error
+    case "lifeCycle":
+      return {
+        ...state,
+        lifeCycle: payload,
+      };
+    case "toggleMap":
+      return {
+        ...state,
+        showMap: !state.showMap,
       };
     default:
       return state;
