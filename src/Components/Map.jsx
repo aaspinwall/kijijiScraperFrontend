@@ -9,7 +9,7 @@ import { readLocalStorage } from "../Utilities/utilityFunctions";
 function mapState(state) {
   const { filteredSearch } = state;
   return {
-    filteredSearch: filteredSearch,
+    filteredSearch,
   };
 }
 
@@ -58,35 +58,24 @@ const median = arr => {
 //const median = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
-const defaultProps = {
-  center: {
-    lat: 59.95,
-    lng: 30.33,
-  },
-  zoom: 11,
-};
 
 function Map(props) {
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
+  const { filteredSearch } = props;
   const mapElement = useRef(null);
-  useEffect(() => {
-    localStorageCheck(props);
-    console.log(mapElement.current.style);
-    console.log(document.body.clientHeight);
-  }, []);
 
   useEffect(() => {
     const latitudeArray = [];
     const longitudeArray = [];
-    if (props.filteredSearch.length > 2) {
+    if (filteredSearch.length > 2) {
       //console.log("State changed");
-      console.log(props.filteredSearch);
+      //console.log(filteredSearch);
       for (const {
         attributes: {
-          location: { latitude: latitude, longitude: longitude },
+          location: { latitude, longitude },
         },
-      } of props.filteredSearch) {
+      } of filteredSearch) {
         longitudeArray.push(longitude);
         latitudeArray.push(latitude);
       }
@@ -95,10 +84,10 @@ function Map(props) {
       changeLong(longitudeAvg);
       changeLat(latitudeAvg);
     }
-  }, [props.filteredSearch]);
+  }, [filteredSearch]);
 
-  //const testLat = props.filteredSearch[0].attributes.location.latitude;
-  //const testlong = props.filteredSearch[0].attributes.location.longitude;
+  //const testLat = filteredSearch[0].attributes.location.latitude;
+  //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
     <Container>
       <div
@@ -114,7 +103,7 @@ function Map(props) {
           }}
           defaultZoom={15}
         >
-          {props.filteredSearch.map((result, i) => {
+          {filteredSearch.map((result, i) => {
             const testLat = result.attributes.location.latitude;
             const testlong = result.attributes.location.longitude;
             const title = result.title;
@@ -135,10 +124,10 @@ const Container = styled.div`
   .mapContainer {
     top: 0;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
   }
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 `;
 
 const Pin = styled.div`

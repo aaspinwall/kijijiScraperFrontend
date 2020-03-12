@@ -15,11 +15,11 @@ function mapState(state) {
     showMap,
   } = state;
   return {
-    searchResults: searchResults,
-    filteredWords: filteredWords,
-    filteredSearch: filteredSearch,
-    lifeCycle: lifeCycle,
-    showMap: showMap,
+    searchResults,
+    filteredWords,
+    filteredSearch,
+    lifeCycle,
+    showMap,
   };
 }
 
@@ -36,24 +36,23 @@ function mapDispatch(dispatch) {
     },
   };
 }
-
 function Results(props) {
+  const { searchResults, applyFilter, filteredWords } = props;
   useEffect(() => {
-    props.applyFilter(filterResults());
-  }, [props.searchResults]);
-  const filterResults = () => {
-    const searchResults = props.searchResults;
-    const filteredResults = searchResults.filter(element => {
-      const title = element.title;
-      const filters = props.filteredWords;
-      //Check if it passes all the filters
-      return filters.every(word => {
-        const noWordFound = title.toLowerCase().search(word) === -1;
-        return noWordFound;
+    const filterResults = () => {
+      const filteredResults = searchResults.filter(element => {
+        const title = element.title;
+        //Check if it passes all the filteredWords
+        return filteredWords.every(word => {
+          const noWordFound = title.toLowerCase().search(word) === -1;
+          return noWordFound;
+        });
       });
-    });
-    return filteredResults;
-  };
+      return filteredResults;
+    };
+    console.log("EFFECT RAN BECAUSE SEARCHRESULTS CHANGED");
+    applyFilter(filterResults());
+  }, [searchResults]);
 
   const results = props.filteredSearch.map((element, i) => {
     return <Result ad={element} key={i} />;
@@ -66,7 +65,7 @@ function Results(props) {
     switch (lifeCycle) {
       case "loading":
         return loading;
-        break;
+
       case "static":
         return (
           <div>
@@ -74,14 +73,12 @@ function Results(props) {
             {results}
           </div>
         );
-        break;
+
       case "error":
         return <Error></Error>;
-        break;
 
       default:
         return;
-        break;
     }
   };
 
@@ -90,8 +87,6 @@ function Results(props) {
 
 const Container = styled.div`
   display: grid;
-  overflow: scroll;
-  height: 100vh;
 `;
 
 export default connect(mapState, mapDispatch)(Results);

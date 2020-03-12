@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SearchInput, Spinner } from "evergreen-ui";
+import { SearchInput } from "evergreen-ui";
 
 const Debugger = styled.div`
   width: 100vw;

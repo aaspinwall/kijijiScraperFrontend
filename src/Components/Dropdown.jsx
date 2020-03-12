@@ -22,7 +22,7 @@ function mapDispatch(dispatch) {
     userInput(e) {
       const value = e.target.value;
       const id = e.target.id;
-      if (typeof value === "Object") {
+      if (typeof value === "object") {
         console.log("Caught an object type");
       }
       dispatch({ type: "input", payload: value, id: id });

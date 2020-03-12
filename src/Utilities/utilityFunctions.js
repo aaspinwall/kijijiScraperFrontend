@@ -14,9 +14,13 @@ const readLocalStorage = () => {
   }
 };
 
+/* const checkOutputType = output => {
+  let isArray = output instanceof Array && output.constructor === Array;
+  return output;
+};
 const clearLocalStorage = () => {
   localStorage.clear();
   console.log("Cleared local storage");
-};
+}; */
 
 export { checkIfEmptyObject, writeToLocalStorage, readLocalStorage };

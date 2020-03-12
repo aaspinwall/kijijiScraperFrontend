@@ -8,12 +8,10 @@ export default class Bubble extends React.Component {
     this.state = { open: false, dropdownVisible: false };
   }
   clicked = () => {
-    this.setState(
-      (this.state = {
-        open: !this.state.open,
-        dropdownVisible: !this.state.dropdownVisible,
-      })
-    );
+    this.setState({
+      open: !this.state.open,
+      dropdownVisible: !this.state.dropdownVisible,
+    });
   };
   handleClickOutside = e => {
     const clickedOutside = !this.node.contains(e.target);

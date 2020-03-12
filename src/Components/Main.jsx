@@ -9,6 +9,54 @@ import {
 } from "../Utilities/utilityFunctions";
 import { connect } from "react-redux";
 
+// Maps `state` to `props`:
+// These will be added as props to the component.
+function mapState(state) {
+  const {
+    keywords,
+    maxResults,
+    searchResults,
+    filteredWords,
+    username,
+    lifeCycle,
+    showMap,
+  } = state;
+  return {
+    keywords: keywords,
+    maxResults: maxResults,
+    searchResults: searchResults,
+    filteredWords: filteredWords,
+    username: username,
+    lifeCycle: lifeCycle,
+    showMap: showMap,
+  };
+}
+
+// Maps `dispatch` to `props`:
+function mapDispatch(dispatch) {
+  return {
+    testText(e) {
+      const value = e.target.value;
+      dispatch({ type: "test", payload: value });
+    },
+    userInput(e) {
+      const value = e.target.value;
+      const id = e.target.id;
+      dispatch({ type: "input", payload: value, id: id });
+    },
+    writeSearchResults(results) {
+      dispatch({ type: "results", payload: results });
+    },
+
+    lifeCycle(flag) {
+      dispatch({ type: "lifeCycle", payload: flag });
+    },
+    toggleMap() {
+      dispatch({ type: "toggleMap" });
+    },
+  };
+}
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -135,58 +183,6 @@ const AppContainer = styled.div`
     display: grid;
     grid-template-columns: 50% 50%;
   }
-  :focus {
-    display: none;
-  }
 `;
-// Maps `state` to `props`:
-// These will be added as props to the component.
-function mapState(state) {
-  const {
-    keywords,
-
-    maxResults,
-    searchResults,
-    filteredWords,
-    username,
-    lifeCycle,
-    showMap,
-  } = state;
-  return {
-    keywords: keywords,
-
-    maxResults: maxResults,
-    searchResults: searchResults,
-    filteredWords: filteredWords,
-    username: username,
-    lifeCycle: lifeCycle,
-    showMap: showMap,
-  };
-}
-
-// Maps `dispatch` to `props`:
-function mapDispatch(dispatch) {
-  return {
-    testText(e) {
-      const value = e.target.value;
-      dispatch({ type: "test", payload: value });
-    },
-    userInput(e) {
-      const value = e.target.value;
-      const id = e.target.id;
-      dispatch({ type: "input", payload: value, id: id });
-    },
-    writeSearchResults(results) {
-      dispatch({ type: "results", payload: results });
-    },
-
-    lifeCycle(flag) {
-      dispatch({ type: "lifeCycle", payload: flag });
-    },
-    toggleMap() {
-      dispatch({ type: "toggleMap" });
-    },
-  };
-}
 
 export default connect(mapState, mapDispatch)(Main);
