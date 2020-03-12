@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
+import Footer from "./Footer";
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -15,20 +16,22 @@ function mapState(state) {
   const {
     keywords,
     maxResults,
+    maxPrice,
+    minPrice,
     searchResults,
-    filteredWords,
     username,
     lifeCycle,
     showMap,
   } = state;
   return {
-    keywords: keywords,
-    maxResults: maxResults,
-    searchResults: searchResults,
-    filteredWords: filteredWords,
-    username: username,
-    lifeCycle: lifeCycle,
-    showMap: showMap,
+    keywords,
+    maxPrice,
+    minPrice,
+    maxResults,
+    searchResults,
+    username,
+    lifeCycle,
+    showMap,
   };
 }
 
@@ -122,7 +125,6 @@ class Main extends React.Component {
 
   localStorageCheck(flags) {
     //TODO add flags
-
     //Check if local storage exists to load the previous search
     const localStorage = readLocalStorage();
     if (localStorage) {
@@ -161,18 +163,7 @@ class Main extends React.Component {
           Search
         </button>
         <Results></Results>
-        <div
-          style={{
-            height: "200px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "grey",
-            color: "white",
-          }}
-        >
-          Here is a footer
-        </div>
+        <Footer />
       </AppContainer>
     );
   }

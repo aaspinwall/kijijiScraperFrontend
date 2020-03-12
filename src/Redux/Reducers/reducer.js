@@ -27,6 +27,7 @@ function reducer(state, action) {
         filteredSearch: payload,
       };
     //Life Cycle states tell the components when to render. Available options are:
+    //Initial - Loads components and gets data
     //Static - App is running with results on display
     //Loading - Results are being fetched
     //Error
