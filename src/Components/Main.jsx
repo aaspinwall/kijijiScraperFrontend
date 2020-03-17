@@ -4,6 +4,7 @@ import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
 import Footer from "./Footer";
+
 import {
   readLocalStorage,
   writeToLocalStorage,
@@ -158,6 +159,7 @@ class Main extends React.Component {
           onClick={() => this.props.toggleMap()}
         />
         <Search submit={this.clicked} />
+
         <Filters />
         <button name='getButton' onClick={this.clicked}>
           Search

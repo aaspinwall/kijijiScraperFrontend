@@ -4,6 +4,7 @@ import Result from "./Result";
 import Loading from "./Loading";
 import Error from "./Error";
 import Map from "./Map";
+import Walkscore from "./Walkscore";
 import { useSelector, useDispatch } from "react-redux";
 
 function Results(props) {
@@ -36,6 +37,20 @@ function Results(props) {
   }, [searchResults]);
 
   const results = filteredSearch.map((element, i) => {
+    if (i === 0) {
+      console.log(element.attributes.location);
+      const {
+        mapAddress: address,
+        latitude,
+        longitude,
+      } = element.attributes.location;
+      return (
+        <div>
+          <Result ad={element} key={i} />
+          <Walkscore locationData={{ address, latitude, longitude }} />
+        </div>
+      );
+    }
     return <Result ad={element} key={i} />;
   });
 
@@ -48,7 +63,7 @@ function Results(props) {
 
       case "static":
         return (
-          <div>
+          <div id='resultsContainer'>
             {showMap ? <Map></Map> : undefined}
             {results}
           </div>
@@ -67,6 +82,8 @@ function Results(props) {
 
 const Container = styled.div`
   display: grid;
+  #resultsContainer {
+  }
 `;
 
 export default Results;

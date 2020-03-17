@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-export default function Debug() {
+export default function Walkscore(props) {
   const [serverResponse, writeResponse] = useState("");
   useEffect(() => {
     const connect = async (url, message) => {
@@ -31,9 +32,15 @@ export default function Debug() {
       return num.toFixed(7);
     };
 
-    let address = "1105 Rue de l'Église, Verdun, QC H4G 2N8, Canada";
-    const latitude = 45.4634046;
-    const longitude = -73.5776328;
+    let address = props.locationData
+      ? props.locationData.address
+      : "1105 Rue de l'Église, Verdun, QC H4G 2N8, Canada";
+    const latitude = props.locationData
+      ? props.locationData.latitude
+      : 45.4634046;
+    const longitude = props.locationData
+      ? props.locationData.longitude
+      : -73.5776328;
     const message = JSON.stringify({
       address: formatAddress(address),
       latitude: formatCoord(latitude),
@@ -41,9 +48,10 @@ export default function Debug() {
     });
     const url = "http://localhost:8000/";
     connect(url, message);
+    console.log(props);
   }, []);
   return (
-    <div>
+    <Container>
       <div>
         <div>Walkscore:</div>
         <div>{serverResponse.walkscore}</div>
@@ -60,6 +68,12 @@ export default function Debug() {
         <div>Description:</div>
         <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
       </div>
-    </div>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  div {
+    font-size: 0.7rem;
+  }
+`;
