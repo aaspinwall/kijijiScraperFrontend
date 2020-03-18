@@ -37,20 +37,6 @@ function Results(props) {
   }, [searchResults]);
 
   const results = filteredSearch.map((element, i) => {
-    if (i === 0) {
-      console.log(element.attributes.location);
-      const {
-        mapAddress: address,
-        latitude,
-        longitude,
-      } = element.attributes.location;
-      return (
-        <div>
-          <Result ad={element} key={i} />
-          <Walkscore locationData={{ address, latitude, longitude }} />
-        </div>
-      );
-    }
     return <Result ad={element} key={i} />;
   });
 

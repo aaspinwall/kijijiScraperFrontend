@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Walkscore from "./Walkscore";
 import styled from "styled-components";
 
 export default function Result(props) {
+  const [showScore, walkscoreToggle] = useState(false);
   const adObject = props.ad;
   const textAttributes = [];
   const numberAttributes = [];
 
   const location = adObject.attributes.location;
+  const { mapAddress: address, latitude, longitude } = location;
   for (const key in adObject.attributes) {
     if (adObject.attributes.hasOwnProperty(key)) {
       const element = adObject.attributes[key];
@@ -41,6 +44,20 @@ export default function Result(props) {
           ))}
           <div>{location.mapAddress}</div>
         </Details>
+        <span>Walkscore</span>
+        <input
+          type='checkbox'
+          id='walkscoreToggle'
+          name='walkscoreToggle'
+          value='walkscoreToggle'
+          checked={showScore}
+          onClick={() => walkscoreToggle(!showScore)}
+        />
+        {showScore ? (
+          <Walkscore locationData={{ address, latitude, longitude }} />
+        ) : (
+          ""
+        )}
       </More>
     </Container>
   );
