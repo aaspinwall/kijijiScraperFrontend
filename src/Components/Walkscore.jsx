@@ -46,7 +46,8 @@ export default function Walkscore(props) {
       latitude: formatCoord(latitude),
       longitude: formatCoord(longitude),
     });
-    const url = "http://localhost:5000/walkscore";
+    const url =
+      "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev/walkscore";
     connect(url, message);
     console.log(props);
   }, []);

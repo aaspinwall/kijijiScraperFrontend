@@ -67,7 +67,8 @@ class Main extends React.Component {
     this.state = { scraperIsLive: true, showMap: false };
   }
   search = async message => {
-    const url = "http://localhost:5000/search";
+    const url =
+      "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev/search";
     try {
       const req = await fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -89,7 +90,8 @@ class Main extends React.Component {
     }
   };
   connectToDB = async username => {
-    const url = "http://localhost:5000/users";
+    const url =
+      "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev/users";
     const reqBody = JSON.stringify({ username: username });
     try {
       const req = await fetch(url, {
