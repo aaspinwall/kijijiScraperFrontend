@@ -19,6 +19,10 @@ export default function ToDos() {
         <p>Arrays don't work</p>
       </Issue>
       <Issue>
+        <h5>Map</h5>
+        <div>Pins show result when hover</div>
+      </Issue>
+      <Issue>
         <h5>Result display</h5>
         <div>Remove duplicates</div>
         <p>Compare titles and descriptions</p>
