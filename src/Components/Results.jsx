@@ -4,8 +4,19 @@ import Result from "./Result";
 import Loading from "./Loading";
 import Error from "./Error";
 import Map from "./Map";
-import Walkscore from "./Walkscore";
 import { useSelector, useDispatch } from "react-redux";
+
+const formatTitle = str => {
+  const cleanStr = str.replace(/([*►◄!])+/g, "").toLowerCase();
+  const regex = /[a-z]/;
+  const found = cleanStr.match(regex);
+  return cleanStr.replace(found[0], found[0].toUpperCase());
+};
+const removeDuplicates = arr => {
+  arr.forEach(result => {
+    console.log(result.title.split(" ").sort());
+  });
+};
 
 function Results(props) {
   const dispatch = useDispatch();
@@ -30,9 +41,17 @@ function Results(props) {
           return noWordFound;
         });
       });
-      return filteredResults;
+
+      //Apply formatting rules
+      const formattedResults = filteredResults.map((result, i) => {
+        const { title } = result;
+        return { ...result, title: formatTitle(title) };
+      });
+      removeDuplicates(formattedResults);
+      //console.log(formattedResults);
+      return formattedResults;
     };
-    console.log("EFFECT RAN BECAUSE SEARCHRESULTS CHANGED");
+    console.log("SEARCHRESULTS CHANGED => Filtering results...");
     applyFilter(filterResults());
   }, [searchResults]);
 
@@ -67,8 +86,8 @@ function Results(props) {
 }
 
 const Container = styled.div`
-  display: grid;
   #resultsContainer {
+    margin: auto 1rem;
   }
 `;
 

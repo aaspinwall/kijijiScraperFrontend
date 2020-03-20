@@ -23,21 +23,19 @@ export default function Result(props) {
     }
   }
 
-  //console.log(images.length);
-  //console.log(textAttributes);
   return (
-    <Container>
+    <Container className='resultContainer'>
       <Image src={adObject.image}></Image>
-      <More>
-        <Info>
+      <Text>
+        <Main>
           <Title href={adObject.url}>{adObject.title}</Title>
-          <Description>
-            {adObject.description
-              ? adObject.description.slice(0, 450) + "..."
-              : ""}
-          </Description>
-        </Info>
-        <div className='price'>{"$" + adObject.attributes.price}</div>
+          <Price className='price'>{"$" + adObject.attributes.price}</Price>
+        </Main>
+        <Description>
+          {adObject.description
+            ? adObject.description.slice(0, 450) + "..."
+            : ""}
+        </Description>
         <Details>
           {numberAttributes.map((attribute, i) => (
             <div key={"attr-" + i}>{attribute}</div>
@@ -58,28 +56,48 @@ export default function Result(props) {
         ) : (
           ""
         )}
-      </More>
+      </Text>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  padding: 1rem;
-  border-top: solid 1px #2222;
-  margin: 0.5rem;
+  @media only screen and (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 1rem;
+    border-top: solid 1px #2222;
+    margin: 0.5rem;
+  }
 `;
 const Image = styled.img`
-  object-fit: cover;
+  @media only screen and (min-width: 1024px) {
+    object-fit: cover;
+    width: 100%;
+  }
+  display: flex;
+  justify-content: center;
   background-origin: border-box;
+  border-radius: 5px;
+  object-fit: cover;
   width: 100%;
   height: 200px;
-  border-radius: 20px;
 `;
-const Info = styled.div`
-  font-size: 1rem;
-  text-align: left;
+const Text = styled.div`
+  @media only screen and (min-width: 1024px) {
+    text-align: right;
+  }
+  display: grid;
+`;
+const Main = styled.div`
+  margin: 12px auto 6px auto;
+  padding: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  width: 100%;
+`;
+const Price = styled.div`
+  text-align: right;
 `;
 const Details = styled.div`
   font-size: 0.7rem;
@@ -87,17 +105,16 @@ const Details = styled.div`
   flex-wrap: wrap;
 `;
 const Title = styled.a`
-  color: #2222;
+  width: 100%;
+  text-align: left;
   color: black;
-  font-size: 1rem;
-  font-style: none;
+  text-decoration: none;
+
   :visited {
     color: black;
-    font-style: none;
+    text-decoration: none;
   }
 `;
-const Description = styled.div``;
-const More = styled.div`
-  margin: 1rem;
-  text-align: right;
+const Description = styled.div`
+  display: none;
 `;

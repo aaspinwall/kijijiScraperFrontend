@@ -180,7 +180,7 @@ class Main extends React.Component {
 const AppContainer = styled.div`
   .resultsContainer {
     display: grid;
-    grid-template-columns: 50% 50%;
+    /* grid-template-columns: 50% 50%; */
   }
 `;
 

@@ -6,7 +6,7 @@ const initialState = {
   counter: 0,
   name: "myname",
   lifeCycle: "",
-  showMap: true,
+  showMap: false,
 
   searchResults: [
     {
