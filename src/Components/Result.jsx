@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 export default function Result(props) {
   const [showScore, walkscoreToggle] = useState(false);
+  const [showMore, moreToggle] = useState(false);
   const adObject = props.ad;
   const textAttributes = [];
   const numberAttributes = [];
@@ -25,37 +26,42 @@ export default function Result(props) {
 
   return (
     <Container className='resultContainer'>
-      <Image src={adObject.image}></Image>
+      <Image src={adObject.images[0]}></Image>
       <Text>
         <Main>
           <Title href={adObject.url}>{adObject.title}</Title>
           <Price className='price'>{"$" + adObject.attributes.price}</Price>
         </Main>
-        <Description>
-          {adObject.description
-            ? adObject.description.slice(0, 450) + "..."
-            : ""}
-        </Description>
-        <Details>
+        <div className='more'>
+          <div className='moreinfoButton' onClick={() => moreToggle(!showMore)}>
+            ^
+          </div>
+        </div>
+        <Details visible={showMore}>
           {numberAttributes.map((attribute, i) => (
-            <div key={"attr-" + i}>{attribute}</div>
+            <span key={"attr-" + i}>{attribute}</span>
           ))}
           <div>{location.mapAddress}</div>
+          <Description>
+            {adObject.description
+              ? adObject.description.slice(0, 450) + "  ... more"
+              : ""}
+          </Description>
+          <input
+            type='checkbox'
+            id='walkscoreToggle'
+            name='walkscoreToggle'
+            value='walkscoreToggle'
+            checked={showScore}
+            onClick={() => walkscoreToggle(!showScore)}
+          />
+          <span>Walkscore</span>
+          {showScore ? (
+            <Walkscore locationData={{ address, latitude, longitude }} />
+          ) : (
+            ""
+          )}
         </Details>
-        <span>Walkscore</span>
-        <input
-          type='checkbox'
-          id='walkscoreToggle'
-          name='walkscoreToggle'
-          value='walkscoreToggle'
-          checked={showScore}
-          onClick={() => walkscoreToggle(!showScore)}
-        />
-        {showScore ? (
-          <Walkscore locationData={{ address, latitude, longitude }} />
-        ) : (
-          ""
-        )}
       </Text>
     </Container>
   );
@@ -69,6 +75,23 @@ const Container = styled.div`
     border-top: solid 1px #2222;
     margin: 0.5rem;
   }
+  .more {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 20px;
+
+    .moreinfoButton {
+      position: absolute;
+      right: 0;
+      height: 20px;
+      width: 20px;
+      font-weight: 200;
+      border-radius: 20px;
+      border: 1px solid grey;
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
 `;
 const Image = styled.img`
   @media only screen and (min-width: 1024px) {
@@ -81,7 +104,7 @@ const Image = styled.img`
   border-radius: 5px;
   object-fit: cover;
   width: 100%;
-  height: 200px;
+  height: 218px;
 `;
 const Text = styled.div`
   @media only screen and (min-width: 1024px) {
@@ -100,9 +123,13 @@ const Price = styled.div`
   text-align: right;
 `;
 const Details = styled.div`
+  > div,
+  > div > div {
+    padding: 1rem 0;
+  }
   font-size: 0.7rem;
-  display: flex;
   flex-wrap: wrap;
+  display: ${props => (props.visible ? "flex" : "none")};
 `;
 const Title = styled.a`
   width: 100%;
@@ -116,5 +143,6 @@ const Title = styled.a`
   }
 `;
 const Description = styled.div`
-  display: none;
+  text-align: justify;
+  padding: 1rem 0;
 `;

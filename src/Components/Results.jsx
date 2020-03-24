@@ -14,7 +14,8 @@ const formatTitle = str => {
 };
 const removeDuplicates = arr => {
   arr.forEach(result => {
-    console.log(result.title.split(" ").sort());
+    //console.log(result.title.split(" ").sort());
+    console.log(result.images.length);
   });
 };
 
@@ -51,7 +52,7 @@ function Results(props) {
       //console.log(formattedResults);
       return formattedResults;
     };
-    console.log("SEARCHRESULTS CHANGED => Filtering results...");
+    //console.log("SEARCHRESULTS CHANGED => Filtering results...");
     applyFilter(filterResults());
   }, [searchResults]);
 
