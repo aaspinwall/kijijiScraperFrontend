@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { MdDirectionsBike } from "react-icons/md";
 
 export default function Walkscore(props) {
   const [serverResponse, writeResponse] = useState("");
@@ -54,29 +55,23 @@ export default function Walkscore(props) {
     console.log(props);
   }, []);
   return (
-    <Container>
+    <Container className='walkScore'>
+      {serverResponse.logo_url ? <img src={serverResponse.logo_url}></img> : ""}
+      <div>{serverResponse.walkscore}</div>
+      <div>{serverResponse.description}</div>
       <div>
-        <div>Walkscore:</div>
-        <div>{serverResponse.walkscore}</div>
-        <div>Description:</div>
-        <div>{serverResponse.description}</div>
-        {serverResponse.logo_url ? (
-          <img src={serverResponse.logo_url}></img>
-        ) : (
-          ""
-        )}
-        <div>Bike:</div>
-        <div>Score:</div>
-        <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
-        <div>Description:</div>
-        <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
+        <MdDirectionsBike /> Bike score{" "}
       </div>
+      <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
+      <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
     </Container>
   );
 }
 
 const Container = styled.div`
+  text-align: left;
+
   div {
-    font-size: 0.7rem;
+    padding: 0 !important;
   }
 `;

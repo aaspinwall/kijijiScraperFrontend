@@ -14,6 +14,8 @@ const readLocalStorage = () => {
   }
 };
 
+const keys = { googleMapsApiKey: "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U" };
+
 /* const checkOutputType = output => {
   let isArray = output instanceof Array && output.constructor === Array;
   return output;
@@ -23,4 +25,4 @@ const clearLocalStorage = () => {
   console.log("Cleared local storage");
 }; */
 
-export { checkIfEmptyObject, writeToLocalStorage, readLocalStorage };
+export { checkIfEmptyObject, writeToLocalStorage, readLocalStorage, keys };

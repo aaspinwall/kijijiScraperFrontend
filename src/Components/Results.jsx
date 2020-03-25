@@ -21,6 +21,7 @@ const removeDuplicates = arr => {
     //console.log(result.title.split(" ").sort());
     //console.log(result.images.length);
   });
+
   return arr.reverse();
 };
 

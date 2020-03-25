@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Walkscore from "./Walkscore";
 import styled from "styled-components";
-import { FaBed, FaBath, FaCouch, FaSmoking, FaSnowflake } from "react-icons/fa";
+import {
+  FaBed,
+  FaBath,
+  FaCouch,
+  FaSmoking,
+  FaSnowflake,
+  FaPaw,
+} from "react-icons/fa";
 
 export default function Result(props) {
-  const adObject = props.ad;
-
   const [showScore, walkscoreToggle] = useState(false);
   const [showMore, moreToggle] = useState(false);
   const [fullDescription, toggleDescription] = useState(false);
+  const adObject = props.ad;
   const textAttributes = [];
   const numberAttributes = [];
 
@@ -26,7 +32,7 @@ export default function Result(props) {
       //numberAttributes.push(key + "=>" + element);
     }
   }
-  console.log(numberAttributes);
+  //console.log(numberAttributes);
 
   const iconMatch = text => {
     switch (text) {
@@ -40,6 +46,8 @@ export default function Result(props) {
         return <FaSmoking />;
       case "airconditioning":
         return <FaSnowflake />;
+      case "petsallowed":
+        return <FaPaw />;
       default:
         return text;
     }
@@ -53,50 +61,53 @@ export default function Result(props) {
           <Title href={adObject.url}>{adObject.title}</Title>
           <Price className='price'>{"$" + adObject.attributes.price}</Price>
         </Main>
-        <div className='more'>
-          <div className='moreinfoButton' onClick={() => moreToggle(!showMore)}>
-            ^
-          </div>
+        <div className='more' onClick={() => moreToggle(!showMore)}>
+          <div className='moreinfoButton'>^</div>
         </div>
         <Details visible={showMore}>
-          <Section>Amenities</Section>
-          <Attributes>
-            {numberAttributes.map((attribute, i) => (
-              <span key={"attr-" + i}>
-                {iconMatch(attribute.key)}
-                {" " + attribute.element}
-              </span>
-            ))}
-            <div>{location.mapAddress}</div>
-          </Attributes>
+          <Section>Description</Section>
           <Description>
             <div>
               <div>
                 {/* prettier-ignore */
-                adObject.description && !fullDescription ? adObject.description.slice(0, 450)
+                adObject.description && !fullDescription ? adObject.description.slice(0, 450) + ' ...'
                 : adObject.description && fullDescription ? adObject.description
                 : ""}
               </div>
               <button onClick={() => toggleDescription(!fullDescription)}>
-                {" "}
                 {!fullDescription ? "... show more" : "show less"}
               </button>
             </div>
           </Description>
-          <input
-            type='checkbox'
-            id='walkscoreToggle'
-            name='walkscoreToggle'
-            value='walkscoreToggle'
-            checked={showScore}
-            onClick={() => walkscoreToggle(!showScore)}
-          />
-          <span>Walkscore</span>
-          {showScore ? (
-            <Walkscore locationData={{ address, latitude, longitude }} />
-          ) : (
-            ""
-          )}
+          <Section>Amenities</Section>
+          <Attributes>
+            <div className='attrs'>
+              {numberAttributes.map((attribute, i) => (
+                <span key={"attr-" + i}>
+                  {iconMatch(attribute.key)}
+                  {" " + attribute.element}
+                </span>
+              ))}
+            </div>
+          </Attributes>
+          <Section>Location</Section>
+          <Location>
+            <div className='address'>{address}</div>
+            <label>Show it</label>
+            <input
+              type='checkbox'
+              id='walkscoreToggle'
+              name='walkscoreToggle'
+              value='walkscoreToggle'
+              checked={showScore}
+              onClick={() => walkscoreToggle(!showScore)}
+            />
+            {showScore ? (
+              <Walkscore locationData={{ address, latitude, longitude }} />
+            ) : (
+              ""
+            )}
+          </Location>
         </Details>
       </Text>
     </Container>
@@ -161,13 +172,13 @@ const Section = styled.div`
   width: 100%;
   text-align: left;
   font-size: 1.1rem;
+  padding-top: 1rem;
 `;
 const Price = styled.div`
   text-align: right;
 `;
 const Details = styled.div`
-  > div,
-  > div > div {
+  > div {
     padding: 1rem 0;
   }
   font-size: 0.7rem;
@@ -175,13 +186,36 @@ const Details = styled.div`
   display: ${props => (props.visible ? "flex" : "none")};
 `;
 
-const Attributes = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+const Location = styled.div`
   width: 100%;
-  text-align: left;
-  border: solid 1px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
   font-size: 1rem;
+  > div {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+`;
+
+const Attributes = styled.div`
+  width: 100%;
+  .attrs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: left;
+    padding: 0;
+    span {
+      padding: 1rem 0;
+    }
+  }
+  .address {
+  }
+
+  font-size: 1rem;
+  > span {
+  }
 `;
 const Title = styled.a`
   width: 100%;
@@ -198,4 +232,31 @@ const Description = styled.div`
   font-size: 1.1rem;
   text-align: left;
   padding: 1rem 0;
+`;
+
+const Pin = styled.div`
+  .pin {
+    font-size: 2rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  filter: opacity(0.5);
+  .label {
+    display: none;
+    padding-left: 2rem;
+    font-size: 1rem;
+    text-align: left;
+    width: 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  :hover {
+    filter: opacity(1);
+  }
+  :hover .label {
+    display: block;
+  }
 `;
