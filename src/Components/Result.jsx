@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Walkscore from "./Walkscore";
 import styled from "styled-components";
+import { FaBed, FaBath, FaCouch, FaSmoking, FaSnowflake } from "react-icons/fa";
 
 export default function Result(props) {
+  const adObject = props.ad;
+
   const [showScore, walkscoreToggle] = useState(false);
   const [showMore, moreToggle] = useState(false);
-  const adObject = props.ad;
+  const [fullDescription, toggleDescription] = useState(false);
   const textAttributes = [];
   const numberAttributes = [];
 
@@ -19,10 +22,28 @@ export default function Result(props) {
         textAttributes.push(key + "=>" + element);
       //Binary attributes
       if (typeof element === "number" && element !== 0)
-        numberAttributes.push(key + ": " + element);
+        numberAttributes.push({ key, element });
       //numberAttributes.push(key + "=>" + element);
     }
   }
+  console.log(numberAttributes);
+
+  const iconMatch = text => {
+    switch (text) {
+      case "numberbedrooms":
+        return <FaBed />;
+      case "numberbathrooms":
+        return <FaBath />;
+      case "furnished":
+        return <FaCouch />;
+      case "smokingpermitted":
+        return <FaSmoking />;
+      case "airconditioning":
+        return <FaSnowflake />;
+      default:
+        return text;
+    }
+  };
 
   return (
     <Container className='resultContainer'>
@@ -38,14 +59,29 @@ export default function Result(props) {
           </div>
         </div>
         <Details visible={showMore}>
-          {numberAttributes.map((attribute, i) => (
-            <span key={"attr-" + i}>{attribute}</span>
-          ))}
-          <div>{location.mapAddress}</div>
+          <Section>Amenities</Section>
+          <Attributes>
+            {numberAttributes.map((attribute, i) => (
+              <span key={"attr-" + i}>
+                {iconMatch(attribute.key)}
+                {" " + attribute.element}
+              </span>
+            ))}
+            <div>{location.mapAddress}</div>
+          </Attributes>
           <Description>
-            {adObject.description
-              ? adObject.description.slice(0, 450) + "  ... more"
-              : ""}
+            <div>
+              <div>
+                {/* prettier-ignore */
+                adObject.description && !fullDescription ? adObject.description.slice(0, 450)
+                : adObject.description && fullDescription ? adObject.description
+                : ""}
+              </div>
+              <button onClick={() => toggleDescription(!fullDescription)}>
+                {" "}
+                {!fullDescription ? "... show more" : "show less"}
+              </button>
+            </div>
           </Description>
           <input
             type='checkbox'
@@ -119,6 +155,13 @@ const Main = styled.div`
   grid-template-columns: 3fr 1fr;
   width: 100%;
 `;
+const Section = styled.div`
+  border-top: solid 2px #2222;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  font-size: 1.1rem;
+`;
 const Price = styled.div`
   text-align: right;
 `;
@@ -130,6 +173,15 @@ const Details = styled.div`
   font-size: 0.7rem;
   flex-wrap: wrap;
   display: ${props => (props.visible ? "flex" : "none")};
+`;
+
+const Attributes = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  text-align: left;
+  border: solid 1px black;
+  font-size: 1rem;
 `;
 const Title = styled.a`
   width: 100%;
@@ -143,6 +195,7 @@ const Title = styled.a`
   }
 `;
 const Description = styled.div`
-  text-align: justify;
+  font-size: 1.1rem;
+  text-align: left;
   padding: 1rem 0;
 `;

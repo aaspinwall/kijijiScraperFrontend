@@ -13,10 +13,15 @@ const formatTitle = str => {
   return cleanStr.replace(found[0], found[0].toUpperCase());
 };
 const removeDuplicates = arr => {
+  console.log(arr);
+  console.log(
+    arr.sort((a, b) => (a.attributes.price > b.attributes.price ? 1 : -1))
+  );
   arr.forEach(result => {
     //console.log(result.title.split(" ").sort());
-    console.log(result.images.length);
+    //console.log(result.images.length);
   });
+  return arr.reverse();
 };
 
 function Results(props) {
