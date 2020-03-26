@@ -156,17 +156,20 @@ class Main extends React.Component {
   render() {
     return (
       <AppContainer id='appContainer'>
-        <input
-          type='checkbox'
-          id='mapToggle'
-          name='mapToggle'
-          value='mapToggle'
-          checked={this.props.showMap}
-          onClick={() => this.props.toggleMap()}
-        />
         <Search submit={this.clicked} />
 
         <Filters />
+        <div>
+          <div>Show map</div>
+          <input
+            type='checkbox'
+            id='mapToggle'
+            name='mapToggle'
+            value='mapToggle'
+            checked={this.props.showMap}
+            onClick={() => this.props.toggleMap()}
+          />
+        </div>
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
