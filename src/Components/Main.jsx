@@ -4,6 +4,7 @@ import Filters from "./Filters";
 import Search from "./Search";
 import Results from "./Results";
 import Footer from "./Footer";
+import FloatingButton from "./FloatingButton";
 
 import {
   readLocalStorage,
@@ -157,9 +158,8 @@ class Main extends React.Component {
     return (
       <AppContainer id='appContainer'>
         <Search submit={this.clicked} />
-
         <Filters />
-        <div>
+        {/* <div>
           <div>Show map</div>
           <input
             type='checkbox'
@@ -169,11 +169,12 @@ class Main extends React.Component {
             checked={this.props.showMap}
             onClick={() => this.props.toggleMap()}
           />
-        </div>
+        </div> */}
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
         <Results></Results>
+        <FloatingButton text={["Map", "List"]} />
         <Footer />
       </AppContainer>
     );

@@ -16,6 +16,7 @@ function Map() {
   const selectedData = useSelector(state => state);
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
+  const [windowHeight, changeHeight] = useState(window.innerHeight);
   const { filteredSearch } = selectedData;
   const mapElement = useRef(null);
 
@@ -40,6 +41,16 @@ function Map() {
     }
   }, [filteredSearch]);
 
+  useEffect(() => {
+    console.log("Height changed to", windowHeight);
+  }, [windowHeight]);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      changeHeight(window.innerHeight);
+    });
+  }, []);
+
   //const testLat = filteredSearch[0].attributes.location.latitude;
   //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
@@ -47,7 +58,14 @@ function Map() {
       <div
         ref={mapElement}
         className='mapContainer'
-        style={{ height: "600px", width: "100%", padding: "1rem 0" }}
+        style={{
+          height:
+            (() => {
+              return windowHeight * 0.85;
+            })().toString() + "px",
+          width: "100%",
+          padding: "0",
+        }}
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
@@ -74,14 +92,11 @@ function Map() {
   );
 }
 const Container = styled.div`
-  z-index: -999;
+  padding-bottom: 1rem;
+  z-index: 500;
   .mapContainer {
     top: 0;
-    width: 100%;
-    /* height: 100%; */
   }
-  width: 100%;
-  /* height: 100%; */
 `;
 
 const Pin = styled.div`
