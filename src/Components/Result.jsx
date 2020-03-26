@@ -9,6 +9,7 @@ import {
   FaSnowflake,
   FaPaw,
 } from "react-icons/fa";
+import { IoIosArrowUp } from "react-icons/io";
 
 export default function Result(props) {
   const [showScore, walkscoreToggle] = useState(false);
@@ -117,7 +118,7 @@ export default function Result(props) {
       </Text>
       <div className='more' onClick={() => moreToggle(!showMore)}>
         <MoreInfoButton open={showMore} className='moreinfoButton'>
-          ^
+          <IoIosArrowUp />
         </MoreInfoButton>
       </div>
     </Container>
@@ -136,7 +137,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 20px;
+    height: 40px;
 
     .moreinfoButton {
     }
@@ -150,11 +151,6 @@ const MoreInfoButton = styled.div`
   position: absolute;
   right: ${props => (props.open ? "auto" : "50%")};
   left: ${props => (props.open ? "50%" : "auto")};
-  height: 20px;
-  width: 20px;
-  font-weight: 200;
-  border-radius: 20px;
-  border: 1px solid grey;
   transform: ${props =>
     props.open
       ? "translateY(-50%) rotate(0deg) translateX(-50%)"

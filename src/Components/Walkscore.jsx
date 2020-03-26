@@ -60,7 +60,7 @@ export default function Walkscore(props) {
       <div>{serverResponse.walkscore}</div>
       <div>{serverResponse.description}</div>
       <div>
-        <MdDirectionsBike /> Bike score{" "}
+        <MdDirectionsBike /> Bike score
       </div>
       <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
       <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
@@ -70,6 +70,9 @@ export default function Walkscore(props) {
 
 const Container = styled.div`
   text-align: left;
+  padding: 1.2rem 2rem;
+  border: 2px #2222 solid;
+  border-radius: 20px;
   div {
     padding: 0 !important;
   }
