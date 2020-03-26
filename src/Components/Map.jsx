@@ -47,7 +47,7 @@ function Map() {
       <div
         ref={mapElement}
         className='mapContainer'
-        style={{ height: "600px", width: "100%" }}
+        style={{ height: "600px", width: "100%", padding: "1rem 0" }}
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}

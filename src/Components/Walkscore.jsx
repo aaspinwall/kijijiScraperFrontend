@@ -70,7 +70,6 @@ export default function Walkscore(props) {
 
 const Container = styled.div`
   text-align: left;
-
   div {
     padding: 0 !important;
   }

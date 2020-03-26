@@ -47,7 +47,11 @@ export default function Result(props) {
       case "airconditioning":
         return <FaSnowflake />;
       case "petsallowed":
-        return <FaPaw />;
+        return (
+          <div>
+            <FaPaw /> <div>Pets allowed</div>
+          </div>
+        );
       default:
         return text;
     }
@@ -61,9 +65,6 @@ export default function Result(props) {
           <Title href={adObject.url}>{adObject.title}</Title>
           <Price className='price'>{"$" + adObject.attributes.price}</Price>
         </Main>
-        <div className='more' onClick={() => moreToggle(!showMore)}>
-          <div className='moreinfoButton'>^</div>
-        </div>
         <Details visible={showMore}>
           <Section>Description</Section>
           <Description>
@@ -93,8 +94,9 @@ export default function Result(props) {
           <Section>Location</Section>
           <Location>
             <div className='address'>{address}</div>
-            <label>Show it</label>
+            <div className='regularSpace'>Walkscore</div>
             <input
+              className='regularSpace'
               type='checkbox'
               id='walkscoreToggle'
               name='walkscoreToggle'
@@ -103,13 +105,21 @@ export default function Result(props) {
               onClick={() => walkscoreToggle(!showScore)}
             />
             {showScore ? (
-              <Walkscore locationData={{ address, latitude, longitude }} />
+              <Walkscore
+                className='regularSpace'
+                locationData={{ address, latitude, longitude }}
+              />
             ) : (
               ""
             )}
           </Location>
         </Details>
       </Text>
+      <div className='more' onClick={() => moreToggle(!showMore)}>
+        <MoreInfoButton open={showMore} className='moreinfoButton'>
+          ^
+        </MoreInfoButton>
+      </div>
     </Container>
   );
 }
@@ -129,16 +139,26 @@ const Container = styled.div`
     height: 20px;
 
     .moreinfoButton {
-      position: absolute;
-      right: 0;
-      height: 20px;
-      width: 20px;
-      font-weight: 200;
-      border-radius: 20px;
-      border: 1px solid grey;
-      transform: translateY(-50%) rotate(180deg);
     }
   }
+  .regularSpace {
+    padding: 1rem 0;
+  }
+`;
+
+const MoreInfoButton = styled.div`
+  position: absolute;
+  right: ${props => (props.open ? "auto" : "50%")};
+  left: ${props => (props.open ? "50%" : "auto")};
+  height: 20px;
+  width: 20px;
+  font-weight: 200;
+  border-radius: 20px;
+  border: 1px solid grey;
+  transform: ${props =>
+    props.open
+      ? "translateY(-50%) rotate(0deg) translateX(-50%)"
+      : "translateY(-50%) rotate(180deg) translateX(-50%)"};
 `;
 const Image = styled.img`
   @media only screen and (min-width: 1024px) {
@@ -195,17 +215,16 @@ const Location = styled.div`
   font-size: 1rem;
   > div {
     flex-wrap: wrap;
-    width: 100%;
   }
 `;
 
 const Attributes = styled.div`
   width: 100%;
+  padding: 0 !important;
   .attrs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: left;
-    padding: 0;
     span {
       padding: 1rem 0;
     }
@@ -232,31 +251,4 @@ const Description = styled.div`
   font-size: 1.1rem;
   text-align: left;
   padding: 1rem 0;
-`;
-
-const Pin = styled.div`
-  .pin {
-    font-size: 2rem;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translate(-50%, -50%);
-  }
-  filter: opacity(0.5);
-  .label {
-    display: none;
-    padding-left: 2rem;
-    font-size: 1rem;
-    text-align: left;
-    width: 300px;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  :hover {
-    filter: opacity(1);
-  }
-  :hover .label {
-    display: block;
-  }
 `;
