@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 import Map from "./Map";
 import { useSelector, useDispatch } from "react-redux";
+import { compareTwoStrings } from "string-similarity";
 
 const formatTitle = str => {
   const cleanStr = str.replace(/([*►◄!])+/g, "").toLowerCase();
@@ -12,16 +13,38 @@ const formatTitle = str => {
   const found = cleanStr.match(regex);
   return cleanStr.replace(found[0], found[0].toUpperCase());
 };
+
+const passSimilarity = (a, b, threshold = 0.7) => {
+  const rating = compareTwoStrings(a, b);
+  return rating > threshold;
+};
+
 const removeDuplicates = arr => {
   console.log(arr);
   console.log(
     arr.sort((a, b) => (a.attributes.price > b.attributes.price ? 1 : -1))
   );
-  arr.forEach(result => {
+  arr.forEach((result, i) => {
     //console.log(result.title.split(" ").sort());
     //console.log(result.images.length);
   });
-
+  const filtered = arr.filter((result, i) => {
+    let strikes = 0;
+    const reference = result.description;
+    if (!reference) {
+      console.log("Did not work");
+      return;
+    }
+    arr.forEach((res2, i) => {
+      const comparison = res2.description;
+      if (passSimilarity(comparison, reference)) {
+        strikes += 1;
+      }
+    });
+    return strikes < 2;
+  });
+  console.log("filtered should look like this:", filtered);
+  return filtered;
   return arr.reverse();
 };
 
