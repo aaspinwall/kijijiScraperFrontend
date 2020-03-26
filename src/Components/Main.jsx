@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
+import Searchbox from "./SearchBox";
 import Results from "./Results";
 import Footer from "./Footer";
 import FloatingButton from "./FloatingButton";
@@ -157,19 +158,9 @@ class Main extends React.Component {
   render() {
     return (
       <AppContainer id='appContainer'>
-        <Search submit={this.clicked} />
+        <Searchbox submit={this.clicked} />
+        {/* <Search submit={this.clicked} /> */}
         <Filters />
-        {/* <div>
-          <div>Show map</div>
-          <input
-            type='checkbox'
-            id='mapToggle'
-            name='mapToggle'
-            value='mapToggle'
-            checked={this.props.showMap}
-            onClick={() => this.props.toggleMap()}
-          />
-        </div> */}
         <button name='getButton' onClick={this.clicked}>
           Search
         </button>
@@ -183,8 +174,8 @@ class Main extends React.Component {
 
 const AppContainer = styled.div`
   .resultsContainer {
+    position: relative;
     display: grid;
-    /* grid-template-columns: 50% 50%; */
   }
 `;
 
