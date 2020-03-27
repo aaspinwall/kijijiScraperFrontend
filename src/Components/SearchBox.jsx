@@ -15,7 +15,7 @@ export default function SearchBox(props) {
   return (
     <Container>
       <Box>
-        <FiSearch />
+        <FiSearch onClick={() => props.submit()} />
         <SearchInput
           id='keywords'
           type='text'
@@ -58,8 +58,10 @@ const Box = styled.div`
   width: 80%;
 `;
 const SearchInput = styled.input`
-  padding-left: 1rem;
+  width: 100%;
   height: 2rem;
+  padding-left: 2rem;
   border: 0;
   font-weight: bold;
+  font-size: 1.1rem;
 `;

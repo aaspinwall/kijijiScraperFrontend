@@ -20,35 +20,41 @@ const passSimilarity = (a, b, threshold = 0.7) => {
 };
 
 const removeDuplicates = arr => {
-  console.log(arr);
-  console.log(
+  console.log("Pre filtered", arr);
+  /* console.log(
     arr.sort((a, b) => (a.attributes.price > b.attributes.price ? 1 : -1))
-  );
-  arr.forEach((result, i) => {
+  ); */
+  /* arr.forEach((result, i) => {
     //console.log(result.title.split(" ").sort());
     //console.log(result.images.length);
-  });
-  const filtered = arr.filter((result, i) => {
+  }); */
+  const filtered = arr.filter(result => {
     let strikes = 0;
     const reference = result.description;
+    const reference2 = result.title;
     if (!reference) {
       console.log("Did not work");
       return;
     }
-    arr.forEach((res2, i) => {
+    arr.forEach(res2 => {
       const comparison = res2.description;
-      if (passSimilarity(comparison, reference)) {
+      const comparison2 = res2.title;
+      if (
+        passSimilarity(comparison, reference) ||
+        passSimilarity(comparison2, reference2)
+      ) {
         strikes += 1;
       }
     });
-    return strikes < 2;
+    /* console.log(i, "Yielded ", strikes, " strikes"); */
+    return strikes === 1;
   });
   console.log("filtered should look like this:", filtered);
-  return filtered;
-  return arr.reverse();
+  //return arr.reverse();
+  return filtered.reverse();
 };
 
-function Results(props) {
+function Results() {
   const dispatch = useDispatch();
   const globalState = useSelector(state => state);
   const {
@@ -77,9 +83,9 @@ function Results(props) {
         const { title } = result;
         return { ...result, title: formatTitle(title) };
       });
-      removeDuplicates(formattedResults);
+      const noDuplicates = removeDuplicates(formattedResults);
       //console.log(formattedResults);
-      return formattedResults;
+      return noDuplicates;
     };
     //console.log("SEARCHRESULTS CHANGED => Filtering results...");
     applyFilter(filterResults());

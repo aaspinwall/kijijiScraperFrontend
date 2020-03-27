@@ -41,6 +41,11 @@ function reducer(state, action) {
         ...state,
         showMap: !state.showMap,
       };
+    case "toggleFilters":
+      return {
+        ...state,
+        showFilters: !state.showFilters,
+      };
     default:
       return state;
   }

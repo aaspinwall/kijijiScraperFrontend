@@ -57,23 +57,34 @@ export default function Walkscore(props) {
   return (
     <Container className='walkScore'>
       {serverResponse.logo_url ? <img src={serverResponse.logo_url}></img> : ""}
-      <div>{serverResponse.walkscore}</div>
-      <div>{serverResponse.description}</div>
+      <div>
+        <div>{serverResponse.walkscore}</div>
+        <div>{serverResponse.description}</div>
+      </div>
       <div>
         <MdDirectionsBike /> Bike score
       </div>
-      <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
-      <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
+      <div>
+        <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
+        <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
+      </div>
     </Container>
   );
 }
 
 const Container = styled.div`
   text-align: left;
-  padding: 1.2rem 2rem;
+  padding: 1rem;
   border: 2px #2222 solid;
-  border-radius: 20px;
-  div {
+  border-radius: 6px;
+  /* div {
     padding: 0 !important;
+  } */
+  > div {
+    display: flex;
+    justify-content: left;
+    padding: 0.3rem 0;
+  }
+  > div > div {
   }
 `;

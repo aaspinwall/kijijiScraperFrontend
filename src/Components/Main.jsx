@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Filters from "./Filters";
-import Search from "./Search";
 import Searchbox from "./SearchBox";
 import Results from "./Results";
 import Footer from "./Footer";
 import FloatingButton from "./FloatingButton";
+import Overlay from "./Overlay";
 
 import {
   readLocalStorage,
@@ -118,7 +118,7 @@ class Main extends React.Component {
     }
   };
 
-  clicked = e => {
+  submit = e => {
     this.props.lifeCycle("loading");
     const message = {
       params: {
@@ -158,10 +158,11 @@ class Main extends React.Component {
   render() {
     return (
       <AppContainer id='appContainer'>
-        <Searchbox submit={this.clicked} />
-        {/* <Search submit={this.clicked} /> */}
+        <Overlay submit={this.submit} visible={this.props.showFilters} />
+        <Searchbox submit={this.submit} />
+        {/* <div onClick={this.props.toggleMap}>Filters</div> */}
         <Filters />
-        <button name='getButton' onClick={this.clicked}>
+        <button name='getButton' onClick={this.submit}>
           Search
         </button>
         <Results></Results>

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function InputBox(props) {
+  const dispatch = useDispatch();
+  const visible = useSelector(state => state.showFilters);
+
   const [value, setValue] = useState(props.value);
   const [initialValue] = useState(props.value);
   const submit = props.submit
@@ -38,6 +42,7 @@ export default function InputBox(props) {
 
   return (
     <input
+      className={props.className}
       id={props.id}
       type={props.type}
       value={value}

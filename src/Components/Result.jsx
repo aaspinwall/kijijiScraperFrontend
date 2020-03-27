@@ -72,13 +72,13 @@ export default function Result(props) {
             <div>
               <div>
                 {/* prettier-ignore */
-                adObject.description && !fullDescription ? adObject.description.slice(0, 450) + ' ...'
+                adObject.description && !fullDescription ? adObject.description.slice(0, 450) 
                 : adObject.description && fullDescription ? adObject.description
                 : ""}
               </div>
-              <button onClick={() => toggleDescription(!fullDescription)}>
+              <div onClick={() => toggleDescription(!fullDescription)}>
                 {!fullDescription ? "... show more" : "show less"}
-              </button>
+              </div>
             </div>
           </Description>
           <Section>Amenities</Section>
@@ -95,17 +95,7 @@ export default function Result(props) {
           <Section>Location</Section>
           <Location>
             <div className='address'>{address}</div>
-            <div className='regularSpace'>Walkscore</div>
-            <input
-              className='regularSpace'
-              type='checkbox'
-              id='walkscoreToggle'
-              name='walkscoreToggle'
-              value='walkscoreToggle'
-              checked={showScore}
-              onClick={() => walkscoreToggle(!showScore)}
-            />
-            {showScore ? (
+            {showMore ? (
               <Walkscore
                 className='regularSpace'
                 locationData={{ address, latitude, longitude }}
