@@ -83,7 +83,7 @@ const Container = styled.div`
   > div {
     display: flex;
     justify-content: left;
-    padding: 0.3rem 0;
+    padding: 0.75rem 1rem;
   }
   > div > div {
   }

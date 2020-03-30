@@ -18,7 +18,7 @@ function Map() {
   const [latAvg, changeLat] = useState(0);
   const [windowHeight, changeHeight] = useState(window.innerHeight);
   const { filteredSearch } = selectedData;
-  const mapElement = useRef(null);
+  const mapElement = useRef();
 
   useEffect(() => {
     const latitudeArray = [];
@@ -46,17 +46,18 @@ function Map() {
   }, [windowHeight]);
 
   useEffect(() => {
+    const mapPosition = mapElement.current.offsetTop;
     window.addEventListener("resize", () => {
       changeHeight(window.innerHeight);
     });
+    window.scrollTo(0, mapPosition);
   }, []);
 
   //const testLat = filteredSearch[0].attributes.location.latitude;
   //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
-    <Container>
+    <Container ref={mapElement}>
       <div
-        ref={mapElement}
         className='mapContainer'
         style={{
           height:

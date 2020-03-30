@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Walkscore from "./Walkscore";
 import styled from "styled-components";
 import {
@@ -12,9 +12,9 @@ import {
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function Result(props) {
-  const [showScore, walkscoreToggle] = useState(false);
   const [showMore, moreToggle] = useState(false);
   const [fullDescription, toggleDescription] = useState(false);
+  const frameRef = useRef();
   const adObject = props.ad;
   const textAttributes = [];
   const numberAttributes = [];
@@ -58,12 +58,24 @@ export default function Result(props) {
     }
   };
 
+  const toggleMore = ref => {
+    const position = ref.target.parentElement.offsetTop;
+    window.scrollTo(0, position - 32);
+    moreToggle(!showMore);
+  };
+
   return (
-    <Container className='resultContainer'>
-      <Image src={adObject.images[0]}></Image>
+    <Container className='resultContainer' ref={frameRef}>
+      <Image src={adObject.images[0]} onClick={toggleMore} />
       <Text>
-        <Main>
-          <Title href={adObject.url}>{adObject.title}</Title>
+        <Main visible={showMore}>
+          <Title
+            visible={showMore}
+            href={adObject.url}
+            onClick={() => moreToggle(true)}
+          >
+            {adObject.title}
+          </Title>
           <Price className='price'>{"$" + adObject.attributes.price}</Price>
         </Main>
         <Details visible={showMore}>
@@ -76,7 +88,7 @@ export default function Result(props) {
                 : adObject.description && fullDescription ? adObject.description
                 : ""}
               </div>
-              <div onClick={() => toggleDescription(!fullDescription)}>
+              <div onClick={toggleMore}>
                 {!fullDescription ? "... show more" : "show less"}
               </div>
             </div>
@@ -94,7 +106,7 @@ export default function Result(props) {
           </Attributes>
           <Section>Location</Section>
           <Location>
-            <div className='address'>{address}</div>
+            <div className='address regularSpace'>{address}</div>
             {showMore ? (
               <Walkscore
                 className='regularSpace'
@@ -106,7 +118,7 @@ export default function Result(props) {
           </Location>
         </Details>
       </Text>
-      <div className='more' onClick={() => moreToggle(!showMore)}>
+      <div className='more' onClick={toggleMore}>
         <MoreInfoButton open={showMore} className='moreinfoButton'>
           <IoIosArrowUp />
         </MoreInfoButton>
@@ -127,7 +139,9 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 40px;
+    height: 2rem;
+    margin: 0 0 2rem 0;
+    border-bottom: solid 1px #2222;
 
     .moreinfoButton {
     }
@@ -141,6 +155,7 @@ const MoreInfoButton = styled.div`
   position: absolute;
   right: ${props => (props.open ? "auto" : "50%")};
   left: ${props => (props.open ? "50%" : "auto")};
+  top: ${props => (props.open ? "50%" : "33%")};
   transform: ${props =>
     props.open
       ? "translateY(-50%) rotate(0deg) translateX(-50%)"
@@ -169,8 +184,17 @@ const Main = styled.div`
   margin: 12px auto 6px auto;
   padding: 0.5rem 0;
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: ${props => (props.visible ? "1fr" : "3fr 1fr")};
   width: 100%;
+  transition: font-size 0.3s ease-in-out;
+  font-size: ${props => (props.visible ? "2rem" : "1rem")};
+  font-weight: ${props => (props.visible ? "bold" : "normal")};
+  > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 0;
+  }
 `;
 const Section = styled.div`
   border-top: solid 2px #2222;
@@ -222,7 +246,7 @@ const Attributes = styled.div`
   > span {
   }
 `;
-const Title = styled.a`
+const Title = styled.div`
   width: 100%;
   text-align: left;
   color: black;
