@@ -46,6 +46,11 @@ function reducer(state, action) {
         ...state,
         showFilters: !state.showFilters,
       };
+    case "toggleMini":
+      return {
+        ...state,
+        miniResult: { show: payload.show, index: payload.index },
+      };
     default:
       return state;
   }

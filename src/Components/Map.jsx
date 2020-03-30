@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import GoogleMapReact from "google-map-react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import ResultMini from "./ResultMini";
 
 const median = arr => {
   const mid = Math.floor(arr.length / 2),
@@ -14,10 +15,12 @@ const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
 function Map() {
   const selectedData = useSelector(state => state);
+  const dispatch = useDispatch();
+  const [showMini, toggleMini] = useState(false);
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
   const [windowHeight, changeHeight] = useState(window.innerHeight);
-  const { filteredSearch } = selectedData;
+  const { filteredSearch, miniResult } = selectedData;
   const mapElement = useRef();
 
   useEffect(() => {
@@ -50,13 +53,21 @@ function Map() {
     window.addEventListener("resize", () => {
       changeHeight(window.innerHeight);
     });
-    window.scrollTo(0, mapPosition);
+    window.scrollTo(0, mapPosition - 32);
   }, []);
+
+  const pinClick = e => {
+    const index = Number(e.target.id.replace("pin", ""));
+    dispatch({ type: "toggleMini", payload: { show: true, index } });
+    //toggleMini(!showMini);
+    console.log("You clicked on i: ", index);
+  };
 
   //const testLat = filteredSearch[0].attributes.location.latitude;
   //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
     <Container ref={mapElement}>
+      {miniResult.show ? <ResultMini /> : ""}
       <div
         className='mapContainer'
         style={{
@@ -82,7 +93,9 @@ function Map() {
             const title = result.title;
             return (
               <Pin lat={testLat} lng={testlong} key={"pin" + i}>
-                <div className='pin'>📍</div>
+                <div className='pin' onClick={pinClick} id={"pin" + i}>
+                  📍
+                </div>
                 <span className='label'>{title}</span>
               </Pin>
             );
@@ -93,6 +106,7 @@ function Map() {
   );
 }
 const Container = styled.div`
+  position: relative;
   padding-bottom: 1rem;
   z-index: 500;
   .mapContainer {

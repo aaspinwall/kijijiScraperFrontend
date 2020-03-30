@@ -8,6 +8,7 @@ const initialState = {
   lifeCycle: "",
   showMap: false,
   showFilters: false,
+  miniResult: { show: false, index: 0 },
 
   searchResults: [
     {

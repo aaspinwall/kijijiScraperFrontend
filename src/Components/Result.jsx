@@ -88,7 +88,7 @@ export default function Result(props) {
                 : adObject.description && fullDescription ? adObject.description
                 : ""}
               </div>
-              <div onClick={toggleMore}>
+              <div onClick={() => toggleDescription(!fullDescription)}>
                 {!fullDescription ? "... show more" : "show less"}
               </div>
             </div>
