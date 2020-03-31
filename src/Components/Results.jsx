@@ -92,7 +92,7 @@ function Results() {
   }, [searchResults]);
 
   const results = filteredSearch.map((element, i) => {
-    return <Result ad={element} key={i} />;
+    return <Result ad={element} key={i} index={i} />;
   });
 
   const loading = <Loading></Loading>;

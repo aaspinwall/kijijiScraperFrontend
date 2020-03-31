@@ -16,11 +16,11 @@ const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 function Map() {
   const selectedData = useSelector(state => state);
   const dispatch = useDispatch();
-  const [showMini, toggleMini] = useState(false);
+  //const [showMini, toggleMini] = useState(false);
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
   const [windowHeight, changeHeight] = useState(window.innerHeight);
-  const { filteredSearch, miniResult } = selectedData;
+  const { filteredSearch, focusedResult } = selectedData;
   const mapElement = useRef();
 
   useEffect(() => {
@@ -58,8 +58,8 @@ function Map() {
 
   const pinClick = e => {
     const index = Number(e.target.id.replace("pin", ""));
-    dispatch({ type: "toggleMini", payload: { show: true, index } });
-    //toggleMini(!showMini);
+    dispatch({ type: "focusedResult", payload: { show: true, index } });
+    //focusedResult(!showMini);
     console.log("You clicked on i: ", index);
   };
 
@@ -67,7 +67,7 @@ function Map() {
   //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
     <Container ref={mapElement}>
-      {miniResult.show ? <ResultMini /> : ""}
+      {focusedResult.show ? <ResultMini /> : ""}
       <div
         className='mapContainer'
         style={{

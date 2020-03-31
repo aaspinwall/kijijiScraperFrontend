@@ -6,14 +6,14 @@ import { AiOutlineClose } from "react-icons/ai";
 export default function ResultMini() {
   const dispatch = useDispatch();
   const focusedElement = useSelector(state => {
-    return state.filteredSearch[state.miniResult.index];
+    return state.filteredSearch[state.focusedResult.index];
   });
 
   useEffect(() => {
     console.log(focusedElement);
   }, []);
   const close = e => {
-    dispatch({ type: "toggleMini", payload: { show: false, index: 0 } });
+    dispatch({ type: "focusedResult", payload: { show: false, index: 0 } });
   };
   return (
     <Container>

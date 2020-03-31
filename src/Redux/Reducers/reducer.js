@@ -36,6 +36,11 @@ function reducer(state, action) {
         ...state,
         lifeCycle: payload,
       };
+    case "toggleSearch":
+      return {
+        ...state,
+        showSearch: !state.showSearch,
+      };
     case "toggleMap":
       return {
         ...state,
@@ -46,10 +51,10 @@ function reducer(state, action) {
         ...state,
         showFilters: !state.showFilters,
       };
-    case "toggleMini":
+    case "focusedResult":
       return {
         ...state,
-        miniResult: { show: payload.show, index: payload.index },
+        focusedResult: { show: payload.show, index: payload.index },
       };
     default:
       return state;

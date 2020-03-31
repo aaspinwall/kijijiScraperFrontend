@@ -6,10 +6,11 @@ const initialState = {
   counter: 0,
   name: "myname",
   lifeCycle: "",
+  showSearch: true,
   showMap: false,
   showFilters: false,
-  miniResult: { show: false, index: 0 },
-
+  focusedResult: { show: false, index: 0 },
+  bottomed: false,
   searchResults: [
     {
       title: "Nothing here",

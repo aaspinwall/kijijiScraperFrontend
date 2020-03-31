@@ -1,18 +1,13 @@
 import React from "react";
+import styled from "styled-components";
 
 export default function Footer() {
-  return (
-    <div
-      style={{
-        height: "200px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "grey",
-        color: "white",
-      }}
-    >
-      Here is a footer
-    </div>
-  );
+  return <Container>Here is a footer</Container>;
 }
+
+const Container = styled.div`
+  color: white;
+  background: grey;
+  padding: 2rem;
+  text-align: center;
+`;

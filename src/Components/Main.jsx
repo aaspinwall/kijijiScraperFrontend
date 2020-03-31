@@ -60,13 +60,21 @@ function mapDispatch(dispatch) {
     toggleMap() {
       dispatch({ type: "toggleMap" });
     },
+    toggleSearch() {
+      dispatch({ type: "toggleSearch" });
+    },
   };
 }
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { scraperIsLive: true, showMap: false };
+    this.state = {
+      scraperIsLive: true,
+      showMap: false,
+      scrollPosition: 0,
+      scrollCount: 0,
+    };
   }
   search = async message => {
     const serverUrl =
@@ -132,6 +140,18 @@ class Main extends React.Component {
     console.log("You sent the message", message);
   };
 
+  scrollInfo = position => {
+    const goingDown = this.state.scrollPosition < position;
+    this.setState(
+      {
+        scrollPosition: position,
+        scrollCount: goingDown ? 0 : this.state.scrollCount + 1,
+      }
+      /* () => console.log(this.state.scrollCount) */
+    );
+    return this.state.scrollCount > 5;
+  };
+
   localStorageCheck(flags) {
     //TODO add flags
     //Check if local storage exists to load the previous search
@@ -154,17 +174,19 @@ class Main extends React.Component {
   componentDidMount() {
     this.localStorageCheck();
     this.props.lifeCycle("static");
+    window.addEventListener("scroll", e => {
+      const position = window.pageYOffset;
+      this.scrollInfo(position);
+      /* console.log("Scroll direction:", this.scrollInfo(position)); */
+    });
   }
   render() {
     return (
       <AppContainer id='appContainer'>
         <Overlay submit={this.submit} visible={this.props.showFilters} />
+        {this.state.scrollCount > 5 ? <Flag>UP!</Flag> : ""}
         <Searchbox submit={this.submit} />
-        {/* <div onClick={this.props.toggleMap}>Filters</div> */}
         <Filters />
-        <button name='getButton' onClick={this.submit}>
-          Search
-        </button>
         <Results></Results>
         <FloatingButton text={["Map", "List"]} />
         <Footer />
@@ -178,6 +200,15 @@ const AppContainer = styled.div`
     position: relative;
     display: grid;
   }
+`;
+
+const Flag = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+  width: 100%;
+  text-align: center;
 `;
 
 export default connect(mapState, mapDispatch)(Main);

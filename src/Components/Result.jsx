@@ -9,13 +9,18 @@ import {
   FaSnowflake,
   FaPaw,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function Result(props) {
+  const focusedResult = useSelector(state => state.focusedResult);
+  const dispatch = useDispatch();
+
   const [showMore, moreToggle] = useState(false);
   const [fullDescription, toggleDescription] = useState(false);
   const frameRef = useRef();
   const adObject = props.ad;
+  const index = props.index;
   const textAttributes = [];
   const numberAttributes = [];
 
@@ -59,8 +64,14 @@ export default function Result(props) {
   };
 
   const toggleMore = ref => {
+    //EXPANDS THE VIEW
+    //Toggles global state focus
     const position = ref.target.parentElement.offsetTop;
     window.scrollTo(0, position - 32);
+    dispatch({
+      type: "focusedResult",
+      payload: { show: focusedResult.show, index },
+    });
     moreToggle(!showMore);
   };
 
@@ -195,6 +206,9 @@ const Main = styled.div`
     align-items: center;
     padding: 1rem 0;
   }
+  .price {
+    justify-content: flex-end;
+  }
 `;
 const Section = styled.div`
   border-top: solid 2px #2222;
@@ -205,7 +219,7 @@ const Section = styled.div`
   padding-top: 1rem;
 `;
 const Price = styled.div`
-  text-align: right;
+  justify-content: flex-end;
 `;
 const Details = styled.div`
   > div {

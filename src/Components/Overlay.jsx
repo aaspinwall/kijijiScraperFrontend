@@ -3,6 +3,7 @@ import styled from "styled-components";
 import InputBox from "./InputBox";
 import { useDispatch, useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
+import Button_Action from "./Templates/Button_Action";
 export default function Overlay(props) {
   const visible = useSelector(state => state.showFilters);
   const dispatch = useDispatch();
@@ -43,10 +44,25 @@ export default function Overlay(props) {
             submit={props.submit}
           />
         </Box>
+        <Title>Max results</Title>
+        <Box>
+          <div>Max results</div>
+          <Input
+            id='maxResults'
+            type='number'
+            value={30}
+            writeToState={writeToState}
+            submit={props.submit}
+          />
+        </Box>
       </Section>
-      <Section>Close</Section>
-      <Section>Close</Section>
-      <Section>Close</Section>
+      <Button_Action
+        text='Submit'
+        submit={() => {
+          toggleVisibility();
+          props.submit();
+        }}
+      />
     </Container>
   );
 }
@@ -57,10 +73,11 @@ const Container = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: white;
   text-align: left;
+  overflow: scroll;
 `;
 
 const Header = styled.header`
