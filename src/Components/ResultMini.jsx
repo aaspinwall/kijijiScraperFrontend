@@ -17,12 +17,11 @@ export default function ResultMini() {
   };
   return (
     <Container>
-      <div className='close' onClick={close}>
-        <AiOutlineClose />
-      </div>
-      <div className='title'>{focusedElement.title}</div>
       <img src={focusedElement.images[0]}></img>
-      <div>{"$ " + focusedElement.attributes.price}</div>
+      <div className='text'>
+        <div className='title'>{focusedElement.title}</div>
+        <div className='price'>{"$ " + focusedElement.attributes.price}</div>
+      </div>
     </Container>
   );
 }
@@ -32,30 +31,19 @@ const Container = styled.div`
   background: white;
   z-index: 999;
   position: absolute;
-  top: 25%;
-  left: 25%;
-  width: 50%;
-  height: 31%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-direction: column;
-  padding-bottom: 1rem;
-  text-align: left;
-  .close {
-    padding-right: 2rem;
-    width: 100%;
-    text-align: right;
+  display: grid;
+
+  .text {
     font-size: 1rem;
+    padding: 1rem;
   }
-  .title {
-    font-size: 1rem;
-    padding: 0 1rem;
+  .price {
+    font-weight: bold;
   }
   img {
+    border-radius: 20px 20px 0 0;
     object-fit: cover;
     height: 100px;
     width: 200px;
-    border-radius: 10px;
   }
 `;

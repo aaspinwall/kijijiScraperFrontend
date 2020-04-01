@@ -26,16 +26,6 @@ function reducer(state, action) {
         ...state,
         filteredSearch: payload,
       };
-    //Life Cycle states tell the components when to render. Available options are:
-    //Initial - Loads components and gets data
-    //Static - App is running with results on display
-    //Loading - Results are being fetched
-    //Error
-    case "lifeCycle":
-      return {
-        ...state,
-        lifeCycle: payload,
-      };
     case "toggleSearch":
       return {
         ...state,
@@ -55,6 +45,16 @@ function reducer(state, action) {
       return {
         ...state,
         focusedResult: { show: payload.show, index: payload.index },
+      };
+    //Life Cycle states tell the components when to render. Available options are:
+    //Initial - Loads components and gets data
+    //Static - App is running with results on display
+    //Loading - Results are being fetched
+    //Error
+    case "lifeCycle":
+      return {
+        ...state,
+        lifeCycle: payload,
       };
     default:
       return state;

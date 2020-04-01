@@ -177,7 +177,6 @@ class Main extends React.Component {
     window.addEventListener("scroll", e => {
       const position = window.pageYOffset;
       this.scrollInfo(position);
-      /* console.log("Scroll direction:", this.scrollInfo(position)); */
     });
   }
   render() {

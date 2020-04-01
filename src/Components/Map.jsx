@@ -22,6 +22,7 @@ function Map() {
   const [windowHeight, changeHeight] = useState(window.innerHeight);
   const { filteredSearch, focusedResult } = selectedData;
   const mapElement = useRef();
+  const pinElement = useRef();
 
   useEffect(() => {
     const latitudeArray = [];
@@ -59,15 +60,15 @@ function Map() {
   const pinClick = e => {
     const index = Number(e.target.id.replace("pin", ""));
     dispatch({ type: "focusedResult", payload: { show: true, index } });
+    //const pinLocation = e.target.getBoundingClientRect();
+    const { x, y } = e.target.getBoundingClientRect();
     //focusedResult(!showMini);
     console.log("You clicked on i: ", index);
+    console.log("The matching ref is", { x, y });
   };
 
-  //const testLat = filteredSearch[0].attributes.location.latitude;
-  //const testlong = filteredSearch[0].attributes.location.longitude;
   return (
     <Container ref={mapElement}>
-      {focusedResult.show ? <ResultMini /> : ""}
       <div
         className='mapContainer'
         style={{
@@ -93,10 +94,19 @@ function Map() {
             const title = result.title;
             return (
               <Pin lat={testLat} lng={testlong} key={"pin" + i}>
-                <div className='pin' onClick={pinClick} id={"pin" + i}>
+                <div
+                  className='pin'
+                  onClick={pinClick}
+                  id={"pin" + i}
+                  ref={pinElement}
+                >
                   📍
                 </div>
-                <span className='label'>{title}</span>
+                {focusedResult.show && i === focusedResult.index ? (
+                  <ResultMini />
+                ) : (
+                  ""
+                )}
               </Pin>
             );
           })}
@@ -122,7 +132,6 @@ const Pin = styled.div`
     top: 0;
     transform: translate(-50%, -50%);
   }
-  filter: opacity(0.5);
   .label {
     display: none;
     padding-left: 2rem;
@@ -133,9 +142,7 @@ const Pin = styled.div`
     top: 0;
     left: 0;
   }
-  :hover {
-    filter: opacity(1);
-  }
+
   :hover .label {
     display: block;
   }
