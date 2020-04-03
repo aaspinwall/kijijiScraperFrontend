@@ -126,6 +126,17 @@ export default function Result(props) {
             ) : (
               ""
             )}
+            {showMore ? (
+              <Kijiji
+                visible={showMore}
+                href={adObject.url}
+                onClick={() => window.open(adObject.url)}
+              >
+                See in Kijiji
+              </Kijiji>
+            ) : (
+              ""
+            )}
           </Location>
         </Details>
       </Text>
@@ -191,6 +202,20 @@ const Text = styled.div`
   }
   display: grid;
 `;
+const Kijiji = styled.span`
+  background: #373373;
+  border-radius: 5px;
+  box-shadow: 5px 5px grey;
+  font-size: 1rem;
+  color: white;
+  -webkit-text-decoration: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  border: 1px #2222 solid;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  max-width: 10rem;
+`;
 const Main = styled.div`
   margin: 12px auto 6px auto;
   padding: 0.5rem 0;
@@ -207,7 +232,7 @@ const Main = styled.div`
     padding: 1rem 0;
   }
   .price {
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 `;
 const Section = styled.div`
