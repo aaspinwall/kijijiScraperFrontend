@@ -7,7 +7,7 @@ import Map from "./Map";
 import { useSelector, useDispatch } from "react-redux";
 import { compareTwoStrings } from "string-similarity";
 
-const formatTitle = str => {
+const formatTitle = (str) => {
   const cleanStr = str.replace(/([*►◄!])+/g, "").toLowerCase();
   const regex = /[a-z]/;
   const found = cleanStr.match(regex);
@@ -19,7 +19,7 @@ const passSimilarity = (a, b, threshold = 0.7) => {
   return rating > threshold;
 };
 
-const removeDuplicates = arr => {
+const removeDuplicates = (arr) => {
   console.log("Pre filtered", arr);
   /* console.log(
     arr.sort((a, b) => (a.attributes.price > b.attributes.price ? 1 : -1))
@@ -28,7 +28,7 @@ const removeDuplicates = arr => {
     //console.log(result.title.split(" ").sort());
     //console.log(result.images.length);
   }); */
-  const filtered = arr.filter(result => {
+  const filtered = arr.filter((result) => {
     let strikes = 0;
     const reference = result.description;
     const reference2 = result.title;
@@ -36,7 +36,7 @@ const removeDuplicates = arr => {
       console.log("Did not work");
       return;
     }
-    arr.forEach(res2 => {
+    arr.forEach((res2) => {
       const comparison = res2.description;
       const comparison2 = res2.title;
       if (
@@ -49,14 +49,14 @@ const removeDuplicates = arr => {
     /* console.log(i, "Yielded ", strikes, " strikes"); */
     return strikes === 1;
   });
-  console.log("filtered should look like this:", filtered);
+  //console.log("filtered should look like this:", filtered);
   //return arr.reverse();
   return filtered.reverse();
 };
 
 function Results() {
   const dispatch = useDispatch();
-  const globalState = useSelector(state => state);
+  const globalState = useSelector((state) => state);
   const {
     searchResults,
     filteredWords,
@@ -64,15 +64,15 @@ function Results() {
     lifeCycle,
     showMap,
   } = globalState;
-  const applyFilter = arr => {
+  const applyFilter = (arr) => {
     dispatch({ type: "filtered", payload: arr });
   };
   useEffect(() => {
     const filterResults = () => {
-      const filteredResults = searchResults.filter(element => {
+      const filteredResults = searchResults.filter((element) => {
         const title = element.title;
         //Check if it passes all the filteredWords
-        return filteredWords.every(word => {
+        return filteredWords.every((word) => {
           const noWordFound = title.toLowerCase().search(word) === -1;
           return noWordFound;
         });
@@ -91,9 +91,24 @@ function Results() {
     applyFilter(filterResults());
   }, [searchResults]);
 
+  const allAttrs = [];
   const results = filteredSearch.map((element, i) => {
+    const attrs = element.attributes;
+    const allKeys = Object.keys(attrs);
+    allKeys.map((el) => {
+      const isANumber = typeof element.attributes[el] === "number";
+      const notZero = element.attributes[el] !== 0;
+      //add unique elements
+      if (!allAttrs.includes(el) && isANumber && notZero) {
+        allAttrs.push(el);
+      }
+    });
+
     return <Result ad={element} key={i} index={i} />;
   });
+  const noRepeats = allAttrs;
+
+  //console.log("no repeats is: ", noRepeats);
 
   const loading = <Loading></Loading>;
 

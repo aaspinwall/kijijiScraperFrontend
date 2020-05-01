@@ -14,7 +14,7 @@ export default function FloatingButton(props) {
       const visible =
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - elementHeight;
-      console.log(visible);
+      //console.log(visible);
     });
   }, []);
 

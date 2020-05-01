@@ -8,12 +8,14 @@ import {
   FaSmoking,
   FaSnowflake,
   FaPaw,
+  FaCheck,
 } from "react-icons/fa";
+import { GiGrass } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function Result(props) {
-  const focusedResult = useSelector(state => state.focusedResult);
+  const focusedResult = useSelector((state) => state.focusedResult);
   const dispatch = useDispatch();
 
   const [showMore, moreToggle] = useState(false);
@@ -40,7 +42,39 @@ export default function Result(props) {
   }
   //console.log(numberAttributes);
 
-  const iconMatch = text => {
+  const icons = {
+    numberbedrooms: { icon: <FaBed /> },
+    numberbathrooms: { icon: <FaBath /> },
+    furnished: { icon: <FaCouch /> },
+    smokingpermitted: { icon: <FaSmoking /> },
+    airconditioning: { icon: <FaSnowflake /> },
+    yard: { text: "Yard", icon: <GiGrass /> },
+    petsallowed: { text: "Pets allowed", icon: <FaPaw /> },
+    sample: { text: "Sample text", icon: <GiGrass /> },
+  };
+  const findIcon = (text) => {
+    if (icons[text]) {
+      const ob = icons[text];
+      //return icons[text].icon;
+      if (ob.icon) {
+        return (
+          <div className='icon'>
+            {ob.icon} <div>{ob.text}</div>
+          </div>
+        );
+      } else {
+        return <div>{ob.text}</div>;
+      }
+    } else {
+      return (
+        <div className='icon'>
+          <FaCheck /> <div>{" " + text}</div>
+        </div>
+      );
+    }
+  };
+
+  const iconMatch = (text) => {
     switch (text) {
       case "numberbedrooms":
         return <FaBed />;
@@ -63,7 +97,7 @@ export default function Result(props) {
     }
   };
 
-  const toggleMore = ref => {
+  const toggleMore = (ref) => {
     //EXPANDS THE VIEW
     //Toggles global state focus
     const position = ref.target.parentElement.offsetTop;
@@ -94,10 +128,12 @@ export default function Result(props) {
           <Description>
             <div>
               <div>
-                {/* prettier-ignore */
-                adObject.description && !fullDescription ? adObject.description.slice(0, 450) 
+                {
+                  /* prettier-ignore */
+                  adObject.description && !fullDescription ? adObject.description.slice(0, 450) 
                 : adObject.description && fullDescription ? adObject.description
-                : ""}
+                : ""
+                }
               </div>
               <div onClick={() => toggleDescription(!fullDescription)}>
                 {!fullDescription ? "... show more" : "show less"}
@@ -109,7 +145,7 @@ export default function Result(props) {
             <div className='attrs'>
               {numberAttributes.map((attribute, i) => (
                 <span key={"attr-" + i}>
-                  {iconMatch(attribute.key)}
+                  {findIcon(attribute.key)}
                   {" " + attribute.element}
                 </span>
               ))}
@@ -172,13 +208,12 @@ const Container = styled.div`
     padding: 1rem 0;
   }
 `;
-
 const MoreInfoButton = styled.div`
   position: absolute;
-  right: ${props => (props.open ? "auto" : "50%")};
-  left: ${props => (props.open ? "50%" : "auto")};
-  top: ${props => (props.open ? "50%" : "33%")};
-  transform: ${props =>
+  right: ${(props) => (props.open ? "auto" : "50%")};
+  left: ${(props) => (props.open ? "50%" : "auto")};
+  top: ${(props) => (props.open ? "50%" : "33%")};
+  transform: ${(props) =>
     props.open
       ? "translateY(-50%) rotate(0deg) translateX(-50%)"
       : "translateY(-50%) rotate(180deg) translateX(-50%)"};
@@ -220,11 +255,11 @@ const Main = styled.div`
   margin: 12px auto 6px auto;
   padding: 0.5rem 0;
   display: grid;
-  grid-template-columns: ${props => (props.visible ? "1fr" : "3fr 1fr")};
+  grid-template-columns: ${(props) => (props.visible ? "1fr" : "3fr 1fr")};
   width: 100%;
   transition: font-size 0.3s ease-in-out;
-  font-size: ${props => (props.visible ? "2rem" : "1rem")};
-  font-weight: ${props => (props.visible ? "bold" : "normal")};
+  font-size: ${(props) => (props.visible ? "2rem" : "1rem")};
+  font-weight: ${(props) => (props.visible ? "bold" : "normal")};
   > div {
     display: flex;
     justify-content: flex-start;
@@ -232,7 +267,8 @@ const Main = styled.div`
     padding: 1rem 0;
   }
   .price {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    align-items: baseline;
   }
 `;
 const Section = styled.div`
@@ -252,9 +288,8 @@ const Details = styled.div`
   }
   font-size: 0.7rem;
   flex-wrap: wrap;
-  display: ${props => (props.visible ? "flex" : "none")};
+  display: ${(props) => (props.visible ? "flex" : "none")};
 `;
-
 const Location = styled.div`
   width: 100%;
   display: flex;
@@ -266,7 +301,6 @@ const Location = styled.div`
     flex-wrap: wrap;
   }
 `;
-
 const Attributes = styled.div`
   width: 100%;
   padding: 0 !important;
@@ -284,6 +318,9 @@ const Attributes = styled.div`
   font-size: 1rem;
   > span {
   }
+  .icon {
+    display: inline-flex;
+  }
 `;
 const Title = styled.div`
   width: 100%;
@@ -300,4 +337,5 @@ const Description = styled.div`
   font-size: 1.1rem;
   text-align: left;
   padding: 1rem 0;
+  line-height: ${(props) => (props.open ? "normal" : "1.7rem")};
 `;
