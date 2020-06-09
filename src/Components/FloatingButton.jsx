@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { FiMap } from "react-icons/fi";
 import { FaListUl } from "react-icons/fa";
@@ -8,14 +8,15 @@ export default function FloatingButton(props) {
   const [counter, changeCounter] = useState(0);
   const dispatch = useDispatch();
   const footerRef = useRef();
+  const visible = useSelector((state) => state.showFloating);
   useEffect(() => {
     const elementHeight = footerRef.current.offsetHeight * 2;
-    window.addEventListener("scroll", () => {
+    /*     window.addEventListener("scroll", () => {
       const visible =
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - elementHeight;
-      //console.log(visible);
-    });
+      console.log(visible);
+    }); */
   }, []);
 
   const flipCounter = () => {
@@ -24,7 +25,7 @@ export default function FloatingButton(props) {
     else changeCounter(1);
   };
   return (
-    <Container onClick={() => flipCounter(1)} ref={footerRef}>
+    <Container visible={visible} onClick={() => flipCounter(1)} ref={footerRef}>
       <div>{props.text[counter]}</div>
       <div>{counter === 0 ? <FiMap /> : <FaListUl />}</div>
     </Container>
@@ -32,6 +33,7 @@ export default function FloatingButton(props) {
 }
 
 const Container = styled.div`
+  z-index: 999;
   > div {
     padding: 0 0.25rem;
     display: flex;
@@ -39,7 +41,7 @@ const Container = styled.div`
     align-items: center;
   }
   position: fixed;
-  display: grid;
+  display: ${(props) => (props.visible ? "grid" : "none")};
   grid-template-columns: 1fr 1fr;
   bottom: 1rem;
   left: 50%;

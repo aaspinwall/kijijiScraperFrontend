@@ -60,8 +60,14 @@ function mapDispatch(dispatch) {
     toggleMap() {
       dispatch({ type: "toggleMap" });
     },
+    setMapVisibility(visible) {
+      dispatch({ type: "mapVisibility", payload: visible });
+    },
     toggleSearch() {
       dispatch({ type: "toggleSearch" });
+    },
+    floatingVisibility(visible) {
+      dispatch({ type: "floatingVisibility", payload: visible });
     },
   };
 }
@@ -71,12 +77,11 @@ class Main extends React.Component {
     super(props);
     this.state = {
       scraperIsLive: true,
-      showMap: false,
       scrollPosition: 0,
       scrollCount: 0,
     };
   }
-  search = async message => {
+  search = async (message) => {
     const serverUrl =
       "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
@@ -101,7 +106,7 @@ class Main extends React.Component {
       this.props.lifeCycle("error");
     }
   };
-  connectToDB = async username => {
+  connectToDB = async (username) => {
     const serverUrl =
       "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
@@ -126,7 +131,7 @@ class Main extends React.Component {
     }
   };
 
-  submit = e => {
+  submit = (e) => {
     this.props.lifeCycle("loading");
     const message = {
       params: {
@@ -140,7 +145,7 @@ class Main extends React.Component {
     console.log("You sent the message", message);
   };
 
-  scrollInfo = position => {
+  scrollInfo = (position) => {
     const goingDown = this.state.scrollPosition < position;
     this.setState(
       {
@@ -174,9 +179,18 @@ class Main extends React.Component {
   componentDidMount() {
     this.localStorageCheck();
     this.props.lifeCycle("static");
-    window.addEventListener("scroll", e => {
-      const position = window.pageYOffset;
-      this.scrollInfo(position);
+    if (window.innerWidth > 1024) {
+      console.log("over 1024");
+      this.props.floatingVisibility(false);
+      this.props.setMapVisibility(true);
+    }
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1024) {
+        this.props.floatingVisibility(false);
+        if (!this.props.showMap) this.props.setMapVisibility(true);
+      } else {
+        this.props.floatingVisibility(true);
+      }
     });
   }
   render() {
@@ -195,6 +209,11 @@ class Main extends React.Component {
 }
 
 const AppContainer = styled.div`
+  @media only screen and (min-width: 1024px) {
+    max-width: 1400px;
+  }
+  max-width: 1000px;
+  margin: auto;
   .resultsContainer {
     position: relative;
     display: grid;

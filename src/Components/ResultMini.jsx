@@ -8,6 +8,7 @@ export default function ResultMini() {
   const focusedElement = useSelector((state) => {
     return state.filteredSearch[state.focusedResult.index];
   });
+  const index = useSelector((state) => state.focusedResult.index);
 
   useEffect(() => {
     console.log(focusedElement);
@@ -16,7 +17,9 @@ export default function ResultMini() {
     dispatch({ type: "focusedResult", payload: { show: false, index: 0 } });
   };
   const goTo = () => {
-    console.log(focusedElement.title);
+    const thatElement = document.querySelector(`#result_${index}`);
+    console.log("That element is: ", thatElement);
+    thatElement.scrollIntoView();
   };
   return (
     <Container>

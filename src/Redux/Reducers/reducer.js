@@ -46,6 +46,16 @@ function reducer(state, action) {
         ...state,
         focusedResult: { show: payload.show, index: payload.index },
       };
+    case "floatingVisibility":
+      return {
+        ...state,
+        showFloating: payload,
+      };
+    case "mapVisibility":
+      return {
+        ...state,
+        showMap: payload,
+      };
     //Life Cycle states tell the components when to render. Available options are:
     //Initial - Loads components and gets data
     //Static - App is running with results on display

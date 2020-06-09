@@ -15,10 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function Result(props) {
-  const focusedResult = useSelector((state) => state.focusedResult);
+  //const focusedResult = useSelector((state) => state.focusedResult);
+  const { focusedResult, showMap } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const [showMore, moreToggle] = useState(false);
+  const [focusedImage, setFocus] = useState();
   const [fullDescription, toggleDescription] = useState(false);
   const frameRef = useRef();
   const adObject = props.ad;
@@ -40,7 +42,6 @@ export default function Result(props) {
       //numberAttributes.push(key + "=>" + element);
     }
   }
-  //console.log(numberAttributes);
 
   const icons = {
     numberbedrooms: { icon: <FaBed /> },
@@ -63,7 +64,11 @@ export default function Result(props) {
           </div>
         );
       } else {
-        return <div>{ob.text}</div>;
+        return (
+          <div className='icon'>
+            <div>{ob.text}</div>
+          </div>
+        );
       }
     } else {
       return (
@@ -71,29 +76,6 @@ export default function Result(props) {
           <FaCheck /> <div>{" " + text}</div>
         </div>
       );
-    }
-  };
-
-  const iconMatch = (text) => {
-    switch (text) {
-      case "numberbedrooms":
-        return <FaBed />;
-      case "numberbathrooms":
-        return <FaBath />;
-      case "furnished":
-        return <FaCouch />;
-      case "smokingpermitted":
-        return <FaSmoking />;
-      case "airconditioning":
-        return <FaSnowflake />;
-      case "petsallowed":
-        return (
-          <div>
-            <FaPaw /> <div>Pets allowed</div>
-          </div>
-        );
-      default:
-        return text;
     }
   };
 
@@ -109,9 +91,22 @@ export default function Result(props) {
     moreToggle(!showMore);
   };
 
+  const getAllImages = (arr) => {
+    return arr.map((image, i) => (
+      <img src={image} onClick={() => setFocus(image)} />
+    ));
+  };
+
   return (
-    <Container className='resultContainer' ref={frameRef}>
-      <Image src={adObject.images[0]} onClick={toggleMore} />
+    <Container className='resultContainer' ref={frameRef} id={props.identifier}>
+      <Image
+        focused={showMore}
+        src={focusedImage ? focusedImage : adObject.images[0]}
+        onClick={toggleMore}
+      />
+      {showMore ? (
+        <AllImages> {getAllImages(adObject.images)}</AllImages>
+      ) : null}
       <Text>
         <Main visible={showMore}>
           <Title
@@ -152,6 +147,19 @@ export default function Result(props) {
             </div>
           </Attributes>
           <Section>Location</Section>
+          <button
+            onClick={() => {
+              window.scrollTo(0, -32);
+              if (!showMap) {
+                dispatch({
+                  type: "mapVisibility",
+                  payload: true,
+                });
+              }
+            }}
+          >
+            Show in map
+          </button>
           <Location>
             <div className='address regularSpace'>{address}</div>
             {showMore ? (
@@ -186,21 +194,11 @@ export default function Result(props) {
 }
 
 const Container = styled.div`
-  @media only screen and (min-width: 1024px) {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    padding: 1rem;
-    border-top: solid 1px #2222;
-    margin: 0.5rem;
-  }
   .more {
     display: flex;
     flex-direction: column;
     position: relative;
     height: 2rem;
-    margin: 0 0 2rem 0;
-    border-bottom: solid 1px #2222;
-
     .moreinfoButton {
     }
   }
@@ -219,22 +217,35 @@ const MoreInfoButton = styled.div`
       : "translateY(-50%) rotate(180deg) translateX(-50%)"};
 `;
 const Image = styled.img`
-  @media only screen and (min-width: 1024px) {
-    object-fit: cover;
-    width: 100%;
-  }
   display: flex;
   justify-content: center;
   background-origin: border-box;
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: ${(props) => (props.focused ? "contain" : "cover")};
+  height: ${(props) => (props.focused ? "70vh" : "30vh")};
   width: 100%;
-  height: 218px;
-`;
-const Text = styled.div`
+  transition: height 0.4s ease-in-out;
+
   @media only screen and (min-width: 1024px) {
-    text-align: right;
+    height: ${(props) => (props.focused ? "50vh" : "30vh")};
   }
+`;
+const AllImages = styled.div`
+  border-radius: 20px;
+  display: flex;
+  overflow-x: scroll;
+  padding: 1rem 0;
+  > img {
+    object-fit: cover;
+    width: 30vw;
+    max-height: 15vh;
+  }
+`;
+
+const Text = styled.div`
+  /* @media only screen and (min-width: 1024px) {
+    text-align: right;
+  } */
   display: grid;
 `;
 const Kijiji = styled.span`

@@ -84,6 +84,6 @@ const Gif = styled.img`
 const Quote = styled.div`
   font-weight: lighter;
   font-size: 1rem;
-  font-family: cursive;
+  font-family: "Work Sans", sans-serif;
   padding: 1rem 25%;
 `;

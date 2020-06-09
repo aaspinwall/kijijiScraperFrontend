@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
 import Button_Action from "./Templates/Button_Action";
 export default function Overlay(props) {
-  const visible = useSelector(state => state.showFilters);
+  const visible = useSelector((state) => state.showFilters);
   const dispatch = useDispatch();
   //const [visible, toggleVisible] = useState(props.visible);
-  const writeToState = e => {
+  const writeToState = (e) => {
     const value = e.target.value;
     const id = e.target.id;
     dispatch({ type: "input", payload: value, id: id });
@@ -46,7 +46,6 @@ export default function Overlay(props) {
         </Box>
         <Title>Max results</Title>
         <Box>
-          <div>Max results</div>
           <Input
             id='maxResults'
             type='number'
@@ -68,7 +67,7 @@ export default function Overlay(props) {
 }
 
 const Container = styled.div`
-  display: ${props => (props.visible ? "initial" : "none")};
+  display: ${(props) => (props.visible ? "initial" : "none")};
   z-index: 999;
   position: fixed;
   left: 0;
@@ -78,6 +77,11 @@ const Container = styled.div`
   background: white;
   text-align: left;
   overflow: scroll;
+  font-family: "Cabin", sans-serif;
+  > div {
+    max-width: 800px;
+    margin: auto;
+  }
 `;
 
 const Header = styled.header`

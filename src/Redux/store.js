@@ -9,6 +9,7 @@ const initialState = {
   showSearch: true,
   showMap: false,
   showFilters: false,
+  showFloating: true,
   focusedResult: { show: false, index: 0 },
   bottomed: false,
   searchResults: [

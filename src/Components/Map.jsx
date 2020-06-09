@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import ResultMini from "./ResultMini";
 
-const median = arr => {
+const median = (arr) => {
   const mid = Math.floor(arr.length / 2),
     nums = [...arr].sort((a, b) => a - b);
   return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
@@ -14,13 +14,16 @@ const median = arr => {
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
 function Map() {
-  const selectedData = useSelector(state => state);
+  const selectedData = useSelector((state) => state);
   const dispatch = useDispatch();
   //const [showMini, toggleMini] = useState(false);
   const [longAvg, changeLong] = useState(0);
   const [latAvg, changeLat] = useState(0);
-  const [windowHeight, changeHeight] = useState(window.innerHeight);
-  const { filteredSearch, focusedResult } = selectedData;
+  const [windowSize, changeHeight] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+  const { filteredSearch, focusedResult, showMap } = selectedData;
   const mapElement = useRef();
   const pinElement = useRef();
 
@@ -46,18 +49,19 @@ function Map() {
   }, [filteredSearch]);
 
   useEffect(() => {
-    console.log("Height changed to", windowHeight);
-  }, [windowHeight]);
+    console.log("Window changed to", windowSize);
+  }, [windowSize]);
 
   useEffect(() => {
     const mapPosition = mapElement.current.offsetTop;
     window.addEventListener("resize", () => {
-      changeHeight(window.innerHeight);
+      const { innerWidth: width, innerHeight: height } = window;
+      changeHeight({ height, width });
     });
     window.scrollTo(0, mapPosition - 32);
   }, []);
 
-  const pinClick = e => {
+  const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
     dispatch({ type: "focusedResult", payload: { show: true, index } });
     //const pinLocation = e.target.getBoundingClientRect();
@@ -68,13 +72,13 @@ function Map() {
   };
 
   return (
-    <Container ref={mapElement}>
+    <Container ref={mapElement} id='mapContainer'>
       <div
         className='mapContainer'
         style={{
           height:
             (() => {
-              return windowHeight * 0.85;
+              return windowSize.height * 0.75;
             })().toString() + "px",
           width: "100%",
           padding: "0",
@@ -145,6 +149,8 @@ const Pin = styled.div`
 
   :hover .label {
     display: block;
+  }
+  #mapContainer {
   }
 `;
 

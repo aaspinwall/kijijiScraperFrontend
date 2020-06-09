@@ -11,13 +11,16 @@ export default function SearchBox(props) {
   const [showClose, toggleClose] = useState(false);
   const [initialValue] = useState("Search");
 
-  const userInput = e => {
+  const userInput = (e) => {
     const value = e.target.value;
     const id = e.target.id;
     dispatch({ type: "input", payload: value, id: id });
   };
   return (
     <Container>
+      <div id='topLogo'>
+        <img src='logo.png'></img>
+      </div>
       <Box>
         <FiSearch onClick={() => props.submit()} />
         <SearchInput
@@ -30,11 +33,11 @@ export default function SearchBox(props) {
           onFocus={() => {
             toggleClose(true);
           }}
-          onChange={e => changeInput(e.target.value)}
-          onBlur={e => {
+          onChange={(e) => changeInput(e.target.value)}
+          onBlur={(e) => {
             userInput(e);
           }}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === "Tab") {
               changeInput(e.target.value);
               if (e.key === "Enter") {
@@ -59,12 +62,24 @@ export default function SearchBox(props) {
 }
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   margin: 0;
   border: 0;
-  padding: 0.5rem 0;
+  padding: 0.5rem 10%;
+  max-width: 1000px;
+  margin: auto;
+  box-sizing: border-box;
+
+  #topLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 2rem;
+    }
+  }
 `;
 
 const Box = styled.div`
