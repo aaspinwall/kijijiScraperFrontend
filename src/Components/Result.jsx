@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import Walkscore from "./Walkscore";
 import styled from "styled-components";
+import { Button } from "../Styles/Components";
 import {
   FaBed,
   FaBath,
@@ -60,20 +61,20 @@ export default function Result(props) {
       if (ob.icon) {
         return (
           <div className='icon'>
-            {ob.icon} <div>{ob.text}</div>
+            {ob.icon} <div className='slideRight'>{ob.text}</div>
           </div>
         );
       } else {
         return (
           <div className='icon'>
-            <div>{ob.text}</div>
+            <div className='slideRight'>{ob.text}</div>
           </div>
         );
       }
     } else {
       return (
         <div className='icon'>
-          <FaCheck /> <div>{" " + text}</div>
+          <FaCheck /> <div className='slideRight'>{" " + text}</div>
         </div>
       );
     }
@@ -95,6 +96,35 @@ export default function Result(props) {
     return arr.map((image, i) => (
       <img src={image} onClick={() => setFocus(image)} />
     ));
+  };
+
+  const getDescription = (adObject) => {
+    if (!adObject) return null;
+    const description = adObject.description;
+    const len = description.length;
+    const limit = 450;
+    return (
+      <Description>
+        <div>
+          <div>
+            {
+              /* prettier-ignore */
+              !fullDescription ? description.slice(0, limit) + ' ...'
+                : fullDescription ? description
+                : ""
+            }
+          </div>
+          {len >= limit ? (
+            <div
+              className='showMore'
+              onClick={() => toggleDescription(!fullDescription)}
+            >
+              {!fullDescription ? "show more" : "show less"}
+            </div>
+          ) : null}
+        </div>
+      </Description>
+    );
   };
 
   return (
@@ -120,34 +150,28 @@ export default function Result(props) {
         </Main>
         <Details visible={showMore}>
           <Section>Description</Section>
-          <Description>
-            <div>
-              <div>
-                {
-                  /* prettier-ignore */
-                  adObject.description && !fullDescription ? adObject.description.slice(0, 450) 
-                : adObject.description && fullDescription ? adObject.description
-                : ""
-                }
-              </div>
-              <div onClick={() => toggleDescription(!fullDescription)}>
-                {!fullDescription ? "... show more" : "show less"}
-              </div>
-            </div>
-          </Description>
+          {getDescription(adObject)}
           <Section>Amenities</Section>
           <Attributes>
             <div className='attrs'>
               {numberAttributes.map((attribute, i) => (
                 <span key={"attr-" + i}>
                   {findIcon(attribute.key)}
-                  {" " + attribute.element}
+                  {" : " + attribute.element}
                 </span>
               ))}
             </div>
           </Attributes>
           <Section>Location</Section>
-          <button
+          <Location>
+            <div className='address regularSpace'>{address}</div>
+            {showMore ? (
+              <Walkscore locationData={{ address, latitude, longitude }} />
+            ) : (
+              ""
+            )}
+          </Location>
+          <Button
             onClick={() => {
               window.scrollTo(0, -32);
               if (!showMap) {
@@ -155,33 +179,28 @@ export default function Result(props) {
                   type: "mapVisibility",
                   payload: true,
                 });
+                if (focusedResult.false) {
+                  dispatch({
+                    type: "focusedResult",
+                    payload: { index: index, show: true },
+                  });
+                }
               }
             }}
           >
             Show in map
-          </button>
-          <Location>
-            <div className='address regularSpace'>{address}</div>
-            {showMore ? (
-              <Walkscore
-                className='regularSpace'
-                locationData={{ address, latitude, longitude }}
-              />
-            ) : (
-              ""
-            )}
-            {showMore ? (
-              <Kijiji
-                visible={showMore}
-                href={adObject.url}
-                onClick={() => window.open(adObject.url)}
-              >
-                See in Kijiji
-              </Kijiji>
-            ) : (
-              ""
-            )}
-          </Location>
+          </Button>
+          {showMore ? (
+            <Kijiji
+              visible={showMore}
+              href={adObject.url}
+              onClick={() => window.open(adObject.url)}
+            >
+              See in Kijiji
+            </Kijiji>
+          ) : (
+            ""
+          )}
         </Details>
       </Text>
       <div className='more' onClick={toggleMore}>
@@ -204,6 +223,7 @@ const Container = styled.div`
   }
   .regularSpace {
     padding: 1rem 0;
+    margin: 2rem 0;
   }
 `;
 const MoreInfoButton = styled.div`
@@ -260,7 +280,8 @@ const Kijiji = styled.span`
   border: 1px #2222 solid;
   margin: 1rem 0;
   padding: 0.5rem;
-  max-width: 10rem;
+  /* max-width: 10rem; */
+  width: 100%;
 `;
 const Main = styled.div`
   margin: 12px auto 6px auto;
@@ -311,6 +332,10 @@ const Location = styled.div`
   > div {
     flex-wrap: wrap;
   }
+  .address {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
 `;
 const Attributes = styled.div`
   width: 100%;
@@ -323,14 +348,15 @@ const Attributes = styled.div`
       padding: 1rem 0;
     }
   }
-  .address {
-  }
 
   font-size: 1rem;
   > span {
   }
   .icon {
     display: inline-flex;
+  }
+  .slideRight {
+    padding-left: 0.5rem;
   }
 `;
 const Title = styled.div`
@@ -344,9 +370,14 @@ const Title = styled.div`
     text-decoration: none;
   }
 `;
-const Description = styled.div`
+const Description = styled.p`
   font-size: 1.1rem;
   text-align: left;
   padding: 1rem 0;
   line-height: ${(props) => (props.open ? "normal" : "1.7rem")};
+  white-space: pre-wrap;
+  .showMore {
+    padding-top: 1rem;
+    font-weight: bold;
+  }
 `;

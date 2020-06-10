@@ -47,6 +47,9 @@ const Container = styled.div`
   .text {
     font-size: 1rem;
     padding: 1rem;
+    > div {
+      padding-bottom: 1rem;
+    }
   }
   .price {
     font-weight: bold;
@@ -54,8 +57,10 @@ const Container = styled.div`
   img {
     border-radius: 20px 20px 0 0;
     object-fit: cover;
-    height: 100px;
-    width: 200px;
+    height: 20vh;
+    min-height: 100px;
+    width: 15vw;
+    min-width: 200px;
   }
   .closeMini {
     position: absolute;

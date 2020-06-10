@@ -22,14 +22,14 @@ export default function Walkscore(props) {
     };
 
     //CONSTRUCT THE MESSAGE
-    const formatAddress = str => {
+    const formatAddress = (str) => {
       let res;
       res = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       res = res.replace(/([ ,%.'])+/g, "%20");
       return res;
     };
 
-    const formatCoord = num => {
+    const formatCoord = (num) => {
       return num.toFixed(7);
     };
 
@@ -52,39 +52,79 @@ export default function Walkscore(props) {
     const localhostUrl = "http://localhost:5000";
     const url = localhostUrl + "/walkscore";
     connect(url, message);
-    console.log(props);
   }, []);
+
+  const logo = () => {
+    return serverResponse.logo_url ? (
+      <img src={serverResponse.logo_url}></img>
+    ) : (
+      ""
+    );
+  };
+
   return (
-    <Container className='walkScore'>
-      {serverResponse.logo_url ? <img src={serverResponse.logo_url}></img> : ""}
-      <div>
-        <div>{serverResponse.walkscore}</div>
-        <div>{serverResponse.description}</div>
+    <Container>
+      <div className='walk'>
+        <div>
+          {logo()}
+          <div className='score'>{serverResponse.walkscore}</div>
+        </div>
+        <div className='desc'>{serverResponse.description}</div>
       </div>
-      <div>
-        <MdDirectionsBike /> Bike score
-      </div>
-      <div>
-        <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
-        <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
+      <div className='bike'>
+        <div>
+          <div className='line'>
+            <MdDirectionsBike className='icn' /> <div>Bike score: </div>
+          </div>
+          <div className='score'>
+            {serverResponse.bike ? serverResponse.bike.score : ""}
+          </div>
+        </div>
+        <div className='desc'>
+          {serverResponse.bike ? serverResponse.bike.description : ""}
+        </div>
       </div>
     </Container>
   );
 }
 
 const Container = styled.div`
-  text-align: left;
-  padding: 1rem;
   border: 2px #2222 solid;
   border-radius: 6px;
-  /* div {
-    padding: 0 !important;
-  } */
+  margin: 2rem 0;
+  width: 100%;
+
+  .icn {
+    font-size: 1.5rem;
+  }
+  .score {
+    padding-top: 1rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .desc {
+    font-family: "Work Sans", sans-serif;
+  }
+
+  .line {
+    display: flex;
+    text-align: left;
+    justify-content: center;
+    > * {
+      padding-right: 1rem;
+    }
+  }
+
   > div {
     display: flex;
     justify-content: left;
-    padding: 0.75rem 1rem;
-  }
-  > div > div {
+    flex-flow: column;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    > div {
+      padding: 1rem 0;
+    }
   }
 `;
