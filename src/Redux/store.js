@@ -50,7 +50,14 @@ const initialState = {
   maxPrice: 1500,
   minPrice: 300,
   maxResults: 80,
-  filteredWords: ["recherch", "office", "bureau", "stationnement", "parking"],
+  filteredWords: [
+    "recherch",
+    "office",
+    "bureau",
+    "stationnement",
+    "parking",
+    "cherche",
+  ],
 };
 
 // Optional - you can pass `initialState` as a second arg
