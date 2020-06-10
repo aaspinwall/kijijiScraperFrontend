@@ -17,8 +17,7 @@ function Map() {
   const selectedData = useSelector((state) => state);
   const dispatch = useDispatch();
   //const [showMini, toggleMini] = useState(false);
-  const [longAvg, changeLong] = useState(0);
-  const [latAvg, changeLat] = useState(0);
+  const [location, changeLocation] = useState({ zoom: 15 });
   const [windowSize, changeHeight] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -31,8 +30,6 @@ function Map() {
     const latitudeArray = [];
     const longitudeArray = [];
     if (filteredSearch.length > 2) {
-      //console.log("State changed");
-      //console.log(filteredSearch);
       for (const {
         attributes: {
           location: { latitude, longitude },
@@ -43,8 +40,7 @@ function Map() {
       }
       const longitudeAvg = median(longitudeArray);
       const latitudeAvg = median(latitudeArray);
-      changeLong(longitudeAvg);
-      changeLat(latitudeAvg);
+      changeLocation({ ...location, long: longitudeAvg, lat: latitudeAvg });
     }
   }, [filteredSearch]);
 
@@ -60,6 +56,15 @@ function Map() {
     });
     window.scrollTo(0, mapPosition - 32);
   }, []);
+
+  useEffect(() => {
+    if (focusedResult.show) {
+      const { latitude, longitude } = filteredSearch[
+        focusedResult.index
+      ].attributes.location;
+      changeLocation({ ...location, long: longitude, lat: latitude });
+    }
+  }, [focusedResult]);
 
   const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
@@ -87,10 +92,11 @@ function Map() {
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
           defaultCenter={{
-            lat: latAvg,
-            lng: longAvg,
+            lat: location.lat,
+            lng: location.long,
           }}
-          defaultZoom={15}
+          center={{ lat: location.lat, lng: location.long }}
+          defaultZoom={location.zoom}
         >
           {filteredSearch.map((result, i) => {
             const testLat = result.attributes.location.latitude;
