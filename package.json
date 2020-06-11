@@ -2,6 +2,7 @@
   "name": "kijiscrapefrontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@reach/menu-button": "^0.9.1",
@@ -9,9 +10,18 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "acorn": "^7.1.1",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
     "evergreen-ui": "^4.24.0",
+    "express": "^4.17.1",
+    "firebase": "^7.15.0",
     "google-map-react": "^1.1.7",
+    "kijiji-scraper": "^5.0.5",
     "lodash": "^4.17.15",
+    "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.9.0",
@@ -19,6 +29,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
+    "request": "^2.88.2",
     "string-similarity": "^4.0.1",
     "styled-components": "^5.0.1"
   },
@@ -26,7 +37,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "node src/Backend/server.js ",
+    "dev": "run-p server start",
+    "production": "run-p server build"
   },
   "eslintConfig": {
     "extends": "react-app"
