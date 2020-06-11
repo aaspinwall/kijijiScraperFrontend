@@ -106,14 +106,14 @@ export default function Result(props) {
     return (
       <Description>
         <div>
-          <div>
+          <p>
             {
               /* prettier-ignore */
               !fullDescription ? description.slice(0, limit) + ' ...'
                 : fullDescription ? description
                 : ""
             }
-          </div>
+          </p>
           {len >= limit ? (
             <div
               className='showMore'
@@ -370,12 +370,14 @@ const Title = styled.div`
     text-decoration: none;
   }
 `;
-const Description = styled.p`
+const Description = styled.div`
   font-size: 1.1rem;
   text-align: left;
   padding: 1rem 0;
   line-height: ${(props) => (props.open ? "normal" : "1.7rem")};
-  white-space: pre-wrap;
+  p {
+    white-space: pre-wrap;
+  }
   .showMore {
     padding-top: 1rem;
     font-weight: bold;
