@@ -30,6 +30,7 @@ export default function SearchBox(props) {
           submit={props.submit}
           value={input}
           placeholder={initialValue}
+          autoComplete='off'
           onFocus={() => {
             toggleClose(true);
           }}
@@ -62,7 +63,7 @@ export default function SearchBox(props) {
 }
 const Container = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   margin: 0;

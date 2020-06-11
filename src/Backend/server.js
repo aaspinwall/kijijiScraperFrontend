@@ -55,6 +55,7 @@ app.post("/search", (req, res) => {
     });
     //Respond with the result
     db.writeUserData("aaspinwall", results);
+    db.newSearch("public", { query, results });
     res.send(JSON.stringify(results));
   };
   searchKijiji(query, res);
@@ -77,7 +78,7 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/walkscore", (req, res) => {
-  const apiKey = process.env.WALKSCORE;
+  const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
   console.log("passed message as", req.body);
   const connect = async (req) => {
     const body = req.body;

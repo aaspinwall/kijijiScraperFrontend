@@ -107,8 +107,6 @@ class Main extends React.Component {
     }
   };
   connectToDB = async (username) => {
-    const serverUrl =
-      "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
     const url = localhostUrl + "/users";
     const reqBody = JSON.stringify({ username: username });
@@ -192,6 +190,7 @@ class Main extends React.Component {
         this.props.floatingVisibility(true);
       }
     });
+    window.addEventListener("keydown", () => this.submit);
   }
   render() {
     return (
