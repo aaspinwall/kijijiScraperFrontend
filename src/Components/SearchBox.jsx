@@ -19,7 +19,7 @@ export default function SearchBox(props) {
   return (
     <Container>
       <div id='topLogo'>
-        <img src='logo.png'></img>
+        <img src='logo512.png'></img>
       </div>
       <Box>
         <FiSearch onClick={() => props.submit()} />

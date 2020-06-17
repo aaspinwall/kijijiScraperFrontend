@@ -128,6 +128,29 @@ class Main extends React.Component {
       this.setState({ scraperIsLive: false });
     }
   };
+  connectToDBV2 = async (endpoint, body, callback) => {
+    const localhostUrl = "http://localhost:5000";
+    const url = localhostUrl + endpoint;
+    const reqBody = JSON.stringify(body);
+    try {
+      const req = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: { "Content-Type": "application/json" },
+        body: reqBody, // body data type must match "Content-Type" header
+      });
+      const body = await req.json();
+      callback(body);
+      //this.props.writeSearchResults(body);
+      //this.setState({ searchResults: body });
+      //writeToLocalStorage(body);
+      console.log("connect to dbv2 was successful!, got response: ", body);
+    } catch (error) {
+      console.log(
+        `Error connecting to ${url} / Database operation triggered this error`
+      );
+      this.setState({ scraperIsLive: false });
+    }
+  };
 
   submit = (e) => {
     this.props.lifeCycle("loading");
@@ -155,7 +178,26 @@ class Main extends React.Component {
     return this.state.scrollCount > 5;
   };
 
-  localStorageCheck(flags) {
+  localStorageCheck = async (flags) => {
+    if (flags === "debug") {
+      this.connectToDBV2(
+        "/public",
+        { path: "users/public/searches" },
+        (response) => {
+          console.log("All results in front end: ", response);
+          //this.props.writeSearchResults(response[]);
+        }
+      );
+      this.connectToDBV2(
+        "/public",
+        { path: "users/aaspinwall" },
+        (response) => {
+          console.log("Latest results loaded: ", response);
+          this.props.writeSearchResults(response);
+        }
+      );
+      this.connectToDBV2("/");
+    }
     //TODO add flags
     //Check if local storage exists to load the previous search
     const localStorage = readLocalStorage();
@@ -172,11 +214,9 @@ class Main extends React.Component {
       );
       this.connectToDB(this.props.username);
     }
-  }
+  };
 
-  componentDidMount() {
-    this.localStorageCheck();
-    this.props.lifeCycle("static");
+  windowSetup = () => {
     if (window.innerWidth > 1024) {
       console.log("over 1024");
       this.props.floatingVisibility(false);
@@ -191,7 +231,14 @@ class Main extends React.Component {
       }
     });
     window.addEventListener("keydown", () => this.submit);
+  };
+
+  componentDidMount() {
+    this.localStorageCheck("debug");
+    this.props.lifeCycle("static");
+    this.windowSetup();
   }
+
   render() {
     return (
       <AppContainer id='appContainer'>

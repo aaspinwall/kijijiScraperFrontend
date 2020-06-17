@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Styles/Style.css";
 import ToDos from "./Components/ToDos";
 import Main from "./Components/Main";
+import Mainhooks from "./Components/Mainhooks";
 import Debug from "./Components/Debug";
 
 export default class App extends React.Component {
@@ -12,6 +13,9 @@ export default class App extends React.Component {
         <Switch>
           <Route exact path='/'>
             <Main />
+          </Route>
+          <Route exact path='/hooks'>
+            <Mainhooks />
           </Route>
           <Route exact path='/todo'>
             <ToDos />

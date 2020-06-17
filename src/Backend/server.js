@@ -26,7 +26,7 @@ app.post("/", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  const options = { scrape: "scrape" };
+  const options = { connected: true };
   console.log(req.body);
   res.send(JSON.stringify(options));
 });
@@ -36,29 +36,38 @@ app.post("/search", (req, res) => {
     params: req.body.params,
     options: req.body.options,
   };
-  const searchKijiji = async (query, res) => {
-    //Wait for the scraping that returns the object
-    const searchResult = await new kAPI(query);
-    const results = Object.keys(searchResult).map((key) => {
-      const element = searchResult[key];
-      const {
-        title,
-        url,
-        description,
-        date,
-        image,
-        images,
-        attributes,
-      } = element;
 
-      return { title, url, description, date, image, images, attributes };
-    });
-    //Respond with the result
-    db.writeUserData("aaspinwall", results);
-    db.newSearch("public", { query, results });
-    res.send(JSON.stringify(results));
-  };
-  searchKijiji(query, res);
+  try {
+    //const {params, options} = query.body
+
+    const searchKijiji = async (query, res) => {
+      //Wait for the scraping that returns the object
+      const searchResult = await new kAPI(query);
+      //Clean up the data
+      const results = Object.keys(searchResult).map((key) => {
+        const element = searchResult[key];
+        const {
+          title,
+          url,
+          description,
+          date,
+          image,
+          images,
+          attributes,
+        } = element;
+
+        return { title, url, description, date, image, images, attributes };
+      });
+      //Respond with the result
+      //db.writeUserData("aaspinwall", results);
+      db.newSearch("public", { query, results });
+      res.send(JSON.stringify(results));
+    };
+    searchKijiji(query, res);
+  } catch (error) {
+    console.log("//// error on search");
+    res.send(JSON.stringify(error));
+  }
 });
 
 app.post("/users", (req, res) => {
@@ -70,6 +79,16 @@ app.post("/users", (req, res) => {
   console.log(req.body);
   const username = req.body.username;
   response();
+});
+app.post("/public", (req, res) => {
+  const response = async (path = { path: "users/public/searches" }) => {
+    //Get the async response from database
+    await db.readPublicData(path, (response) =>
+      res.send(JSON.stringify(response))
+    );
+  };
+  console.log(req.body);
+  response(req.body);
 });
 
 app.get("/test", (req, res) => {
