@@ -12,9 +12,6 @@ export default class App extends React.Component {
       <Router>
         <Switch>
           <Route exact path='/'>
-            <Main />
-          </Route>
-          <Route exact path='/hooks'>
             <Mainhooks />
           </Route>
           <Route exact path='/todo'>

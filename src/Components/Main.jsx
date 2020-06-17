@@ -188,15 +188,15 @@ class Main extends React.Component {
           //this.props.writeSearchResults(response[]);
         }
       );
-      this.connectToDBV2(
+      /*       this.connectToDBV2(
         "/public",
         { path: "users/aaspinwall" },
         (response) => {
           console.log("Latest results loaded: ", response);
           this.props.writeSearchResults(response);
         }
-      );
-      this.connectToDBV2("/");
+      ); */
+      //this.connectToDBV2("/");
     }
     //TODO add flags
     //Check if local storage exists to load the previous search

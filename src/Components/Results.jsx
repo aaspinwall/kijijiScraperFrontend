@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { Spinner } from "evergreen-ui";
 import styled from "styled-components";
 import Result from "./Result";
 import Loading from "./Loading";
@@ -20,7 +21,7 @@ const passSimilarity = (a, b, threshold = 0.7) => {
 };
 
 const removeDuplicates = (arr) => {
-  console.log("Pre filtered", arr);
+  console.log("Remove duplicates triggered", arr);
   const filtered = arr.filter((result) => {
     let strikes = 0;
     const reference = result.description;
@@ -59,29 +60,37 @@ function Results() {
   const applyFilter = (arr) => {
     dispatch({ type: "filtered", payload: arr });
   };
+  const filterResults = () => {
+    const filteredResults = searchResults.filter((element) => {
+      const title = element.title;
+      //Check if it passes all the filteredWords
+      return filteredWords.every((word) => {
+        const noWordFound = title.toLowerCase().search(word) === -1;
+        return noWordFound;
+      });
+    });
+
+    //Apply formatting rules
+    const formattedResults = filteredResults.map((result, i) => {
+      const { title } = result;
+      return { ...result, title: formatTitle(title) };
+    });
+    const noDuplicates = removeDuplicates(formattedResults);
+
+    return noDuplicates;
+  };
+
   useEffect(() => {
-    const filterResults = () => {
-      const filteredResults = searchResults.filter((element) => {
-        const title = element.title;
-        //Check if it passes all the filteredWords
-        return filteredWords.every((word) => {
-          const noWordFound = title.toLowerCase().search(word) === -1;
-          return noWordFound;
-        });
-      });
-
-      //Apply formatting rules
-      const formattedResults = filteredResults.map((result, i) => {
-        const { title } = result;
-        return { ...result, title: formatTitle(title) };
-      });
-      const noDuplicates = removeDuplicates(formattedResults);
-
-      return noDuplicates;
-    };
-
+    //filterResults();
     applyFilter(filterResults());
   }, [searchResults]);
+
+  /*   useEffect(() => {
+    if (lifeCycle === "static") {
+      filterResults();
+      applyFilter(filterResults());
+    }
+  }, [filteredWords]); */
 
   const allAttrs = [];
   const results = filteredSearch.map((element, i) => {
@@ -118,7 +127,11 @@ function Results() {
         return <Error></Error>;
 
       default:
-        return;
+        return (
+          <Center>
+            <Spinner />
+          </Center>
+        );
     }
   };
 
@@ -151,6 +164,14 @@ const Container = styled.div`
     margin: 0 1rem 1rem;
     box-shadow: 10px 7px #8080802b;
   }
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
 `;
 
 export default Results;

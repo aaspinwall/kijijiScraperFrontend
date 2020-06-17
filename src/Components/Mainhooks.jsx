@@ -22,6 +22,7 @@ export default function Mainhooks() {
     maxResults,
     searchResults,
     username,
+    filteredSearch,
     lifeCycle,
     showMap,
     showFilters,
@@ -125,39 +126,6 @@ export default function Mainhooks() {
     return scrollCount > 5;
   };
 
-  const localStorageCheck = async (flags) => {
-    if (flags === "empty") return;
-    if (flags === "debug") {
-      connectToDBV2(
-        "/public",
-        { path: "users/public/searches" },
-        (response) => {
-          console.log("All results in front end: ", response);
-          //dispatcher.writeSearchResults(response[]);
-        }
-      );
-      /*       connectToDBV2("/public", { path: "users/aaspinwall" }, (response) => {
-        console.log("Latest results loaded: ", response);
-        dispatcher.writeSearchResults(response);
-      }); */
-      //connectToDBV2("/");
-      return;
-    }
-    //TODO add flags
-    //Check if local storage exists to load the previous search
-    const localStorage = readLocalStorage();
-    if (localStorage) {
-      //Load previous search
-      dispatcher.writeSearchResults(localStorage);
-      console.log("Local storage found and loaded");
-    } else {
-      //If no local storage, query database
-      console.log("No local storage");
-      console.log("This runs as page connects. Username: ", username);
-      connectToDB(username);
-    }
-  };
-
   const windowSetup = () => {
     if (window.innerWidth > 1024) {
       console.log("over 1024");
@@ -207,10 +175,12 @@ export default function Mainhooks() {
   };
 
   useEffect(() => {
+    //Check if global state has filteredSearch
+    if (filteredSearch.length > 1) dispatcher.lifeCycle("static");
     read();
-    localStorageCheck("debug");
-    dispatcher.lifeCycle("static");
-    windowSetup();
+    //dispatcher.lifeCycle("static");
+    //windowSetup();
+    //localStorageCheck("debug");
   }, []);
 
   return (

@@ -64,7 +64,13 @@ const initialState = {
 const persistConfig = {
   key: "root",
   storage: storage,
-  blacklist: ["showHide"], // navigation will not be persisted
+  blacklist: [
+    "showMap",
+    "showFloating",
+    "showSearch",
+    "showFilters",
+    "lifeCycle",
+  ], // navigation will not be persisted
 };
 
 const pReducer = persistReducer(persistConfig, reducer);
