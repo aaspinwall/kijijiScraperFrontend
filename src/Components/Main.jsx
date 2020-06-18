@@ -6,13 +6,11 @@ import Results from "./Results";
 import Footer from "./Footer";
 import FloatingButton from "./FloatingButton";
 import Overlay from "./Overlay";
-import { read, write } from "../Utilities/database";
 
-import {
-  readLocalStorage,
-  writeToLocalStorage,
-} from "../Utilities/utilityFunctions";
+import { writeToLocalStorage } from "../Utilities/utilityFunctions";
 import { useSelector, useDispatch } from "react-redux";
+import { database } from "firebase";
+import { read } from "../Utilities/database";
 
 export default function Mainhooks() {
   const {
@@ -173,19 +171,18 @@ export default function Mainhooks() {
 
   useEffect(() => {
     //Check if global state has filteredSearch
-    dispatcher.lifeCycle("");
-    //read();
+    const emptySearch = searchResults[0].title === "Nothing here";
+    if (emptySearch) {
+      read(`/users/public/latest`, (response) =>
+        dispatcher.writeSearchResults(response.results)
+      );
+    }
+
+    dispatcher.lifeCycle("static");
     //dispatcher.lifeCycle("static");
     windowSetup();
     //localStorageCheck("debug");
   }, []);
-
-  //console.log("DEBUG MAIN: /// /// prerender searchresults: ", searchResults);
-
-  useEffect(() => {
-    console.log("DEBUG MAIN: /// /// searchresults changed: ", searchResults);
-    if (searchResults.length > 1) dispatcher.lifeCycle("static");
-  }, [searchResults]);
 
   const name = (params) => {
     switch (params) {

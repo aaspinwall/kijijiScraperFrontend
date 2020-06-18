@@ -106,28 +106,25 @@ function Map() {
               lat: location.lat,
               lng: location.long,
             }}
-            /* center={{ lat: location.lat, lng: location.long }} */
+            center={{ lat: location.lat, lng: location.long }}
             defaultZoom={location.zoom}
           >
             {filteredSearch.map((result, i) => {
               const testLat = result.attributes.location.latitude;
               const testlong = result.attributes.location.longitude;
               const title = result.title;
+              const isActive = focusedResult.show && i === focusedResult.index;
               return (
                 <Pin lat={testLat} lng={testlong} key={"pin" + i}>
                   <div
-                    className='pin'
+                    className={`pin ${isActive ? "" : "pinActive"}`}
                     onClick={pinClick}
                     id={"pin" + i}
                     ref={pinElement}
                   >
                     📍
                   </div>
-                  {focusedResult.show && i === focusedResult.index ? (
-                    <ResultMini />
-                  ) : (
-                    ""
-                  )}
+                  {isActive ? <ResultMini /> : ""}
                 </Pin>
               );
             })}
@@ -147,6 +144,9 @@ const Container = styled.div`
 `;
 
 const Pin = styled.div`
+  .pinActive {
+    filter: opacity(0.5) grayscale(20%);
+  }
   .pin {
     font-size: 2rem;
     position: absolute;

@@ -30,6 +30,7 @@ const newSearch = (user, response) => {
   const updates = {};
   updates[ref + newPostKey] = data;
   updates[`/users/${user}/index/` + newPostKey] = { query, time };
+  updates[`/users/${user}/latest/`] = data;
   firebase.database().ref().update(updates);
 };
 

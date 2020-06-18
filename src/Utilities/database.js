@@ -18,9 +18,10 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 const database = firebase.database();
 
-export const read = async () => {
-  const response = await database.ref("/users/public/searches").once("value");
+export const read = async (path = "/users/public/searches", callback) => {
+  const response = await database.ref(path).once("value");
   const data = await response.val();
+  callback(data);
   console.log("/// UTILITIES response: ", data);
 };
 

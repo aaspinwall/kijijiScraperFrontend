@@ -94,7 +94,7 @@ export default function Result(props) {
 
   const getAllImages = (arr) => {
     return arr.map((image, i) => (
-      <img src={image} onClick={() => setFocus(image)} />
+      <img src={image} key={`image-k-${i}`} onClick={() => setFocus(image)} />
     ));
   };
 
@@ -179,13 +179,12 @@ export default function Result(props) {
                   type: "mapVisibility",
                   payload: true,
                 });
-                if (focusedResult.false) {
-                  dispatch({
-                    type: "focusedResult",
-                    payload: { index: index, show: true },
-                  });
-                }
               }
+
+              dispatch({
+                type: "focusedResult",
+                payload: { index: index, show: true },
+              });
             }}
           >
             Show in map

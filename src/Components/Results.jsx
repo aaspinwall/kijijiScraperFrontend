@@ -21,7 +21,6 @@ const passSimilarity = (a, b, threshold = 0.7) => {
 };
 
 const removeDuplicates = (arr) => {
-  console.log("Remove duplicates triggered", arr);
   const filtered = arr.filter((result) => {
     let strikes = 0;
     const reference = result.description;
