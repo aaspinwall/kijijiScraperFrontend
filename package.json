@@ -2,7 +2,6 @@
   "name": "kijiscrapefrontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@reach/menu-button": "^0.9.1",
@@ -35,12 +34,11 @@
     "styled-components": "^5.0.1"
   },
   "scripts": {
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon src/Backend/server.js ",
-    "dev": "react-scripts start",
-    "start": "run-p server dev"
+    "dev": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
