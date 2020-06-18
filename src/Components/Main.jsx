@@ -21,7 +21,6 @@ export default function Mainhooks() {
     minPrice,
     maxResults,
     searchResults,
-    username,
     filteredSearch,
     lifeCycle,
     showMap,
@@ -35,8 +34,6 @@ export default function Mainhooks() {
   const [scrollCount, setscrollCount] = useState(0);
 
   const search = async (message) => {
-    const serverUrl =
-      "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
     const url = localhostUrl + "/search";
     try {
@@ -48,14 +45,14 @@ export default function Mainhooks() {
       const body = await req.json();
       dispatcher.writeSearchResults(body);
       console.log("The response was: ", body);
-      setScraperState(true);
-      writeToLocalStorage(body);
+      //setScraperState(true);
+      //writeToLocalStorage(body);
       dispatcher.lifeCycle("static");
     } catch (error) {
       console.log(
         `Error connecting to ${url} / Search operation triggered this error`
       );
-      setScraperState(false);
+      //setScraperState(false);
       dispatcher.lifeCycle("error");
     }
   };
@@ -176,12 +173,19 @@ export default function Mainhooks() {
 
   useEffect(() => {
     //Check if global state has filteredSearch
-    if (filteredSearch.length > 1) dispatcher.lifeCycle("static");
-    read();
+    dispatcher.lifeCycle("");
+    //read();
     //dispatcher.lifeCycle("static");
     windowSetup();
     //localStorageCheck("debug");
   }, []);
+
+  //console.log("DEBUG MAIN: /// /// prerender searchresults: ", searchResults);
+
+  useEffect(() => {
+    console.log("DEBUG MAIN: /// /// searchresults changed: ", searchResults);
+    if (searchResults.length > 1) dispatcher.lifeCycle("static");
+  }, [searchResults]);
 
   const name = (params) => {
     switch (params) {

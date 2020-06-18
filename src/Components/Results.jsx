@@ -85,6 +85,10 @@ function Results() {
     applyFilter(filterResults());
   }, [searchResults]);
 
+  useEffect(() => {
+    applyFilter(filterResults());
+  }, []);
+
   /*   useEffect(() => {
     if (lifeCycle === "static") {
       filterResults();

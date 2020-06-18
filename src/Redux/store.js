@@ -65,12 +65,16 @@ const persistConfig = {
   key: "root",
   storage: storage,
   blacklist: [
+    "filteredSearch",
+    "filteredWords",
+    "locationAverage",
     "showMap",
-    "showFloating",
+    "focusedResult",
     "showSearch",
+    "showFloating",
     "showFilters",
     "lifeCycle",
-  ], // navigation will not be persisted
+  ],
 };
 
 const pReducer = persistReducer(persistConfig, reducer);
