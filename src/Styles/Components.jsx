@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const colors = {
+  accent: "#373373",
+};
+
 export const Button = styled.div`
   color: white;
   background: rgb(255, 90, 95);

@@ -1,4 +1,4 @@
-const checkIfEmptyObject = obj => {
+const checkIfEmptyObject = (obj) => {
   return Object.entries(obj).length === 0 && obj.constructor === Object;
 };
 
@@ -13,16 +13,6 @@ const readLocalStorage = () => {
     console.log("Error while reading local storage", error);
   }
 };
-
 const keys = { googleMapsApiKey: "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U" };
-
-/* const checkOutputType = output => {
-  let isArray = output instanceof Array && output.constructor === Array;
-  return output;
-};
-const clearLocalStorage = () => {
-  localStorage.clear();
-  console.log("Cleared local storage");
-}; */
 
 export { checkIfEmptyObject, writeToLocalStorage, readLocalStorage, keys };
