@@ -10,9 +10,6 @@ export default function ResultMini() {
   });
   const index = useSelector((state) => state.focusedResult.index);
 
-  useEffect(() => {
-    console.log(focusedElement);
-  }, []);
   const close = (e) => {
     dispatch({ type: "focusedResult", payload: { show: false, index: 0 } });
   };

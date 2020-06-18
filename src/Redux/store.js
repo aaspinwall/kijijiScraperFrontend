@@ -1,5 +1,7 @@
 import { createStore } from "redux";
-import reducer from "./Reducers/reducer";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import reducer from "../Redux/Reducers/reducer";
 const initialState = {
   test: "",
   score: 0,
@@ -59,12 +61,29 @@ const initialState = {
     "cherche",
   ],
 };
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  blacklist: [
+    "filteredSearch",
+    "filteredWords",
+    "locationAverage",
+    "showMap",
+    "focusedResult",
+    "showSearch",
+    "showFloating",
+    "showFilters",
+    "lifeCycle",
+  ],
+};
 
-// Optional - you can pass `initialState` as a second arg
-let store = createStore(
-  reducer,
+const pReducer = persistReducer(persistConfig, reducer);
+
+export const store = createStore(
+  pReducer,
   initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+export const persistor = persistStore(store);
 
 export default store;

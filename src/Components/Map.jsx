@@ -14,19 +14,22 @@ const median = (arr) => {
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
 function Map() {
-  const selectedData = useSelector((state) => state);
+  const { filteredSearch, focusedResult, showMap } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   //const [showMini, toggleMini] = useState(false);
+  const [debug, setDebug] = useState(false);
   const [location, changeLocation] = useState({ zoom: 15 });
   const [windowSize, changeHeight] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
   });
-  const { filteredSearch, focusedResult, showMap } = selectedData;
   const mapElement = useRef();
   const pinElement = useRef();
 
   useEffect(() => {
+    console.log("MAP: Filteredsearch changed to: ", filteredSearch);
     const latitudeArray = [];
     const longitudeArray = [];
     if (filteredSearch.length > 2) {
@@ -45,10 +48,15 @@ function Map() {
   }, [filteredSearch]);
 
   useEffect(() => {
-    console.log("Window changed to", windowSize);
+    console.log("MAP: Window changed to", windowSize);
   }, [windowSize]);
 
   useEffect(() => {
+    if (filteredSearch.length < 1) {
+      console.log("DONRENDERMAP");
+      setDebug(false);
+    }
+    console.log("MAP: Map rendered: ", focusedResult);
     const mapPosition = mapElement.current.offsetTop;
     window.addEventListener("resize", () => {
       const { innerWidth: width, innerHeight: height } = window;
@@ -58,6 +66,8 @@ function Map() {
   }, []);
 
   useEffect(() => {
+    console.log("MAP: Focused result changed to: ", focusedResult);
+    //return;
     if (focusedResult.show) {
       const { latitude, longitude } = filteredSearch[
         focusedResult.index
@@ -89,38 +99,37 @@ function Map() {
           padding: "0",
         }}
       >
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey }}
-          defaultCenter={{
-            lat: location.lat,
-            lng: location.long,
-          }}
-          center={{ lat: location.lat, lng: location.long }}
-          defaultZoom={location.zoom}
-        >
-          {filteredSearch.map((result, i) => {
-            const testLat = result.attributes.location.latitude;
-            const testlong = result.attributes.location.longitude;
-            const title = result.title;
-            return (
-              <Pin lat={testLat} lng={testlong} key={"pin" + i}>
-                <div
-                  className='pin'
-                  onClick={pinClick}
-                  id={"pin" + i}
-                  ref={pinElement}
-                >
-                  📍
-                </div>
-                {focusedResult.show && i === focusedResult.index ? (
-                  <ResultMini />
-                ) : (
-                  ""
-                )}
-              </Pin>
-            );
-          })}
-        </GoogleMapReact>
+        {debug ? null : (
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey }}
+            defaultCenter={{
+              lat: location.lat,
+              lng: location.long,
+            }}
+            center={{ lat: location.lat, lng: location.long }}
+            defaultZoom={location.zoom}
+          >
+            {filteredSearch.map((result, i) => {
+              const testLat = result.attributes.location.latitude;
+              const testlong = result.attributes.location.longitude;
+              const title = result.title;
+              const isActive = focusedResult.show && i === focusedResult.index;
+              return (
+                <Pin lat={testLat} lng={testlong} key={"pin" + i}>
+                  <div
+                    className={`pin ${isActive ? "" : "pinActive"}`}
+                    onClick={pinClick}
+                    id={"pin" + i}
+                    ref={pinElement}
+                  >
+                    📍
+                  </div>
+                  {isActive ? <ResultMini /> : ""}
+                </Pin>
+              );
+            })}
+          </GoogleMapReact>
+        )}
       </div>
     </Container>
   );
@@ -135,6 +144,9 @@ const Container = styled.div`
 `;
 
 const Pin = styled.div`
+  .pinActive {
+    filter: opacity(0.5) grayscale(20%);
+  }
   .pin {
     font-size: 2rem;
     position: absolute;

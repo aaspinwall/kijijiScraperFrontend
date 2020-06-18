@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
 import Button_Action from "./Templates/Button_Action";
 export default function Overlay(props) {
-  const visible = useSelector((state) => state.showFilters);
+  const state = useSelector((state) => state);
+  const visible = state.showFilters;
+  const { filteredWords } = state;
   const dispatch = useDispatch();
-  //const [visible, toggleVisible] = useState(props.visible);
   const writeToState = (e) => {
     const value = e.target.value;
     const id = e.target.id;
@@ -54,6 +55,21 @@ export default function Overlay(props) {
             submit={props.submit}
           />
         </Box>
+        {/*         <Title>Filtered words</Title>
+        <Box>
+          <InputArray
+            id='filteredWords'
+            type='text'
+            value={filteredWords.join(" ")}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                id: "filteredWords",
+                payload: e.target.value.split(" "),
+              })
+            }
+          />
+        </Box> */}
       </Section>
       <Button_Action
         text='Submit'
@@ -116,6 +132,11 @@ const Box = styled.div`
 `;
 
 const Input = styled(InputBox)`
+  font-size: 1.1rem;
+  border: 0;
+  width: 100%;
+`;
+const InputArray = styled.input`
   font-size: 1.1rem;
   border: 0;
   width: 100%;
