@@ -15,6 +15,7 @@ const initialState = {
   focusedResult: { show: false, index: 0 },
   windowInfo: {},
   bottomed: false,
+  isLive: "one",
   searchResults: [
     {
       title: "Nothing here",
@@ -76,6 +77,7 @@ const persistConfig = {
     "showFilters",
     "lifeCycle",
     "windowInfo",
+    "isLive",
   ],
 };
 

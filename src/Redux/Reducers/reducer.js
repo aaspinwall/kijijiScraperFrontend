@@ -13,6 +13,11 @@ function reducer(state, action) {
         ...state,
         keywords: payload,
       };
+    case "isLive":
+      return {
+        ...state,
+        isLive: payload,
+      };
     case "clearResults":
       return { ...state, searchResults: {} };
 

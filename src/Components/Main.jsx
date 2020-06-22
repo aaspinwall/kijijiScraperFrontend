@@ -22,6 +22,7 @@ export default function Mainhooks() {
     maxResults,
     searchResults,
     filteredSearch,
+    isLive,
     windowInfo,
     lifeCycle,
     showMap,
@@ -155,7 +156,7 @@ export default function Mainhooks() {
   }, []);
 
   const name = (params) => {
-    switch (params) {
+    switch (isLive) {
       case "one":
         return (
           <Content footerHeight={windowInfo.footerHeight}>
@@ -182,7 +183,7 @@ export default function Mainhooks() {
 
   return (
     <AppContainer id='appContainer'>
-      {name("one")}
+      {name()}
       <Footer />
     </AppContainer>
   );
