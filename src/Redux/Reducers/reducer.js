@@ -56,6 +56,14 @@ function reducer(state, action) {
         ...state,
         showMap: payload,
       };
+
+    case "windowInfo":
+      const windowInfo = state.windowInfo;
+      //const id = action.id;
+      return {
+        ...state,
+        windowInfo: { ...state.windowInfo, [payload.id]: payload.value },
+      };
     //Life Cycle states tell the components when to render. Available options are:
     //Initial - Loads components and gets data
     //Static - App is running with results on display

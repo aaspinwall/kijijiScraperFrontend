@@ -48,14 +48,14 @@ const removeDuplicates = (arr) => {
 
 function Results() {
   const dispatch = useDispatch();
-  const globalState = useSelector((state) => state);
   const {
     searchResults,
     filteredWords,
     filteredSearch,
     lifeCycle,
     showMap,
-  } = globalState;
+  } = useSelector((state) => state);
+
   const applyFilter = (arr) => {
     dispatch({ type: "filtered", payload: arr });
   };
@@ -146,7 +146,7 @@ const Container = styled.div`
   #resultsContainer {
     #resultList {
       overflow-y: hidden;
-      margin: 0 1rem;
+      margin: 0;
     }
     @media only screen and (min-width: 1024px) {
       display: grid;

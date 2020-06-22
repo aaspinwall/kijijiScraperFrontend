@@ -5,11 +5,11 @@ import Bubble from "./Bubble";
 
 export default function Filters() {
   const dispatch = useDispatch();
-  const globalState = useSelector(state => state);
-  const { showMap, showFilters } = globalState;
+  const { showMap, showFilters, showFloating } = useSelector((state) => state);
 
   const toggleVisibility = () => {
     dispatch({ type: "toggleFilters" });
+    dispatch({ type: "floatingVisibility", payload: showFilters });
   };
   return (
     <Container>
@@ -43,7 +43,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0;
+  padding: 0.5rem 0 0.5rem;
 `;
 
 const Button = styled.div`

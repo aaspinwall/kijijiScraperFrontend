@@ -7,7 +7,7 @@ import Button_Action from "./Templates/Button_Action";
 export default function Overlay(props) {
   const state = useSelector((state) => state);
   const visible = state.showFilters;
-  const { filteredWords } = state;
+  const { filteredWords, showFilters } = state;
   const dispatch = useDispatch();
   const writeToState = (e) => {
     const value = e.target.value;
@@ -17,6 +17,7 @@ export default function Overlay(props) {
 
   const toggleVisibility = () => {
     dispatch({ type: "toggleFilters" });
+    dispatch({ type: "floatingVisibility", payload: showFilters });
   };
 
   return (

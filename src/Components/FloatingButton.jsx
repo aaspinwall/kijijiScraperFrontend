@@ -8,16 +8,8 @@ export default function FloatingButton(props) {
   const [counter, changeCounter] = useState(0);
   const dispatch = useDispatch();
   const footerRef = useRef();
-  const visible = useSelector((state) => state.showFloating);
-  useEffect(() => {
-    const elementHeight = footerRef.current.offsetHeight * 2;
-    /*     window.addEventListener("scroll", () => {
-      const visible =
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - elementHeight;
-      console.log(visible);
-    }); */
-  }, []);
+  const { windowInfo } = useSelector((state) => state);
+  const [visible, changeVisible] = useState(null);
 
   const flipCounter = () => {
     dispatch({ type: "toggleMap" });
@@ -41,12 +33,12 @@ const Container = styled.div`
     align-items: center;
   }
   position: fixed;
-  display: ${(props) => (props.visible ? "grid" : "none")};
   grid-template-columns: 1fr 1fr;
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   background: white;
+  display: flex;
   border-radius: 20px;
   border: #2222 solid 1px;
   padding: 0.5rem;

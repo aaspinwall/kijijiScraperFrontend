@@ -78,7 +78,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     img {
-      height: 2rem;
+      height: 1.2rem;
     }
   }
 `;

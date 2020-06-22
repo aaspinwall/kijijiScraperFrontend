@@ -241,7 +241,7 @@ const Image = styled.img`
   background-origin: border-box;
   border-radius: 5px;
   object-fit: ${(props) => (props.focused ? "contain" : "cover")};
-  height: ${(props) => (props.focused ? "70vh" : "30vh")};
+  height: ${(props) => (props.focused ? "40vh" : "30vh")};
   width: 100%;
   transition: height 0.4s ease-in-out;
 
