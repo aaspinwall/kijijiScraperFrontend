@@ -1,4 +1,3 @@
-W;
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdDirectionsBike } from "react-icons/md";
@@ -9,6 +8,11 @@ export default function Walkscore(props) {
     const connect = async (url, message) => {
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Access-Control-Allow-Origin", "*");
+      myHeaders.append(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       try {
         const req = await fetch(url, {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
