@@ -13,6 +13,11 @@ function reducer(state, action) {
         ...state,
         keywords: payload,
       };
+    case "isLive":
+      return {
+        ...state,
+        isLive: payload,
+      };
     case "clearResults":
       return { ...state, searchResults: {} };
 
@@ -55,6 +60,14 @@ function reducer(state, action) {
       return {
         ...state,
         showMap: payload,
+      };
+
+    case "windowInfo":
+      const windowInfo = state.windowInfo;
+      //const id = action.id;
+      return {
+        ...state,
+        windowInfo: { ...state.windowInfo, [payload.id]: payload.value },
       };
     //Life Cycle states tell the components when to render. Available options are:
     //Initial - Loads components and gets data

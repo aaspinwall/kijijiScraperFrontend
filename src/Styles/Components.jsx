@@ -16,3 +16,10 @@ export const Button = styled.div`
 `;
 
 export const Debug = styled.div``;
+
+export const Section = styled.div``;
+
+export const Content = styled.div`
+  padding-bottom: ${(props) =>
+    props.footerHeight ? props.footerHeight + "px" : "18rem"};
+`;

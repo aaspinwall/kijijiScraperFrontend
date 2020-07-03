@@ -6,6 +6,8 @@ import Results from "./Results";
 import Footer from "./Footer";
 import FloatingButton from "./FloatingButton";
 import Overlay from "./Overlay";
+import OldSearch from "./OldSearch";
+import { Content } from "../Styles/Components";
 
 import { writeToLocalStorage } from "../Utilities/utilityFunctions";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,9 +22,12 @@ export default function Mainhooks() {
     maxResults,
     searchResults,
     filteredSearch,
+    isLive,
+    windowInfo,
     lifeCycle,
     showMap,
     showFilters,
+    showFloating,
   } = useSelector((state) => state);
 
   const dispatch = useDispatch();
@@ -54,50 +59,6 @@ export default function Mainhooks() {
       dispatcher.lifeCycle("error");
     }
   };
-  const connectToDB = async (username) => {
-    const localhostUrl = "http://localhost:5000";
-    const url = localhostUrl + "/users";
-    const reqBody = JSON.stringify({ username: username });
-    try {
-      const req = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: { "Content-Type": "application/json" },
-        body: reqBody, // body data type must match "Content-Type" header
-      });
-      const body = await req.json();
-      dispatcher.writeSearchResults(body);
-      writeToLocalStorage(body);
-      console.log(body);
-    } catch (error) {
-      console.log(
-        `Error connecting to ${url} / Database operation triggered this error`
-      );
-      setScraperState(false);
-    }
-  };
-  const connectToDBV2 = async (endpoint, body, callback) => {
-    const localhostUrl = "http://localhost:5000";
-    const url = localhostUrl + endpoint;
-    const reqBody = JSON.stringify(body);
-    try {
-      const req = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: { "Content-Type": "application/json" },
-        body: reqBody, // body data type must match "Content-Type" header
-      });
-      const body = await req.json();
-      callback(body);
-      //dispatcher.writeSearchResults(body);
-      //this.setState({ searchResults: body });
-      //writeToLocalStorage(body);
-      console.log("connect to dbv2 was successful!, got response: ", body);
-    } catch (error) {
-      console.log(
-        `Error connecting to ${url} / Database operation triggered this error`
-      );
-      setScraperState(false);
-    }
-  };
 
   const submit = (e) => {
     dispatcher.lifeCycle("loading");
@@ -121,13 +82,18 @@ export default function Mainhooks() {
     return scrollCount > 5;
   };
 
+  const setWindowSize = () => {
+    dispatcher.windowSize("windowHeight", window.innerHeight);
+    dispatcher.windowSize("windowWidth", window.innerWidth);
+  };
+
   const windowSetup = () => {
-    if (window.innerWidth > 1024) {
-      console.log("over 1024");
-      dispatcher.floatingVisibility(false);
-      dispatcher.setMapVisibility(true);
-    }
+    const isDesktop = window.innerWidth > 1024;
+
+    dispatcher.setMapVisibility(window.innerWidth > 1024 ? true : false);
+
     window.addEventListener("resize", () => {
+      setWindowSize();
       if (window.innerWidth > 1024) {
         dispatcher.floatingVisibility(false);
         if (!showMap) dispatcher.setMapVisibility(true);
@@ -139,6 +105,12 @@ export default function Mainhooks() {
   };
 
   const dispatcher = {
+    windowSize: (id, value) => {
+      dispatch({
+        type: "windowInfo",
+        payload: { id, value: value },
+      });
+    },
     testText: (e) => {
       const value = e.target.value;
       dispatch({ type: "test", payload: value });
@@ -170,6 +142,7 @@ export default function Mainhooks() {
   };
 
   useEffect(() => {
+    setWindowSize();
     //Check if global state has filteredSearch
     const emptySearch = searchResults[0].title === "Nothing here";
     if (emptySearch) {
@@ -177,28 +150,30 @@ export default function Mainhooks() {
         dispatcher.writeSearchResults(response.results)
       );
     }
-
+    dispatcher.floatingVisibility(window.innerWidth < 1024);
     dispatcher.lifeCycle("static");
-    //dispatcher.lifeCycle("static");
     windowSetup();
-    //localStorageCheck("debug");
   }, []);
 
   const name = (params) => {
-    switch (params) {
+    switch (isLive) {
       case "one":
         return (
-          <div>
+          <Content footerHeight={windowInfo.footerHeight}>
             {flagUp}
             <Searchbox submit={submit} />
             <Filters />
             <Overlay submit={submit} visible={showFilters} />
             <Results></Results>
-            <FloatingButton text={["Map", "List"]} />
-          </div>
+            {showFloating ? <FloatingButton text={["Map", "List"]} /> : null}
+          </Content>
         );
       case "two":
-        return <div>TWO</div>;
+        return (
+          <Content>
+            <OldSearch />
+          </Content>
+        );
       default:
         break;
     }
@@ -208,13 +183,15 @@ export default function Mainhooks() {
 
   return (
     <AppContainer id='appContainer'>
-      {name("one")}
+      {name()}
       <Footer />
     </AppContainer>
   );
 }
 
 const AppContainer = styled.div`
+  position: relative;
+  min-height: 100vh;
   @media only screen and (min-width: 1024px) {
     max-width: 1400px;
   }

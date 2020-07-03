@@ -13,7 +13,9 @@ const initialState = {
   showFilters: false,
   showFloating: true,
   focusedResult: { show: false, index: 0 },
+  windowInfo: {},
   bottomed: false,
+  isLive: "one",
   searchResults: [
     {
       title: "Nothing here",
@@ -74,6 +76,8 @@ const persistConfig = {
     "showFloating",
     "showFilters",
     "lifeCycle",
+    "windowInfo",
+    "isLive",
   ],
 };
 
