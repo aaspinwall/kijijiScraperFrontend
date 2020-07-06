@@ -2,7 +2,6 @@
   "name": "kijiscrapefrontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@reach/menu-button": "^0.9.1",
@@ -24,6 +23,7 @@
     "firebase": "^7.15.5",
     "google-auth-library": "^6.0.2",
     "google-map-react": "^1.1.7",
+    "http-proxy-middleware": "^1.0.4",
     "kijiji-scraper": "^5.0.6",
     "lodash": "^4.17.15",
     "nodemon": "^2.0.4",

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdDirectionsBike } from "react-icons/md";
-import { format } from "path";
 
 export default function Walkscore(props) {
   const [serverResponse, writeResponse] = useState("");
@@ -52,7 +51,7 @@ export default function Walkscore(props) {
     const serverUrl =
       "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
-    const url = `/`;
+    const url = `/walk`;
     const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
     const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
     console.log("formatted url", formattedUrl);
