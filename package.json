@@ -2,7 +2,7 @@
   "name": "kijiscrapefrontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@reach/menu-button": "^0.9.1",

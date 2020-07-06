@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdDirectionsBike } from "react-icons/md";
+import { format } from "path";
 
 export default function Walkscore(props) {
   const [serverResponse, writeResponse] = useState("");
@@ -10,11 +11,12 @@ export default function Walkscore(props) {
         const req = await fetch(url, {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           headers: { "Content-Type": "application/json" },
-          body: message, // body data type must match "Content-Type" header
+          body: JSON.stringify({ route: "walkscore", message }), // body data type must match "Content-Type" header
         });
+        console.log("req:", req);
         const body = await req.json();
-        writeResponse(body);
         console.log("The response was: ", body);
+        writeResponse(body);
       } catch (error) {
         console.log(error);
         console.log(`Error connecting to ${url}`);
@@ -42,16 +44,20 @@ export default function Walkscore(props) {
     const longitude = props.locationData
       ? props.locationData.longitude
       : -73.5776328;
-    const message = JSON.stringify({
+    const message = {
       address: formatAddress(address),
       latitude: formatCoord(latitude),
       longitude: formatCoord(longitude),
-    });
+    };
     const serverUrl =
       "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
-    const url = localhostUrl + "/walkscore";
-    connect(url, message);
+    const url = `/`;
+    const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
+    const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
+    console.log("formatted url", formattedUrl);
+
+    connect(url, formattedUrl);
   }, []);
 
   const logo = () => {
