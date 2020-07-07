@@ -51,7 +51,8 @@ export default function Walkscore(props) {
     const serverUrl =
       "https://av2bnw0v0h.execute-api.us-east-1.amazonaws.com/dev";
     const localhostUrl = "http://localhost:5000";
-    const url = `https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello`;
+    //const url = `https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello`;
+    const url = `/.netlify/functions/hello`;
     const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
     const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
     console.log("formatted url", formattedUrl);
