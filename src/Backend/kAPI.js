@@ -28,7 +28,7 @@ class Search {
   queryCheck(query) {
     const queryKeys = Object.keys(query);
     const condition = Object.keys(this.searchObject);
-    const validKeys = queryKeys.every(ob => {
+    const validKeys = queryKeys.every((ob) => {
       return condition.indexOf(ob) !== -1;
     });
     return validKeys;

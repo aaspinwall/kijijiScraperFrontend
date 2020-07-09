@@ -3,40 +3,37 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function InputBox(props) {
   const dispatch = useDispatch();
-  const visible = useSelector(state => state.showFilters);
+  const visible = useSelector((state) => state.showFilters);
 
   const [value, setValue] = useState(props.value);
   const [initialValue] = useState(props.value);
   const submit = props.submit
     ? props.submit
-    : e =>
+    : (e) =>
         console.log(
           "Pressed enter but did not assign a submit function on component: ",
           e.target
         );
-  const handleInput = e => {
+  const handleInput = (e) => {
     setValue(e.target.value);
   };
-  const isIn = e => {
+  const isIn = (e) => {
     if (e.target.value.toString() === initialValue.toString()) {
       setValue("");
     }
   };
-  const isOut = e => {
+  const isOut = (e) => {
+    props.writeToState(e);
     if (e.key) {
       //TAB out with no value
       if (e.key === "Tab") {
         if (toString(e.target.value) === "") {
           props.writeToState(initialValue);
-        } else {
-          props.writeToState(e);
         }
       }
       if (e.key === "Enter") {
         submit(e);
       }
-    } else {
-      props.writeToState(e);
     }
   };
 
@@ -50,10 +47,10 @@ export default function InputBox(props) {
       onChange={handleInput}
       onFocus={isIn}
       //Once focus is off
-      onBlur={e => {
+      onBlur={(e) => {
         isOut(e);
       }}
-      onKeyDown={e => isOut(e)}
+      onKeyDown={(e) => isOut(e)}
     ></input>
   );
 }

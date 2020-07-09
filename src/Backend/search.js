@@ -8,7 +8,7 @@ const db = require("./db");
 
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
 app.post("/search", (req, res) => {
   const params = req.body.params;
   const options = req.body.options;
-  //console.log(keywords);
+
   let query = {
     options: options,
     params: params,

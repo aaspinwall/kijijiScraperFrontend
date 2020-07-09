@@ -51,9 +51,9 @@ const initialState = {
   },
   username: "aaspinwall",
   keywords: "",
-  maxPrice: 1500,
-  minPrice: 300,
-  maxResults: 80,
+  maxPrice: 1300,
+  minPrice: 900,
+  maxResults: 40,
   filteredWords: [
     "recherch",
     "office",

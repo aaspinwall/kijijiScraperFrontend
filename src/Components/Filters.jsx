@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import Bubble from "./Bubble";
 
 export default function Filters() {
   const dispatch = useDispatch();
@@ -14,27 +13,6 @@ export default function Filters() {
   return (
     <Container>
       <Button onClick={toggleVisibility}>Filters</Button>
-      {/* <Bubble
-        label='Price'
-        type='number'
-        content={[
-          {
-            text: "Max price",
-            type: "number",
-            id: "maxPrice",
-          },
-          {
-            text: "Min price",
-            type: "number",
-            id: "minPrice",
-          },
-        ]}
-      />
-      <Bubble
-        label='More'
-        type='number'
-        content={[{ text: "Max results", type: "number", id: "maxResults" }]}
-      /> */}
     </Container>
   );
 }

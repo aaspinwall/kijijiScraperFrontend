@@ -7,7 +7,7 @@ import Button_Action from "./Templates/Button_Action";
 export default function Overlay(props) {
   const state = useSelector((state) => state);
   const visible = state.showFilters;
-  const { filteredWords, showFilters } = state;
+  const { filteredWords, showFilters, maxPrice, minPrice, maxResults } = state;
   const dispatch = useDispatch();
   const writeToState = (e) => {
     const value = e.target.value;
@@ -33,7 +33,7 @@ export default function Overlay(props) {
           <Input
             id='maxPrice'
             type='number'
-            value={1800}
+            value={maxPrice}
             writeToState={writeToState}
             submit={props.submit}
           />
@@ -41,7 +41,7 @@ export default function Overlay(props) {
           <Input
             id='minPrice'
             type='number'
-            value={400}
+            value={minPrice}
             writeToState={writeToState}
             submit={props.submit}
           />
@@ -51,26 +51,11 @@ export default function Overlay(props) {
           <Input
             id='maxResults'
             type='number'
-            value={30}
+            value={maxResults}
             writeToState={writeToState}
             submit={props.submit}
           />
         </Box>
-        {/*         <Title>Filtered words</Title>
-        <Box>
-          <InputArray
-            id='filteredWords'
-            type='text'
-            value={filteredWords.join(" ")}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                id: "filteredWords",
-                payload: e.target.value.split(" "),
-              })
-            }
-          />
-        </Box> */}
       </Section>
       <Button_Action
         text='Submit'

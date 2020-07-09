@@ -60,7 +60,7 @@ export default function Mainhooks() {
     }
   };
 
-  const submit = (e) => {
+  const submit = () => {
     dispatcher.lifeCycle("loading");
     const message = {
       params: {
@@ -72,14 +72,6 @@ export default function Mainhooks() {
     };
     search(JSON.stringify(message));
     console.log("You sent the message", message);
-  };
-
-  const scrollInfo = (position) => {
-    const goingDown = scrollPosition < position;
-    scrollPosition(position);
-    setscrollCount(goingDown ? 0 : scrollCount + 1);
-
-    return scrollCount > 5;
   };
 
   const setWindowSize = () => {

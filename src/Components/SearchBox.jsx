@@ -1,17 +1,22 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 
 export default function SearchBox(props) {
   const dispatch = useDispatch();
   const searchRef = useRef();
-  const [input, changeInput] = useState("");
+  const input = useSelector((state) => state.keywords);
+  //const [input, changeInput] = useState("");
   const [showClose, toggleClose] = useState(false);
   const [initialValue] = useState("Search");
 
-  const userInput = (e) => {
+  const userInput = (e, empty = false) => {
+    if (empty) {
+      dispatch({ type: "input", payload: "", id: "keywords" });
+      return;
+    }
     const value = e.target.value;
     const id = e.target.id;
     dispatch({ type: "input", payload: value, id: id });
@@ -34,13 +39,14 @@ export default function SearchBox(props) {
           onFocus={() => {
             toggleClose(true);
           }}
-          onChange={(e) => changeInput(e.target.value)}
+          onChange={(e) => userInput(e)}
           onBlur={(e) => {
             userInput(e);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === "Tab") {
-              changeInput(e.target.value);
+              userInput(e);
+              //changeInput(e.target.value);
               if (e.key === "Enter") {
                 props.submit(e);
               }
@@ -49,8 +55,9 @@ export default function SearchBox(props) {
         ></SearchInput>
         {showClose ? (
           <MdClose
-            onClick={() => {
-              changeInput("");
+            onClick={(e) => {
+              userInput(e, true);
+              //changeInput("");
               console.log(searchRef.current.focus());
             }}
           ></MdClose>
