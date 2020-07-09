@@ -1,65 +1,74 @@
 import React, { useEffect, useState } from "react";
 
 export default function Debug() {
-  const [serverResponse, writeResponse] = useState("");
-  useEffect(() => {
-    const connect = async (url, message) => {
-      try {
-        const req = await fetch(url, {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          headers: { "Content-Type": "application/json" },
-          body: message, // body data type must match "Content-Type" header
-        });
-        const body = await req.json();
-        writeResponse(body);
-        console.log("The response was: ", body);
-      } catch (error) {
-        console.log(error);
-        console.log(`Error connecting to ${url}`);
+  const [message, setMessage] = useState();
+  const connect = async () => {
+    const m = JSON.stringify(message);
+    console.log(m);
+    const response = await fetch(
+      `http://localhost:8888/.netlify/functions/hello/`,
+      {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          method: "post",
+          url: `https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello/`,
+          req: m,
+        }), // body data type must match "Content-Type" header
       }
+    );
+
+    const body = await response.json();
+    console.log(body);
+    return body;
+  };
+
+  useEffect(() => {
+    let options = {
+      minResults: 20,
+      maxResults: 40,
     };
 
-    //CONSTRUCT THE MESSAGE
-    const formatAddress = str => {
-      let res;
-      res = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      res = res.replace(/([ ,%.'])+/g, "%20");
-      return res;
+    let params = {
+      keywords: "verdun",
+      locationId: 1700281, // Same as kijiji.locations.MONTREAL
+      categoryId: 34, // Same as kijiji.categories.CARS_AND_VEHICLES
+      minPrice: 1000,
+      maxPrice: 1050,
+      adType: "OFFER",
+      sortByName: "priceAsc", // Show the cheapest listings first
     };
-
-    const formatCoord = num => {
-      return num.toFixed(7);
-    };
-
-    let address = "1105 Rue de l'Église, Verdun, QC H4G 2N8, Canada";
-    const latitude = 45.4634046;
-    const longitude = -73.5776328;
-    const message = JSON.stringify({
-      address: formatAddress(address),
-      latitude: formatCoord(latitude),
-      longitude: formatCoord(longitude),
-    });
-    const url = "http://localhost:8000/";
-    connect(url, message);
+    const message = { options, params };
+    setMessage(message);
   }, []);
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
+  const inputs = () => {
+    return Object.keys(message.params).map((el, i) => {
+      return (
+        <div key={`bw${i}`}>
+          <label>{el}</label>
+          <input
+            value={message["params"][el]}
+            onChange={(e) => {
+              const newVal = (message["params"][el] = e.target.value);
+              const newMes = {
+                ...message,
+                ["params"]: { ...message["params"], [el]: newVal },
+              };
+              setMessage(newMes);
+            }}
+          />
+        </div>
+      );
+    });
+  };
   return (
     <div>
-      <div>
-        <div>Walkscore:</div>
-        <div>{serverResponse.walkscore}</div>
-        <div>Description:</div>
-        <div>{serverResponse.description}</div>
-        {serverResponse.logo_url ? (
-          <img src={serverResponse.logo_url}></img>
-        ) : (
-          ""
-        )}
-        <div>Bike:</div>
-        <div>Score:</div>
-        <div>{serverResponse.bike ? serverResponse.bike.score : ""}</div>
-        <div>Description:</div>
-        <div>{serverResponse.bike ? serverResponse.bike.description : ""}</div>
-      </div>
+      <div>Debug</div>
+      <div>{message ? inputs() : null}</div>
+      <button onClick={() => connect()}>Fetch</button>
     </div>
   );
 }

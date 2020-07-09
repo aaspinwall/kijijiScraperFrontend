@@ -3,12 +3,14 @@ const fetch = require("axios").default;
 
 exports.handler = async (event, context, callback) => {
   const connect = async (body) => {
-    console.log(typeof body, body);
-    const { message } = body;
+    let request;
+    const { req, method, url } = body;
+    if (method === "post") {
+      request = await fetch.post(url, req);
+    } else if (method === "get") {
+      request = await fetch.get(url);
+    }
 
-    const request = await fetch.get(message);
-
-    console.log(request.data, typeof request.data);
     return {
       statusCode: 200,
       headers: {
@@ -20,7 +22,7 @@ exports.handler = async (event, context, callback) => {
       body: JSON.stringify(request.data),
     };
   };
-  const bod = await JSON.parse(event.body);
-  const bd = await connect(bod);
-  return bd;
+  const body = await JSON.parse(event.body);
+  const res = await connect(body);
+  return res;
 };

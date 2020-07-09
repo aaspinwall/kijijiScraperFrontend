@@ -10,7 +10,7 @@ export default function Walkscore(props) {
         const req = await fetch(url, {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ route: "walkscore", message }), // body data type must match "Content-Type" header
+          body: JSON.stringify({ method: "get", url: message }), // body data type must match "Content-Type" header
         });
         console.log("req:", req);
         const body = await req.json();
