@@ -155,7 +155,9 @@ export default function Mainhooks() {
             {flagUp}
             <Searchbox submit={submit} />
             <Filters />
-            <Overlay submit={submit} visible={showFilters} />
+            {showFilters ? (
+              <Overlay submit={submit} visible={showFilters} />
+            ) : null}
             <Results></Results>
             {showFloating ? <FloatingButton text={["Map", "List"]} /> : null}
           </Content>

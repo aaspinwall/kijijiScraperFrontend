@@ -6,8 +6,6 @@ const kAPI = require("./kAPI");
 const db = require("./db");
 require("dotenv").config();
 
-const local = true;
-
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
@@ -59,7 +57,6 @@ app.post("/search", (req, res) => {
         return { title, url, description, date, image, images, attributes };
       });
       //Respond with the result
-      //db.writeUserData("aaspinwall", results);
       db.newSearch("public", { query, results });
       res.send(JSON.stringify(results));
     };
@@ -80,6 +77,7 @@ app.post("/users", (req, res) => {
   const username = req.body.username;
   response();
 });
+
 app.post("/public", (req, res) => {
   const response = async (path = { path: "users/public/searches" }) => {
     //Get the async response from database
@@ -113,8 +111,4 @@ app.post("/walkscore", (req, res) => {
   }
 });
 
-local
-  ? app.listen(port, () =>
-      console.log(`Example app listening on port ${port}!`)
-    )
-  : (module.exports.handler = serverless(app));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));

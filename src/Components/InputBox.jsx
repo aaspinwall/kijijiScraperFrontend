@@ -15,6 +15,9 @@ export default function InputBox(props) {
           e.target
         );
   const handleInput = (e) => {
+    if (e.key === "Enter") {
+      props.submit(e);
+    }
     setValue(e.target.value);
   };
   const isIn = (e) => {

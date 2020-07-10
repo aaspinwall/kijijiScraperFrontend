@@ -12,7 +12,7 @@ export default function Debug() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           method: "post",
-          url: `https://sharp-clarke-8f329a.netlify.app/.netlify/functions/hello/`,
+          url: `http://localhost:9999/.netlify/functions/hello/`,
           req: m,
         }), // body data type must match "Content-Type" header
       }
@@ -27,6 +27,7 @@ export default function Debug() {
     let options = {
       minResults: 20,
       maxResults: 40,
+      scrapeResultDetails: false,
     };
 
     let params = {
@@ -42,24 +43,35 @@ export default function Debug() {
     setMessage(message);
   }, []);
   useEffect(() => {
-    console.log(message);
+    //console.log(message);
   }, [message]);
   const inputs = () => {
-    return Object.keys(message.params).map((el, i) => {
+    return Object.keys(message).map((eachObjectKeys, i) => {
       return (
-        <div key={`bw${i}`}>
-          <label>{el}</label>
-          <input
-            value={message["params"][el]}
-            onChange={(e) => {
-              const newVal = (message["params"][el] = e.target.value);
-              const newMes = {
-                ...message,
-                ["params"]: { ...message["params"], [el]: newVal },
-              };
-              setMessage(newMes);
-            }}
-          />
+        <div key={`top${i}`}>
+          <h3>{eachObjectKeys}</h3>
+          {Object.keys(message[eachObjectKeys]).map((el, j) => {
+            return (
+              <div key={`low${i}_${j}`}>
+                <label>{el}</label>
+                <input
+                  value={message[eachObjectKeys][el]}
+                  onChange={(e) => {
+                    const newVal = (message[eachObjectKeys][el] =
+                      e.target.value);
+                    const newMes = {
+                      ...message,
+                      [eachObjectKeys]: {
+                        ...message[eachObjectKeys],
+                        [el]: newVal,
+                      },
+                    };
+                    setMessage(newMes);
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
       );
     });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InputBox from "./InputBox";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,17 @@ export default function Overlay(props) {
     dispatch({ type: "toggleFilters" });
     dispatch({ type: "floatingVisibility", payload: showFilters });
   };
+
+  useEffect(() => {
+    const willEsc = (e) => {
+      if (e.key === "Escape") {
+        toggleVisibility();
+      }
+    };
+    window.addEventListener("keydown", willEsc);
+
+    return () => window.removeEventListener("keydown", willEsc);
+  }, []);
 
   return (
     <Container visible={visible}>
