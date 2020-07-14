@@ -124,13 +124,30 @@ export default function Mainhooks() {
   };
 
   useEffect(() => {
+    let runningLive;
+
+    const runningLocalhost = async () => {
+      try {
+        const url = "http://localhost:5000/host";
+        const body = await fetch(url);
+        const response = await body.json();
+        runningLive = response.response;
+      } catch (error) {
+        runningLive = false;
+      }
+    };
+
+    runningLocalhost();
+
     setWindowSize();
     //Check if global state has filteredSearch
+
     const emptySearch = searchResults[0].title === "Nothing here";
-    if (emptySearch) {
-      read(`/users/public/latest`, (response) =>
-        dispatcher.writeSearchResults(response.results)
-      );
+    if (emptySearch || runningLive) {
+      read(`/users/public/latest/results`, (response) => {
+        console.log(response);
+        dispatcher.writeSearchResults(response);
+      });
     }
     dispatcher.floatingVisibility(window.innerWidth < 1024);
     dispatcher.lifeCycle("static");

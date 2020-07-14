@@ -17,16 +17,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post("/", (req, res) => {
-  const query = req.body;
-  console.log(query);
-  res.send(JSON.stringify("POST received"));
-});
-
-app.get("/", (req, res) => {
-  const options = { connected: true };
-  console.log(req.body);
-  res.send(JSON.stringify(options));
+app.get("/host", (req, res) => {
+  res.send(JSON.stringify({ response: true }));
 });
 
 app.post("/search", (req, res) => {

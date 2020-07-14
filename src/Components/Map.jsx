@@ -29,7 +29,7 @@ function Map() {
   const pinElement = useRef();
 
   useEffect(() => {
-    console.log("MAP: Filteredsearch changed to: ", filteredSearch);
+    //console.log("MAP: Filteredsearch changed to: ", filteredSearch);
     const latitudeArray = [];
     const longitudeArray = [];
     if (filteredSearch.length > 2) {
@@ -49,10 +49,10 @@ function Map() {
 
   useEffect(() => {
     if (filteredSearch.length < 1) {
-      console.log("DONRENDERMAP");
+      //console.log("DONRENDERMAP");
       setDebug(false);
     }
-    console.log("MAP: Map rendered: ", focusedResult);
+    //console.log("MAP: Map rendered: ", focusedResult);
     const mapPosition = mapElement.current.offsetTop;
     window.addEventListener("resize", () => {
       const { innerWidth: width, innerHeight: height } = window;
@@ -62,7 +62,7 @@ function Map() {
   }, []);
 
   useEffect(() => {
-    console.log("MAP: Focused result changed to: ", focusedResult);
+    //console.log("MAP: Focused result changed to: ", focusedResult);
     //return;
     if (focusedResult.show) {
       const { latitude, longitude } = filteredSearch[
@@ -78,8 +78,8 @@ function Map() {
     //const pinLocation = e.target.getBoundingClientRect();
     const { x, y } = e.target.getBoundingClientRect();
     //focusedResult(!showMini);
-    console.log("You clicked on i: ", index);
-    console.log("The matching ref is", { x, y });
+    //console.log("You clicked on i: ", index);
+    //console.log("The matching ref is", { x, y });
   };
 
   return (
