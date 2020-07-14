@@ -84,15 +84,7 @@ export default function Result(props) {
     //EXPANDS THE VIEW
     //Toggles global state focus
     const position = ref.target.parentElement.offsetTop;
-    if (showMap) {
-      const thatElement = document.querySelector(
-        `#result_${focusedResult.index}`
-      );
-      thatElement.scrollIntoView();
-      //window.scrollTo(0, 32);
-    } else {
-      window.scrollTo(0, position - 32);
-    }
+    window.scrollTo(0, position - 32);
     dispatch({
       type: "focusedResult",
       payload: { show: focusedResult.show, index },
