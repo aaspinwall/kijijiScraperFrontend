@@ -48,10 +48,6 @@ function Map() {
   }, [filteredSearch]);
 
   useEffect(() => {
-    console.log("MAP: Window changed to", windowSize);
-  }, [windowSize]);
-
-  useEffect(() => {
     if (filteredSearch.length < 1) {
       console.log("DONRENDERMAP");
       setDebug(false);

@@ -54,7 +54,7 @@ function reducer(state, action) {
     case "floatingVisibility":
       return {
         ...state,
-        showFloating: payload,
+        showMapListButton: payload,
       };
     case "mapVisibility":
       return {

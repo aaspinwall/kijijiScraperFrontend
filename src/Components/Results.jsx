@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Spinner } from "evergreen-ui";
 import styled from "styled-components";
 import Result from "./Result";
@@ -60,11 +60,14 @@ function Results() {
     dispatch({ type: "filtered", payload: arr });
   };
   const filterResults = () => {
+    //
     const filteredResults = searchResults.filter((element) => {
       const title = element.title;
-      //Check if it passes all the filteredWords
       return filteredWords.every((word) => {
-        const noWordFound = title.toLowerCase().search(word) === -1;
+        //Check if it passes all the filteredWords and doesn't contain special characters
+        const noWordFound =
+          title.toLowerCase().search(word) === -1 &&
+          title.replace(/\W/g, "").length > 4;
         return noWordFound;
       });
     });
@@ -79,21 +82,18 @@ function Results() {
     return noDuplicates;
   };
 
+  const applyFilters = () => {
+    const formattedTitles = filterResults();
+    applyFilter(formattedTitles);
+  };
+
   useEffect(() => {
-    //filterResults();
-    applyFilter(filterResults());
+    applyFilters();
   }, [searchResults]);
 
   useEffect(() => {
-    applyFilter(filterResults());
+    applyFilters();
   }, []);
-
-  /*   useEffect(() => {
-    if (lifeCycle === "static") {
-      filterResults();
-      applyFilter(filterResults());
-    }
-  }, [filteredWords]); */
 
   const allAttrs = [];
   const results = filteredSearch.map((element, i) => {
@@ -107,6 +107,8 @@ function Results() {
         allAttrs.push(el);
       }
     });
+
+    //console.log(filteredSearch);
 
     return <Result ad={element} key={i} index={i} identifier={`result_${i}`} />;
   });

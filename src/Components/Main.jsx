@@ -9,9 +9,7 @@ import Overlay from "./Overlay";
 import OldSearch from "./OldSearch";
 import { Content } from "../Styles/Components";
 
-import { writeToLocalStorage } from "../Utilities/utilityFunctions";
 import { useSelector, useDispatch } from "react-redux";
-import { database } from "firebase";
 import { read } from "../Utilities/database";
 
 export default function Mainhooks() {
@@ -21,20 +19,14 @@ export default function Mainhooks() {
     minPrice,
     maxResults,
     searchResults,
-    filteredSearch,
     isLive,
     windowInfo,
-    lifeCycle,
     showMap,
     showFilters,
-    showFloating,
+    showMapListButton,
   } = useSelector((state) => state);
 
   const dispatch = useDispatch();
-
-  const [scraperIsLive, setScraperState] = useState(true);
-  const [scrollPosition, setscrollPosition] = useState(0);
-  const [scrollCount, setscrollCount] = useState(0);
 
   const search = async (message) => {
     const localhostUrl = "http://localhost:5000";
@@ -80,8 +72,6 @@ export default function Mainhooks() {
   };
 
   const windowSetup = () => {
-    const isDesktop = window.innerWidth > 1024;
-
     dispatcher.setMapVisibility(window.innerWidth > 1024 ? true : false);
 
     window.addEventListener("resize", () => {
@@ -148,18 +138,20 @@ export default function Mainhooks() {
   }, []);
 
   const name = (params) => {
+    console.log();
     switch (isLive) {
       case "one":
         return (
           <Content footerHeight={windowInfo.footerHeight}>
-            {flagUp}
             <Searchbox submit={submit} />
             <Filters />
             {showFilters ? (
               <Overlay submit={submit} visible={showFilters} />
             ) : null}
-            <Results></Results>
-            {showFloating ? <FloatingButton text={["Map", "List"]} /> : null}
+            {searchResults ? <Results></Results> : null}
+            {showMapListButton ? (
+              <FloatingButton text={["Map", "List"]} />
+            ) : null}
           </Content>
         );
       case "two":
@@ -172,8 +164,6 @@ export default function Mainhooks() {
         break;
     }
   };
-
-  const flagUp = scrollCount > 5 ? <Flag>UP!</Flag> : null;
 
   return (
     <AppContainer id='appContainer'>
@@ -195,13 +185,4 @@ const AppContainer = styled.div`
     position: relative;
     display: grid;
   }
-`;
-
-const Flag = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: white;
-  width: 100%;
-  text-align: center;
 `;

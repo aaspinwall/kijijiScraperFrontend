@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Filters() {
   const dispatch = useDispatch();
-  const { showMap, showFilters, showFloating } = useSelector((state) => state);
+  const { showMap, showFilters, showMapListButton } = useSelector(
+    (state) => state
+  );
 
   const toggleVisibility = () => {
     dispatch({ type: "toggleFilters" });

@@ -8,7 +8,7 @@ export default function FloatingButton(props) {
   const [counter, changeCounter] = useState(0);
   const dispatch = useDispatch();
   const footerRef = useRef();
-  const { windowInfo } = useSelector((state) => state);
+  const { windowInfo, showMap } = useSelector((state) => state);
   const [visible, changeVisible] = useState(null);
 
   const flipCounter = () => {
@@ -16,10 +16,11 @@ export default function FloatingButton(props) {
     if (counter === 1) changeCounter(0);
     else changeCounter(1);
   };
+
   return (
     <Container visible={visible} onClick={() => flipCounter(1)} ref={footerRef}>
-      <div>{props.text[counter]}</div>
-      <div>{counter === 0 ? <FiMap /> : <FaListUl />}</div>
+      <div>{!showMap ? props.text[0] : props.text[1]}</div>
+      <div>{!showMap ? <FiMap /> : <FaListUl />}</div>
     </Container>
   );
 }
@@ -39,8 +40,8 @@ const Container = styled.div`
   transform: translateX(-50%);
   background: white;
   display: flex;
-  border-radius: 20px;
+  border-radius: 40px;
   border: #2222 solid 1px;
-  padding: 0.5rem;
+  padding: 1rem;
   box-shadow: 2px 4px #2222;
 `;
