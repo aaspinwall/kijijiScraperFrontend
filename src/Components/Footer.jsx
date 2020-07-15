@@ -4,6 +4,7 @@ import { colors } from "../Styles/Components";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTwitter } from "react-icons/fa";
 import { IoLogoChrome } from "react-icons/io";
+import { read } from "../Utilities/database";
 
 export default function Footer() {
   const footerRef = useRef(null);
@@ -33,11 +34,24 @@ export default function Footer() {
     });
   }, [footerRef]);
 
+  const fetchLatest = async () => {
+    dispatch({ type: "lifeCycle", payload: "loading" });
+    const res = await read(`/users/public/latest/results`, (results) =>
+      dispatch({ type: "results", payload: results })
+    );
+    if (res) {
+      dispatch({ type: "lifeCycle", payload: "static" });
+    } else {
+      dispatch({ type: "lifeCycle", payload: "error" });
+    }
+  };
+
   return (
     <Container ref={footerRef}>
       <div className='icons'>{socialIcons()}</div>
       <div>© 2020 Moving Day, Inc. All rights reserved</div>
       <div>Alejandro Aspinwall</div>
+      <div onClick={fetchLatest}>Fetch</div>
     </Container>
   );
 }

@@ -22,6 +22,7 @@ export const read = async (path = "/users/public/searches", callback) => {
   const response = await database.ref(path).once("value");
   const data = await response.val();
   callback(data);
+  return data;
   //console.log("/// UTILITIES response: ", data);
 };
 
