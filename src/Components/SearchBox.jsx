@@ -73,11 +73,11 @@ const Container = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  margin: 0;
+
   border: 0;
-  padding: 0.5rem 10%;
+  /* padding: 0.5rem 10%; */
   max-width: 1000px;
-  margin: auto;
+
   box-sizing: border-box;
 
   #topLogo {

@@ -17,6 +17,11 @@ export const Button = styled.div`
 
 export const Debug = styled.div``;
 
+export const Top = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
 export const Section = styled.div``;
 
 export const Content = styled.div`

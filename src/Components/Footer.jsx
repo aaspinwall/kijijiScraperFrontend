@@ -49,14 +49,18 @@ export default function Footer() {
   return (
     <Container ref={footerRef}>
       <div className='icons'>{socialIcons()}</div>
-      <div>© 2020 Moving Day, Inc. All rights reserved</div>
-      <div>Alejandro Aspinwall</div>
+      <div>
+        © 2020 Moving Day, Inc. All rights reserved | Alejandro Aspinwall
+      </div>
+      <div></div>
       <div onClick={fetchLatest}>Fetch</div>
     </Container>
   );
 }
 
 const Container = styled.footer`
+  display: flex;
+  justify-content: space-between;
   position: absolute;
   bottom: 0;
   width: 100%;

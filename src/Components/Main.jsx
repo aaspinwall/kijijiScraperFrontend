@@ -7,7 +7,7 @@ import Footer from "./Footer";
 import FloatingButton from "./FloatingButton";
 import Overlay from "./Overlay";
 import OldSearch from "./OldSearch";
-import { Content } from "../Styles/Components";
+import { Content, Top } from "../Styles/Components";
 
 import { useSelector, useDispatch } from "react-redux";
 import { read } from "../Utilities/database";
@@ -160,8 +160,11 @@ export default function Mainhooks() {
       case "one":
         return (
           <Content footerHeight={windowInfo.footerHeight}>
-            <Searchbox submit={submit} />
-            <Filters />
+            <Top>
+              <Searchbox submit={submit} />
+              <Filters />
+            </Top>
+
             {showFilters ? (
               <Overlay submit={submit} visible={showFilters} />
             ) : null}
@@ -194,7 +197,7 @@ const AppContainer = styled.div`
   position: relative;
   min-height: 100vh;
   @media only screen and (min-width: 1024px) {
-    max-width: 1400px;
+    max-width: 2000px;
   }
   max-width: 1000px;
   margin: auto;
