@@ -20,7 +20,7 @@ class Search {
     //Check if the query is valid
     console.log("queryCheck returned".green, this.queryCheck(query));
     return this.search(this.prepareQuery(query));
-    //console.log("results: ", res);
+
     //return Promise.resolve(res);
   }
 

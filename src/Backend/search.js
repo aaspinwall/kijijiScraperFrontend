@@ -1,10 +1,8 @@
 const serverless = require("serverless-http");
 const express = require("express");
 const app = express();
-//const port = 5000;
 const bodyParser = require("body-parser");
 const kAPI = require("./kAPI");
-const db = require("./db");
 
 app.use(bodyParser.json());
 
@@ -56,8 +54,6 @@ app.post("/search", (req, res) => {
       }
     }
     //Respond with the result
-
-    db.writeUserData("aaspinwall", links);
     res.send(JSON.stringify(links));
   };
   searchKijiji(query, res);
