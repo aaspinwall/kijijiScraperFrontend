@@ -1,8 +1,2 @@
-
-
-
-/*
-!.gitignore
-!src/Backend
-!README.md
-!package.json
+node_modules
+package-lock.json
