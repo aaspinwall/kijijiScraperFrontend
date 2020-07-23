@@ -18,8 +18,13 @@ export const Button = styled.div`
 export const Debug = styled.div``;
 
 export const Top = styled.div`
+  padding: 1rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (min-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 
 export const Section = styled.div``;

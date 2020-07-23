@@ -128,7 +128,12 @@ export default function Result(props) {
   };
 
   return (
-    <Container className='resultContainer' ref={frameRef} id={props.identifier}>
+    <Container
+      className='resultContainer'
+      ref={frameRef}
+      id={props.identifier}
+      tabIndex={"0"}
+    >
       <Image
         focused={showMore}
         src={focusedImage ? focusedImage : adObject.images[0]}

@@ -61,13 +61,14 @@ export default function Footer() {
 const Container = styled.footer`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: absolute;
   bottom: 0;
   width: 100%;
   font-size: 1rem;
   color: white;
   background: grey;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   box-sizing: border-box;
   > div {

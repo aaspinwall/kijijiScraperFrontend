@@ -154,17 +154,11 @@ export default function Mainhooks() {
     windowSetup();
   }, []);
 
-  const name = (params) => {
-    console.log();
+  const getMainSearch = () => {
     switch (isLive) {
       case "one":
         return (
           <Content footerHeight={windowInfo.footerHeight}>
-            <Top>
-              <Searchbox submit={submit} />
-              <Filters />
-            </Top>
-
             {showFilters ? (
               <Overlay submit={submit} visible={showFilters} />
             ) : null}
@@ -187,13 +181,17 @@ export default function Mainhooks() {
 
   return (
     <AppContainer id='appContainer'>
-      {name()}
+      <Top>
+        <Searchbox submit={submit} />
+        <Filters />
+      </Top>
+      {getMainSearch()}
       <Footer />
     </AppContainer>
   );
 }
 
-const AppContainer = styled.div`
+const AppContainer = styled.main`
   position: relative;
   min-height: 100vh;
   @media only screen and (min-width: 1024px) {
@@ -201,8 +199,4 @@ const AppContainer = styled.div`
   }
   max-width: 1000px;
   margin: auto;
-  .resultsContainer {
-    position: relative;
-    display: grid;
-  }
 `;

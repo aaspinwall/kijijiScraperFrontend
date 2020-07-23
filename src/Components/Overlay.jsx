@@ -100,7 +100,9 @@ const Container = styled.div`
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-right: 1rem;
+  font-size: 1rem;
   svg {
     height: 1.5rem;
     width: 1.5rem;
@@ -114,26 +116,22 @@ const Section = styled.div`
   }
 `;
 
-const Title = styled.h4`
+const Title = styled.div`
   color: black;
   text-decoration: none;
   font-weight: bold;
+  margin: 1rem 0 0;
 `;
 
 const Box = styled.div`
   display: grid;
   > div,
   > input {
-    padding: 1rem 0;
+    padding: 0.5rem 0;
   }
 `;
 
 const Input = styled(InputBox)`
-  font-size: 1.1rem;
-  border: 0;
-  width: 100%;
-`;
-const InputArray = styled.input`
   font-size: 1.1rem;
   border: 0;
   width: 100%;

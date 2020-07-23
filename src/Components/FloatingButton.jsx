@@ -9,7 +9,6 @@ export default function FloatingButton(props) {
   const dispatch = useDispatch();
   const footerRef = useRef();
   const { windowInfo, showMap } = useSelector((state) => state);
-  const [visible, changeVisible] = useState(null);
 
   const flipCounter = () => {
     dispatch({ type: "toggleMap" });
@@ -18,7 +17,11 @@ export default function FloatingButton(props) {
   };
 
   return (
-    <Container visible={visible} onClick={() => flipCounter(1)} ref={footerRef}>
+    <Container
+      bottom={windowInfo.footerHeight}
+      onClick={() => flipCounter(1)}
+      ref={footerRef}
+    >
       <div>{!showMap ? props.text[0] : props.text[1]}</div>
       <div>{!showMap ? <FiMap /> : <FaListUl />}</div>
     </Container>
@@ -35,9 +38,10 @@ const Container = styled.div`
   }
   position: fixed;
   grid-template-columns: 1fr 1fr;
-  bottom: 1rem;
+  transition: bottom 1s ease-in-out;
+  bottom: ${(props) => `${props.bottom}px`};
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 40%);
   background: white;
   display: flex;
   border-radius: 40px;
