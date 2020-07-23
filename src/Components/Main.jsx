@@ -29,7 +29,7 @@ export default function Mainhooks() {
   const dispatch = useDispatch();
 
   const search = async (message) => {
-    const localhostUrl = "http://localhost:5000";
+    const localhostUrl = "https://limitless-cove-26677.herokuapp.com";
     const url = localhostUrl + "/search";
     try {
       const req = await fetch(url, {
@@ -128,7 +128,7 @@ export default function Mainhooks() {
 
     const runningLocalhost = async () => {
       try {
-        const url = "http://localhost:5000/host";
+        const url = "https://limitless-cove-26677.herokuapp.com/host";
         const body = await fetch(url);
         const response = await body.json();
         runningLive = response.response;
