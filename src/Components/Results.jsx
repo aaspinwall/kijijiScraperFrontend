@@ -123,7 +123,7 @@ function Results() {
       case "static":
         return (
           <div id='resultsContainer'>
-            {showMap ? <Map></Map> : undefined}
+            {showMap ? <Map></Map> : null}
             <div id='resultList'>{results}</div>
           </div>
         );
@@ -156,8 +156,6 @@ const Container = styled.div`
       > div {
       }
       #resultList {
-        overflow-y: scroll;
-        height: 100vh;
         padding: 0 1rem;
       }
     }

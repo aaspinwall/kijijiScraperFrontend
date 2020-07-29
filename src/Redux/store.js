@@ -11,7 +11,7 @@ const initialState = {
   showSearch: true,
   showMap: false,
   showFilters: false,
-  showMapListButton: true,
+  showMapListButton: false,
   focusedResult: { show: false, index: 0 },
   windowInfo: {},
   bottomed: false,
@@ -83,10 +83,16 @@ const persistConfig = {
 
 const pReducer = persistReducer(persistConfig, reducer);
 
+const devOptions =
+  window.location.hostname === "localhost"
+    ? { trace: true, traceLimit: 10 }
+    : {};
+
 export const store = createStore(
   pReducer,
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION__(devOptions)
 );
 export const persistor = persistStore(store);
 

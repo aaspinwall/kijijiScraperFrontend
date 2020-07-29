@@ -30,6 +30,7 @@ export default function FloatingButton(props) {
 
 const Container = styled.div`
   z-index: 999;
+  user-select: none;
   > div {
     padding: 0 0.25rem;
     display: flex;

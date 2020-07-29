@@ -9,14 +9,11 @@ const median = (arr) => {
     nums = [...arr].sort((a, b) => a - b);
   return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 };
-//const median = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
 function Map() {
-  const { filteredSearch, focusedResult, showMap } = useSelector(
-    (state) => state
-  );
+  const { filteredSearch, focusedResult } = useSelector((state) => state);
   const dispatch = useDispatch();
   //const [showMini, toggleMini] = useState(false);
   const [debug, setDebug] = useState(false);
@@ -29,7 +26,6 @@ function Map() {
   const pinElement = useRef();
 
   useEffect(() => {
-    //console.log("MAP: Filteredsearch changed to: ", filteredSearch);
     const latitudeArray = [];
     const longitudeArray = [];
     if (filteredSearch.length > 2) {
@@ -49,10 +45,8 @@ function Map() {
 
   useEffect(() => {
     if (filteredSearch.length < 1) {
-      //console.log("DONRENDERMAP");
       setDebug(false);
     }
-    //console.log("MAP: Map rendered: ", focusedResult);
     const mapPosition = mapElement.current.offsetTop;
     window.addEventListener("resize", () => {
       const { innerWidth: width, innerHeight: height } = window;
@@ -62,8 +56,6 @@ function Map() {
   }, []);
 
   useEffect(() => {
-    //console.log("MAP: Focused result changed to: ", focusedResult);
-    //return;
     if (focusedResult.show) {
       const { latitude, longitude } = filteredSearch[
         focusedResult.index
@@ -75,15 +67,15 @@ function Map() {
   const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
     dispatch({ type: "focusedResult", payload: { show: true, index } });
-    //const pinLocation = e.target.getBoundingClientRect();
     const { x, y } = e.target.getBoundingClientRect();
-    //focusedResult(!showMini);
-    //console.log("You clicked on i: ", index);
-    //console.log("The matching ref is", { x, y });
   };
 
   return (
-    <Container ref={mapElement} id='mapContainer'>
+    <Container
+      ref={mapElement}
+      id='mapContainer'
+      mobile={window.innerWidth < 1024}
+    >
       <div
         className='mapContainer'
         style={{
@@ -131,7 +123,10 @@ function Map() {
   );
 }
 const Container = styled.div`
-  position: relative;
+  position: ${(props) => (props.mobile ? "static" : "fixed")};
+  top: 8rem;
+  left: 50%;
+  width: ${(props) => (props.mobile ? "auto" : "50%")};
   padding-bottom: 1rem;
   z-index: 500;
   .mapContainer {

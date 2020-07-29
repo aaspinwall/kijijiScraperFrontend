@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Filters from "./Filters";
 import Searchbox from "./SearchBox";
@@ -8,6 +8,7 @@ import FloatingButton from "./FloatingButton";
 import Overlay from "./Overlay";
 import OldSearch from "./OldSearch";
 import { Content, Top } from "../Styles/Components";
+import UseEventListener from "../Utilities/hooks";
 
 import { useSelector, useDispatch } from "react-redux";
 import { read } from "../Utilities/database";
@@ -21,38 +22,39 @@ export default function Mainhooks() {
     searchResults,
     isLive,
     windowInfo,
+    showMapListButton,
     showMap,
     showFilters,
-    showMapListButton,
   } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
+  //Search Heroku / Write results / Change lifecycle
   const search = async (message) => {
     const localhostUrl = "https://limitless-cove-26677.herokuapp.com";
     const url = localhostUrl + "/search";
     try {
       const req = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: message, // body data type must match "Content-Type" header
+        body: message,
       });
       const body = await req.json();
+      //Pass search results to Redux state
       dispatcher.writeSearchResults(body);
-      console.log("The response was: ", body);
-      //setScraperState(true);
-      //writeToLocalStorage(body);
+      //Static renders results the rest of the UI
       dispatcher.lifeCycle("static");
     } catch (error) {
       console.log(
         `Error connecting to ${url} / Search operation triggered this error`
       );
-      //setScraperState(false);
+      //Trigger cat animation
       dispatcher.lifeCycle("error");
     }
   };
 
   const submit = () => {
+    //Trigger cat gifs while user waits
     dispatcher.lifeCycle("loading");
     const message = {
       params: {
@@ -62,27 +64,19 @@ export default function Mainhooks() {
       },
       options: { maxResults: parseInt(maxResults) },
     };
+    //Connect to API
     search(JSON.stringify(message));
-    console.log("You sent the message", message);
   };
 
-  const setWindowSize = () => {
-    dispatcher.windowSize("windowHeight", window.innerHeight);
-    dispatcher.windowSize("windowWidth", window.innerWidth);
+  const arrangeView = () => {
+    const isMobile = window.innerWidth < 1024;
+    //Initialize window views
+    dispatcher.setMapVisibility(!isMobile);
+    dispatcher.floatingVisibility(isMobile);
   };
 
   const windowSetup = () => {
-    dispatcher.setMapVisibility(window.innerWidth > 1024 ? true : false);
-
-    window.addEventListener("resize", () => {
-      setWindowSize();
-      if (window.innerWidth > 1024) {
-        dispatcher.floatingVisibility(false);
-        if (!showMap) dispatcher.setMapVisibility(true);
-      } else {
-        dispatcher.floatingVisibility(true);
-      }
-    });
+    arrangeView();
     window.addEventListener("keydown", () => submit);
   };
 
@@ -124,9 +118,9 @@ export default function Mainhooks() {
   };
 
   useEffect(() => {
+    //Check if server is live
     let runningLive;
-
-    const runningLocalhost = async () => {
+    const isServerRunning = async () => {
       try {
         const url = "https://limitless-cove-26677.herokuapp.com/host";
         const body = await fetch(url);
@@ -136,12 +130,9 @@ export default function Mainhooks() {
         runningLive = false;
       }
     };
+    isServerRunning();
 
-    runningLocalhost();
-
-    setWindowSize();
     //Check if global state has filteredSearch
-
     const emptySearch = searchResults[0].title === "Nothing here";
     if (emptySearch || runningLive) {
       read(`/users/public/latest/results`, (response) => {
@@ -149,7 +140,6 @@ export default function Mainhooks() {
         dispatcher.writeSearchResults(response);
       });
     }
-    dispatcher.floatingVisibility(window.innerWidth < 1024);
     dispatcher.lifeCycle("static");
     windowSetup();
   }, []);
@@ -163,6 +153,7 @@ export default function Mainhooks() {
               <Overlay submit={submit} visible={showFilters} />
             ) : null}
             {searchResults ? <Results></Results> : null}
+
             {showMapListButton ? (
               <FloatingButton text={["Map", "List"]} />
             ) : null}
