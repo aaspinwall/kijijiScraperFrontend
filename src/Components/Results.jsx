@@ -112,7 +112,6 @@ function Results() {
 
     return <Result ad={element} key={i} index={i} identifier={`result_${i}`} />;
   });
-  const noRepeats = allAttrs;
   const loading = <Loading></Loading>;
 
   const display = () => {

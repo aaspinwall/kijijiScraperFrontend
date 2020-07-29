@@ -71,6 +71,7 @@ const Container = styled.footer`
   padding: 1rem;
   text-align: center;
   box-sizing: border-box;
+  z-index: 999;
   > div {
     padding: 0.25rem 0;
   }

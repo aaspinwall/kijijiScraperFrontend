@@ -19,12 +19,14 @@ export const Debug = styled.div``;
 
 export const Top = styled.div`
   padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  @media only screen and (min-width: 1024px) {
+  /*   @media only screen and (min-width: 1024px) {
     flex-direction: column;
-  }
+  } */
 `;
 
 export const Section = styled.div``;

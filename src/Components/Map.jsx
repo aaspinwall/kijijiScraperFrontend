@@ -13,7 +13,9 @@ const median = (arr) => {
 const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
 
 function Map() {
-  const { filteredSearch, focusedResult } = useSelector((state) => state);
+  const { filteredSearch, focusedResult, windowInfo } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   //const [showMini, toggleMini] = useState(false);
   const [debug, setDebug] = useState(false);
@@ -48,10 +50,14 @@ function Map() {
       setDebug(false);
     }
     const mapPosition = mapElement.current.offsetTop;
+
     window.addEventListener("resize", () => {
       const { innerWidth: width, innerHeight: height } = window;
+
       changeHeight({ height, width });
     });
+
+    //Got to the map whenever it renders
     window.scrollTo(0, mapPosition - 32);
   }, []);
 
@@ -67,7 +73,6 @@ function Map() {
   const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
     dispatch({ type: "focusedResult", payload: { show: true, index } });
-    const { x, y } = e.target.getBoundingClientRect();
   };
 
   return (
@@ -75,13 +80,14 @@ function Map() {
       ref={mapElement}
       id='mapContainer'
       mobile={window.innerWidth < 1024}
+      top={windowInfo}
     >
       <div
         className='mapContainer'
         style={{
           height:
             (() => {
-              return windowSize.height * 0.75;
+              return windowSize.height - windowInfo.footerHeight * 2;
             })().toString() + "px",
           width: "100%",
           padding: "0",
@@ -124,11 +130,12 @@ function Map() {
 }
 const Container = styled.div`
   position: ${(props) => (props.mobile ? "static" : "fixed")};
-  top: 8rem;
+  top: ${(props) => props.top.topHeight + "px"};
   left: 50%;
   width: ${(props) => (props.mobile ? "auto" : "50%")};
-  padding-bottom: 1rem;
+  padding-bottom: ${(props) => (props.mobile ? "1rem" : 0)};
   z-index: 500;
+  transition: 0.7s ease-in-out;
   .mapContainer {
     top: 0;
   }

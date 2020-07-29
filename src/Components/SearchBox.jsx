@@ -8,7 +8,6 @@ export default function SearchBox(props) {
   const dispatch = useDispatch();
   const searchRef = useRef();
   const input = useSelector((state) => state.keywords);
-  //const [input, changeInput] = useState("");
   const [showClose, toggleClose] = useState(false);
   const [initialValue] = useState("Search");
 
@@ -24,7 +23,7 @@ export default function SearchBox(props) {
   return (
     <Container>
       <div id='topLogo'>
-        <img src='logo512.png'></img>
+        <img src='logo512.png' alt='logoimage'></img>
       </div>
       <Box>
         <FiSearch onClick={() => props.submit()} />

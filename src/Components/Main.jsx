@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
 import Filters from "./Filters";
 import Searchbox from "./SearchBox";
@@ -26,6 +26,8 @@ export default function Mainhooks() {
     showMap,
     showFilters,
   } = useSelector((state) => state);
+
+  const topRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -75,9 +77,19 @@ export default function Mainhooks() {
     dispatcher.floatingVisibility(isMobile);
   };
 
+  const resizeHandler = () => {
+    if (window.innerWidth > 1024) {
+      dispatcher.floatingVisibility(false);
+      if (!showMap) dispatcher.setMapVisibility(true);
+    } else {
+      dispatcher.floatingVisibility(true);
+    }
+  };
+
   const windowSetup = () => {
     arrangeView();
     window.addEventListener("keydown", () => submit);
+    window.addEventListener("resize", resizeHandler);
   };
 
   const dispatcher = {
@@ -142,6 +154,8 @@ export default function Mainhooks() {
     }
     dispatcher.lifeCycle("static");
     windowSetup();
+    console.log("ok");
+    dispatcher.windowSize("topHeight", topRef.current.offsetHeight);
   }, []);
 
   const getMainSearch = () => {
@@ -172,7 +186,7 @@ export default function Mainhooks() {
 
   return (
     <AppContainer id='appContainer'>
-      <Top>
+      <Top ref={topRef}>
         <Searchbox submit={submit} />
         <Filters />
       </Top>
