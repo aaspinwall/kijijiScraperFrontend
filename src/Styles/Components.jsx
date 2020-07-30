@@ -35,3 +35,31 @@ export const Content = styled.div`
   padding-bottom: ${(props) =>
     props.footerHeight ? props.footerHeight + "px" : "18rem"};
 `;
+
+export const FeaturedImages = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  > div {
+    width: 100%;
+    height: 50vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+
+    > img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      filter: opacity(0.4);
+      object-fit: cover;
+    }
+    > p {
+      display: none;
+    }
+  }
+`;
