@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Filters from "./Filters";
 import Searchbox from "./SearchBox";
@@ -8,6 +8,7 @@ import FloatingButton from "./FloatingButton";
 import Overlay from "./Overlay";
 import OldSearch from "./OldSearch";
 import { Content, Top } from "../Styles/Components";
+import { search as s } from "../Utilities/utilityFunctions";
 import UseEventListener from "../Utilities/hooks";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -31,33 +32,14 @@ export default function Mainhooks() {
 
   const dispatch = useDispatch();
 
-  //Search Heroku / Write results / Change lifecycle
-  const search = async (message) => {
-    const localhostUrl = "https://limitless-cove-26677.herokuapp.com";
-    const url = localhostUrl + "/search";
-    try {
-      const req = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: message,
-      });
-      const body = await req.json();
-      //Pass search results to Redux state
-      dispatcher.writeSearchResults(body);
-      //Static renders results the rest of the UI
-      dispatcher.lifeCycle("static");
-    } catch (error) {
-      console.log(
-        `Error connecting to ${url} / Search operation triggered this error`
-      );
-      //Trigger cat animation
-      dispatcher.lifeCycle("error");
-    }
-  };
-
   const submit = () => {
     //Trigger cat gifs while user waits
+
+    //Hide filters and floating button
+    dispatcher.changeState("showFilters", false);
+    dispatcher.changeState("showMapListButton", false);
     dispatcher.lifeCycle("loading");
+
     const message = {
       params: {
         keywords: keywords,
@@ -66,8 +48,23 @@ export default function Mainhooks() {
       },
       options: { maxResults: parseInt(maxResults) },
     };
+
+    const handleResponse = (res) => {
+      if (res.message) {
+        //Trigger cat animation
+        dispatcher.lifeCycle("error");
+      } else {
+        //Pass search results to Redux state
+        dispatcher.writeSearchResults(res);
+        //Static renders results the rest of the UI
+        dispatcher.lifeCycle("static");
+      }
+    };
     //Connect to API
-    search(JSON.stringify(message));
+    s(JSON.stringify(message), handleResponse, () =>
+      console.log("Search function finished")
+    );
+    //search(JSON.stringify(message));
   };
 
   const arrangeView = () => {
@@ -93,6 +90,10 @@ export default function Mainhooks() {
   };
 
   const dispatcher = {
+    changeState: (target, value) => {
+      dispatch({ type: "changeState", target: target, payload: value });
+    },
+
     windowSize: (id, value) => {
       dispatch({
         type: "windowInfo",
@@ -124,6 +125,9 @@ export default function Mainhooks() {
     toggleSearch: () => {
       dispatch({ type: "toggleSearch" });
     },
+    toggleFilters: () => {
+      dispatch({ type: "toggleFilters" });
+    },
     floatingVisibility: (visible) => {
       dispatch({ type: "floatingVisibility", payload: visible });
     },
@@ -154,7 +158,6 @@ export default function Mainhooks() {
     }
     dispatcher.lifeCycle("static");
     windowSetup();
-    console.log("ok");
     dispatcher.windowSize("topHeight", topRef.current.offsetHeight);
   }, []);
 
@@ -164,10 +167,12 @@ export default function Mainhooks() {
         return (
           <Content footerHeight={windowInfo.footerHeight}>
             {showFilters ? (
-              <Overlay submit={submit} visible={showFilters} />
+              <Overlay
+                submit={submit}
+                close={() => dispatcher.changeState("showFilters", false)}
+              />
             ) : null}
             {searchResults ? <Results></Results> : null}
-
             {showMapListButton ? (
               <FloatingButton text={["Map", "List"]} />
             ) : null}

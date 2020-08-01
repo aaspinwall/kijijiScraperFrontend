@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { Label } from "../Styles/Components";
 import InputBox from "./InputBox";
 import { useDispatch, useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
 import Button_Action from "./Templates/Button_Action";
-export default function Overlay(props) {
+export default function Overlay({
+  submit,
+  forceVisible = false,
+  close = () => {},
+}) {
   const state = useSelector((state) => state);
-  const visible = state.showFilters;
-  const { filteredWords, showFilters, maxPrice, minPrice, maxResults } = state;
+  const visible = forceVisible ? forceVisible : state.showFilters;
+  const { maxPrice, minPrice, maxResults, keywords } = state;
   const dispatch = useDispatch();
   const writeToState = (e) => {
     const value = e.target.value;
@@ -15,81 +20,91 @@ export default function Overlay(props) {
     dispatch({ type: "input", payload: value, id: id });
   };
 
-  const toggleVisibility = () => {
-    dispatch({ type: "toggleFilters" });
-    dispatch({ type: "floatingVisibility", payload: showFilters });
-  };
-
   useEffect(() => {
     const willEsc = (e) => {
       if (e.key === "Escape") {
-        toggleVisibility();
+        close();
       }
     };
     window.addEventListener("keydown", willEsc);
-
+    document.querySelectorAll("input").forEach((n) => (n.autocomplete = "off"));
     return () => window.removeEventListener("keydown", willEsc);
   }, []);
 
   return (
-    <Container visible={visible}>
+    <Container visible={visible} contained={forceVisible} scale={1}>
       <Section>
-        <Header>
-          <MdClose onClick={toggleVisibility} />
-          <div>Clear</div>
-        </Header>
-        <Title>Price Range</Title>
+        {!forceVisible ? (
+          <Header>
+            <MdClose onClick={close} />
+          </Header>
+        ) : null}
+
         <Box>
-          <div>Max price</div>
-          <Input
+          <Label>Keywords</Label>
+          <InputBox
+            config={{ id: "keywords", type: "text", value: keywords }}
+            writeToState={writeToState}
+            submit={submit}
+          />
+          <Label>Max price</Label>
+          <div>{maxPrice}</div>
+          <Slider
             id='maxPrice'
-            type='number'
+            type='range'
+            min={300}
+            max={3000}
+            step={25}
             value={maxPrice}
-            writeToState={writeToState}
-            submit={props.submit}
+            onChange={writeToState}
           />
-          <div>Min price</div>
-          <Input
+
+          <Label>Min price</Label>
+          <div>{minPrice}</div>
+          <Slider
             id='minPrice'
-            type='number'
+            type='range'
+            min={300}
+            max={3000}
+            step={25}
             value={minPrice}
-            writeToState={writeToState}
-            submit={props.submit}
+            onChange={writeToState}
           />
-        </Box>
-        <Title>Max results</Title>
-        <Box>
-          <Input
+
+          <Label>Max results</Label>
+          <div>{maxResults}</div>
+          <Slider
             id='maxResults'
-            type='number'
+            type='range'
+            min={20}
+            max={120}
+            step={20}
             value={maxResults}
-            writeToState={writeToState}
-            submit={props.submit}
+            onChange={writeToState}
           />
         </Box>
+        <Box></Box>
+        <Button_Action
+          text='Search'
+          submit={() => {
+            submit();
+          }}
+        />
       </Section>
-      <Button_Action
-        text='Submit'
-        submit={() => {
-          toggleVisibility();
-          props.submit();
-        }}
-      />
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: ${(props) => (props.visible ? "initial" : "none")};
+  display: ${(props) => (props.visible ? "block" : "none")};
   z-index: 999;
-  position: fixed;
+  position: ${(props) => (props.contained ? "static" : "fixed")};
   left: 0;
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: ${(props) => (props.contained ? "auto" : "100vh")};
   background: white;
   text-align: left;
-  overflow: scroll;
   font-family: "Cabin", sans-serif;
   > div {
     max-width: 800px;
@@ -97,7 +112,7 @@ const Container = styled.div`
   }
 `;
 
-const Header = styled.header`
+const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -106,6 +121,9 @@ const Header = styled.header`
   svg {
     height: 1.5rem;
     width: 1.5rem;
+  }
+  > * {
+    cursor: pointer;
   }
 `;
 const Section = styled.div`
@@ -116,23 +134,30 @@ const Section = styled.div`
   }
 `;
 
-const Title = styled.div`
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 1rem 0 0;
-`;
-
 const Box = styled.div`
   display: grid;
-  > div,
-  > input {
-    padding: 0.5rem 0;
-  }
 `;
 
-const Input = styled(InputBox)`
-  font-size: 1.1rem;
-  border: 0;
-  width: 100%;
+const Slider = styled.input`
+  color: green;
+  -webkit-appearance: none;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 20px;
+  ::-moz-range-thumb {
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  ::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 20px;
+    width: 1rem;
+    height: 1rem;
+    background: rgb(255, 90, 95);
+    cursor: pointer;
+  }
 `;

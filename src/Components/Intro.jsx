@@ -1,71 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
-import { ReactComponent as Logo } from "../logo.svg";
-
+import Overlay from "./Overlay";
+import Logo from "./Logo";
 import Featured from "./Featured";
+import Loading from "./Loading";
+import { search as s } from "../Utilities/utilityFunctions";
 
 export default function Intro() {
-  const [full, setFull] = React.useState(false);
-
   const sizes = [133, 676, 885, 1190, 1900];
+  const [initial, setInital] = useState(true);
 
   return (
-    <div>
-      <Logo
-        stroke='blue'
-        style={{
-          width: "4rem",
-          zIndex: 1000,
-          position: "absolute",
-          left: "2rem",
-          top: "2rem",
-        }}
-      />
-      <TopBanner full={full}>
+    <Container>
+      <Logo id='logo' />
+      <TopBanner>
         <img
-          src={`https://www.nationalgeographic.com/content/dam/travel/2017-digital/canada/montreal-article/moins-sombre.adapt.${
-            full ? sizes[4] : sizes[3]
-          }.1.jpg`}
+          src={`https://www.nationalgeographic.com/content/dam/travel/2017-digital/canada/montreal-article/moins-sombre.adapt.${sizes[3]}.1.jpg`}
           alt='montreal-image'
         />
         <WrappedText>
-          {full ? null : (
-            <Welcome onClick={() => setFull(!full)}>
-              <div>Welcome to Moving Day</div>
-              <div>This text should go away</div>
-            </Welcome>
-          )}
+          <Welcome>
+            <div>Welcome to Moving Day</div>
+            <div>Start your search here</div>
+          </Welcome>
         </WrappedText>
       </TopBanner>
-      <div
-        style={{
-          height: "30vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src='/imgs/searchholder.png'
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "scale-down",
-          }}
-        />
-      </div>
+      <Interactive>
+        {initial ? (
+          <Overlay
+            forceVisible={{ height: "30vh" }}
+            submit={(result) => {
+              setInital(false);
+              console.log("submitted, ", result);
+            }}
+          />
+        ) : (
+          <Loading />
+        )}
+      </Interactive>
       <Featured>
         <h3>Explore Montreal's Buroughs</h3>
       </Featured>
-    </div>
+    </Container>
   );
 }
 
+const handleSubmit = () => {
+  //show cats instead of search
+};
+
+const Interactive = styled.div`
+  margin: 0 15%;
+  min-height: 40vh;
+`;
+
+const Container = styled.div`
+  #logo {
+    width: "5rem";
+    z-index: 1000;
+    position: "absolute";
+    left: 0;
+    top: "1rem";
+  }
+`;
+
 const TopBanner = styled.div`
-  transition: height 1.3s linear;
+  /* transition: height 1.3s linear; */
   position: relative;
-  height: ${(props) => (props.full ? "100vh" : "50vh")};
+  height: 30vh;
   width: 100%;
   img {
     position: relative;
@@ -102,7 +104,7 @@ const WrappedText = styled.div`
       rgba(255, 90, 95, 1) 32%,
       rgba(255, 255, 255, 1) 95%
     );
-    opacity: 0.3;
+    opacity: 0.35;
   }
 `;
 
@@ -112,7 +114,12 @@ const Welcome = styled.div`
   > div {
     transition: opacity 0.4s ease-in-out;
   }
-  :hover > :nth-child(2) {
+  > :nth-child(2) {
     opacity: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  :hover > :nth-child(2) {
+    opacity: 1;
   }
 `;

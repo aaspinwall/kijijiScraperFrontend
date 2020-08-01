@@ -50,9 +50,9 @@ const initialState = {
     locationAverage: { x: 0, y: 0 },
   },
   username: "aaspinwall",
-  keywords: "",
-  maxPrice: 1300,
-  minPrice: 900,
+  keywords: "Plateau",
+  maxPrice: 1600,
+  minPrice: 1200,
   maxResults: 40,
   filteredWords: [
     "recherch",

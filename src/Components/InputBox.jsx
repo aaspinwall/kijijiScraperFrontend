@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { Input } from "../Styles/Components";
 
-export default function InputBox(props) {
-  const dispatch = useDispatch();
-  const visible = useSelector((state) => state.showFilters);
+export default function InputBox({
+  config: { id, type, value: inputValue },
+  submit,
+  writeToState,
+  className,
+}) {
+  const [value, setValue] = useState(inputValue);
+  const [initialValue] = useState(inputValue);
 
-  const [value, setValue] = useState(props.value);
-  const [initialValue] = useState(props.value);
-  const submit = props.submit
-    ? props.submit
-    : (e) =>
-        console.log(
-          "Pressed enter but did not assign a submit function on component: ",
-          e.target
-        );
   const handleInput = (e) => {
     if (e.key === "Enter") {
-      props.submit(e);
+      submit(e);
     }
     setValue(e.target.value);
   };
@@ -26,12 +22,12 @@ export default function InputBox(props) {
     }
   };
   const isOut = (e) => {
-    props.writeToState(e);
+    writeToState(e);
     if (e.key) {
       //TAB out with no value
       if (e.key === "Tab") {
         if (toString(e.target.value) === "") {
-          props.writeToState(initialValue);
+          writeToState(initialValue);
         }
       }
       if (e.key === "Enter") {
@@ -41,10 +37,10 @@ export default function InputBox(props) {
   };
 
   return (
-    <input
-      className={props.className}
-      id={props.id}
-      type={props.type}
+    <Input
+      className={className}
+      id={id}
+      type={type}
       value={value}
       placeholder={initialValue}
       onChange={handleInput}
@@ -54,6 +50,6 @@ export default function InputBox(props) {
         isOut(e);
       }}
       onKeyDown={(e) => isOut(e)}
-    ></input>
+    ></Input>
   );
 }

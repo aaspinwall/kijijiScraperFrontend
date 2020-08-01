@@ -62,9 +62,15 @@ function reducer(state, action) {
         showMap: payload,
       };
 
+    case "changeState":
+      //target a specific value
+      const target = action.target;
+      return {
+        ...state,
+        [target]: payload,
+      };
+
     case "windowInfo":
-      const windowInfo = state.windowInfo;
-      //const id = action.id;
       return {
         ...state,
         windowInfo: { ...state.windowInfo, [payload.id]: payload.value },

@@ -112,7 +112,7 @@ function Results() {
 
     return <Result ad={element} key={i} index={i} identifier={`result_${i}`} />;
   });
-  const loading = <Loading></Loading>;
+  const loading = <Loading />;
 
   const display = () => {
     switch (lifeCycle) {

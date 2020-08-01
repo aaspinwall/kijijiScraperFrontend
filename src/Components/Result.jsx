@@ -176,7 +176,7 @@ export default function Result(props) {
               ""
             )}
           </Location>
-          <Button
+          <ButtonShow
             onClick={() => {
               window.scrollTo(0, -32);
               if (!showMap) {
@@ -193,7 +193,7 @@ export default function Result(props) {
             }}
           >
             Show in map
-          </Button>
+          </ButtonShow>
           {showMore ? (
             <Kijiji
               visible={showMore}
@@ -264,6 +264,10 @@ const AllImages = styled.div`
     width: 30vw;
     max-height: 15vh;
   }
+`;
+
+const ButtonShow = styled(Button)`
+  width: 100%;
 `;
 
 const Text = styled.div`
