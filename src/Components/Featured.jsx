@@ -3,14 +3,10 @@ import { FeaturedImages } from "../Styles/Components";
 
 import { neighbourhoods as data } from "../Data/content";
 
-const neighbourhoods: any = data;
-
-interface Props {
-  children: any;
-}
+const neighbourhoods = data;
 
 const getNbhds = () => {
-  return Object.keys(neighbourhoods).map((keyName: any) => {
+  return Object.keys(neighbourhoods).map((keyName) => {
     const neighbourhoodObject = neighbourhoods[keyName];
     return (
       <div>
@@ -22,7 +18,7 @@ const getNbhds = () => {
   });
 };
 
-export default function Featured({ children }: Props): React.ReactElement {
+export default function Featured({ children }) {
   return (
     <div>
       <div>{children}</div>
