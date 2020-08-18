@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./Styles/Style.css";
 import ToDos from "./Components/ToDos";
 import Main from "./Components/Main";
@@ -10,20 +10,18 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route exact path='/debug'>
-            <Debug />
-          </Route>
-          <Route exact path='/results'>
-            <Main />
-          </Route>
-          <Route exact path='/todo'>
-            <ToDos />
-          </Route>
-          <Route exact path='/'>
-            <Intro />
-          </Route>
-        </Switch>
+        <Route exact path='/debug'>
+          <Debug />
+        </Route>
+        <Route exact path='/results'>
+          <Main />
+        </Route>
+        <Route exact path='/todo'>
+          <ToDos />
+        </Route>
+        <Route exact path='/'>
+          <Intro />
+        </Route>
       </Router>
     );
   }

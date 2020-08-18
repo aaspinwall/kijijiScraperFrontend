@@ -10,8 +10,6 @@ import OldSearch from "./OldSearch";
 import { Content, Top } from "../Styles/Components";
 import { search as s } from "../Utilities/utilityFunctions";
 import { apiCall } from "../Utilities/utilityFunctions";
-import UseEventListener from "../Utilities/hooks";
-
 import { useSelector, useDispatch } from "react-redux";
 import { read } from "../Utilities/database";
 
