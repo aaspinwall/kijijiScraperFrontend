@@ -9,6 +9,7 @@ import Overlay from "./Overlay";
 import OldSearch from "./OldSearch";
 import { Content, Top } from "../Styles/Components";
 import { search as s } from "../Utilities/utilityFunctions";
+import { apiCall } from "../Utilities/utilityFunctions";
 import UseEventListener from "../Utilities/hooks";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -64,7 +65,6 @@ export default function Mainhooks() {
     s(JSON.stringify(message), handleResponse, () =>
       console.log("Search function finished")
     );
-    //search(JSON.stringify(message));
   };
 
   const arrangeView = () => {
@@ -134,23 +134,16 @@ export default function Mainhooks() {
   };
 
   useEffect(() => {
-    //Check if server is live
     let runningLive;
-    const isServerRunning = async () => {
-      try {
-        const url = "https://limitless-cove-26677.herokuapp.com/host";
-        const body = await fetch(url);
-        const response = await body.json();
-        runningLive = response.response;
-      } catch (error) {
-        runningLive = false;
-      }
-    };
-    isServerRunning();
+    const url = `https://limitless-cove-26677.herokuapp.com/host`;
+    apiCall(url, (res) => {
+      runningLive = res.response;
+    });
 
     //Check if global state has filteredSearch
     const emptySearch = searchResults[0].title === "Nothing here";
-    if (emptySearch || runningLive) {
+    console.log("Empty search? ", emptySearch);
+    if (emptySearch || !runningLive) {
       read(`/users/public/latest/results`, (response) => {
         console.log(response);
         dispatcher.writeSearchResults(response);

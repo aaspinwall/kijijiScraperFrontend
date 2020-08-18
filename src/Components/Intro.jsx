@@ -25,7 +25,7 @@ export default function Intro() {
           </Welcome>
         </WrappedText>
       </TopBanner>
-      <Interactive>
+      <Search>
         {initial ? (
           <Overlay
             forceVisible={{ height: "30vh" }}
@@ -37,7 +37,7 @@ export default function Intro() {
         ) : (
           <Loading />
         )}
-      </Interactive>
+      </Search>
       <Featured>
         <h3>Explore Montreal's Buroughs</h3>
       </Featured>
@@ -49,8 +49,9 @@ const handleSubmit = () => {
   //show cats instead of search
 };
 
-const Interactive = styled.div`
-  margin: 0 15%;
+const Search = styled.div`
+  max-width: 500px;
+  margin: auto;
   min-height: 40vh;
 `;
 
@@ -110,7 +111,9 @@ const WrappedText = styled.div`
 
 const Welcome = styled.div`
   z-index: 100;
-  font-size: 3rem;
+  font-size: 2rem;
+  width: 50%;
+
   > div {
     transition: opacity 0.4s ease-in-out;
   }

@@ -18,6 +18,24 @@ const keys = { googleMapsApiKey: "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U" };
 /**
  * Sends search object to the server and returns formatted ads
  *
+ * @param {string} url
+ * @param {function} callback returns the response / false if error
+ * @return {undefined}
+ */
+export const apiCall = async (url, callback) => {
+  try {
+    console.log("apiCall on ", url);
+    const body = await fetch(url);
+    const response = await body.json();
+    callback(response);
+  } catch (error) {
+    console.log("API Call failed with error message: ", error);
+    return null;
+  }
+};
+/**
+ * Sends search object to the server and returns formatted ads
+ *
  * @param {string} message JSON stringified message
  * @param {function} responseCallback returns results or error object
  * @param {function} onCompleteCallback (optional)
