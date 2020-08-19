@@ -19,7 +19,7 @@ const initialValues = {
 
 const validate = async (values) => {
   const errors = {};
-  if (!values.keywords) errors.keywords = "This field is required";
+  if (!values.keywords) errors.keywords = "Add a keyword";
   if (values.minPrice <= 0) errors.minPrice = "Invalid value";
   if (values.maxPrice <= 0) errors.maxPrice = "Invalid value";
   if (values.maxResults <= 0) errors.maxResults = "Invalid value";

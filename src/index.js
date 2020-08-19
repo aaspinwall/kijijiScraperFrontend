@@ -7,13 +7,17 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { persistor, store } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate persistor={persistor} loading={null}>
-      <App />
-    </PersistGate>
-  </Provider>,
+  <ThemeProvider>
+    <CSSReset />
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </ThemeProvider>,
   document.getElementById("root")
 );
 

@@ -1,17 +1,18 @@
 import React from "react";
 import { Button } from "@chakra-ui/core";
 
-const ButtonStandard = () => (
+const ButtonStandard = ({ text, isLoading, isDisabled }) => (
   <Button
-    size='md'
-    variant='solid'
-    isLoading={false}
-    isDisabled={false}
-    m={"0rem"}
-    p={"1.6rem"}
-    variantColor={"red"}
+    mt={4}
+    variantColor='red'
+    isLoading={isLoading}
+    isDisabled={isDisabled}
+    size={"lg"}
+    type='submit'
+    p={"1.7rem"}
+    w={"100%"}
   >
-    Click me
+    {text}
   </Button>
 );
 
