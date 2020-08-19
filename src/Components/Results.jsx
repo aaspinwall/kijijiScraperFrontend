@@ -62,13 +62,14 @@ function Results() {
   const filterResults = () => {
     //
     const filteredResults = searchResults.filter((element) => {
+      const hasProps = element.attributes.location;
       const title = element.title;
       return filteredWords.every((word) => {
         //Check if it passes all the filteredWords and doesn't contain special characters
         const noWordFound =
           title.toLowerCase().search(word) === -1 &&
           title.replace(/\W/g, "").length > 4;
-        return noWordFound;
+        return noWordFound && hasProps;
       });
     });
 

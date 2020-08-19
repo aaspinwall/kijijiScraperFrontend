@@ -53,6 +53,7 @@ export default function Mainhooks() {
         //Trigger cat animation
         dispatcher.lifeCycle("error");
       } else {
+        console.log("Search returned: ", res);
         //Pass search results to Redux state
         dispatcher.writeSearchResults(res);
         //Static renders results the rest of the UI
@@ -60,6 +61,7 @@ export default function Mainhooks() {
       }
     };
     //Connect to API
+    console.log(message);
     s(JSON.stringify(message), handleResponse, () =>
       console.log("Search function finished")
     );
@@ -139,7 +141,7 @@ export default function Mainhooks() {
     });
 
     //Check if global state has filteredSearch
-    const emptySearch = searchResults[0].title === "Nothing here";
+    const emptySearch = searchResults.length < 4;
     console.log("Empty search? ", emptySearch);
     if (emptySearch || !runningLive) {
       read(`/users/public/latest/results`, (response) => {

@@ -47,7 +47,11 @@ export const search = async (
   callbackOnComplete
 ) => {
   //Heroku server
-  const url = "https://limitless-cove-26677.herokuapp.com/search";
+  const hostUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : "https://limitless-cove-26677.herokuapp.com";
+  const url = `${hostUrl}/search`;
   try {
     const req = await fetch(url, {
       method: "POST",
