@@ -8,9 +8,10 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import customTheme from "./theme";
 
 ReactDOM.render(
-  <ThemeProvider>
+  <ThemeProvider theme={customTheme}>
     <CSSReset />
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
