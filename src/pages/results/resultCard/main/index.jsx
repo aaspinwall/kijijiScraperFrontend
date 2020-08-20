@@ -1,11 +1,12 @@
 import React from "react";
+import { Image } from "./elements";
 
-const Main = ({ data }) => {
+const Main = ({ data, focused }) => {
   const { title, price, image } = data;
   return (
     <>
       <div>{title}</div>
-      <img src={image} />
+      <Image src={image} focused={focused} />
       <div>Price: {price}</div>
     </>
   );

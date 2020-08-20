@@ -1,6 +1,11 @@
 import React from "react";
 import Main from "./main";
+import Images from "./images";
+import Amenities from "./amenities";
+import Description from "./description";
+import Drawer from "../../../Components/buttons/discrete";
 import { Wrapper } from "./elements";
+import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 
 const Result = ({ ad }) => {
   const {
@@ -15,17 +20,30 @@ const Result = ({ ad }) => {
 
   return (
     <Wrapper>
-      <Main data={{ title, image, price }} onClick={() => setOpen(true)}></Main>
+      <Main
+        data={{ title, image, price }}
+        focused={isOpen}
+        onClick={() => setOpen(true)}
+      ></Main>
       {isOpen ? (
         <>
-          <div>Other Pictures</div>
-          <div>Title and price</div>
-          <div>Amenities</div>
-          <div>Description</div>
+          <Images images={images}>Other Pictures</Images>
+          <hr></hr>
+          <Amenities data={attributes}>Amenities</Amenities>
+          <hr></hr>
+          <Description text={description} />
+          <hr></hr>
           <div>Location</div>
         </>
       ) : null}
-      <div onClick={() => setOpen(!isOpen)}>{!isOpen ? "+++" : "---"}</div>
+      <Drawer
+        width={"100%"}
+        size={"lg"}
+        p={"1rem"}
+        onClick={() => setOpen(!isOpen)}
+      >
+        {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+      </Drawer>
     </Wrapper>
   );
 };

@@ -6,45 +6,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 import Map from "./Map";
 import { useSelector, useDispatch } from "react-redux";
-import { compareTwoStrings } from "string-similarity";
-
-const formatTitle = (str) => {
-  const cleanStr = str.replace(/([*►◄!])+/g, "").toLowerCase();
-  const regex = /[a-z]/;
-  const found = cleanStr.match(regex);
-  return cleanStr.replace(found[0], found[0].toUpperCase());
-};
-
-const passSimilarity = (a, b, threshold = 0.7) => {
-  const rating = compareTwoStrings(a, b);
-  return rating > threshold;
-};
-
-const removeDuplicates = (arr) => {
-  const filtered = arr.filter((result) => {
-    let strikes = 0;
-    const reference = result.description;
-    const reference2 = result.title;
-    if (!reference) {
-      console.log("Did not work");
-      return;
-    }
-    arr.forEach((res2) => {
-      const comparison = res2.description;
-      const comparison2 = res2.title;
-      if (
-        passSimilarity(comparison, reference) ||
-        passSimilarity(comparison2, reference2)
-      ) {
-        strikes += 1;
-      }
-    });
-
-    return strikes === 1;
-  });
-
-  return filtered.reverse();
-};
+import { formatResults } from "../Utilities/resultCleanup";
 
 function Results() {
   const dispatch = useDispatch();
@@ -56,44 +18,18 @@ function Results() {
     showMap,
   } = useSelector((state) => state);
 
-  const applyFilter = (arr) => {
+  const passToGlobalState = (arr) => {
     dispatch({ type: "filtered", payload: arr });
-  };
-  const filterResults = () => {
-    //
-    const filteredResults = searchResults.filter((element) => {
-      const hasProps = element.attributes.location;
-      const title = element.title;
-      return filteredWords.every((word) => {
-        //Check if it passes all the filteredWords and doesn't contain special characters
-        const noWordFound =
-          title.toLowerCase().search(word) === -1 &&
-          title.replace(/\W/g, "").length > 4;
-        return noWordFound && hasProps;
-      });
-    });
-
-    //Apply formatting rules
-    const formattedResults = filteredResults.map((result, i) => {
-      const { title } = result;
-      return { ...result, title: formatTitle(title) };
-    });
-    const noDuplicates = removeDuplicates(formattedResults);
-
-    return noDuplicates;
-  };
-
-  const applyFilters = () => {
-    const formattedTitles = filterResults();
-    applyFilter(formattedTitles);
   };
 
   useEffect(() => {
-    applyFilters();
+    const cleanData = formatResults(searchResults, filteredWords);
+    passToGlobalState(cleanData);
   }, [searchResults]);
 
   useEffect(() => {
-    applyFilters();
+    const cleanData = formatResults(searchResults, filteredWords);
+    passToGlobalState(cleanData);
   }, []);
 
   const allAttrs = [];

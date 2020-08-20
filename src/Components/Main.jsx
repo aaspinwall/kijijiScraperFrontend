@@ -143,7 +143,8 @@ export default function Mainhooks() {
     //Check if global state has filteredSearch
     const emptySearch = searchResults.length < 4;
     console.log("Empty search? ", emptySearch);
-    if (emptySearch || !runningLive) {
+    if (emptySearch) {
+      console.log("Reading from database...");
       read(`/users/public/latest/results`, (response) => {
         console.log(response);
         dispatcher.writeSearchResults(response);

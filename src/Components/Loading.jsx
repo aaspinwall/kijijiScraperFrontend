@@ -31,7 +31,6 @@ export default function Loading() {
       });
       const body = await req.json();
       setQuote(body);
-      console.log("The response was: ", body);
     } catch (error) {
       console.log(
         `Error connecting to ${url} / Load operation triggered this error`
@@ -40,8 +39,15 @@ export default function Loading() {
   };
 
   useEffect(() => {
-    console.log(`Kitty gif has been loaded? ${loaded}`);
+    let timeout = setTimeout(() => {
+      console.log("PAGE SHOULD REFRESH");
+      //window.location.reload();
+    }, 1000 * 30);
     getCatQuote();
+    return () => {
+      clearTimeout(timeout);
+      console.log("stopped timer");
+    };
   }, []);
 
   useEffect(() => {

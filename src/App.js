@@ -13,13 +13,13 @@ export default class App extends React.Component {
         <Route exact path='/debug'>
           <Debug />
         </Route>
-        <Route exact path='/results'>
+        <Route exact path='/'>
           <Main />
         </Route>
         <Route exact path='/todo'>
           <ToDos />
         </Route>
-        <Route exact path='/'>
+        <Route exact path='/main'>
           <Intro />
         </Route>
       </Router>

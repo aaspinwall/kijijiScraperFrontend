@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 //import Result from '../../Components/Result'
+import { Wrapper } from "./elements";
 import Result from "./resultCard";
+import { Heading } from "@chakra-ui/core";
 import { formatResults } from "../../Utilities/resultCleanup/index";
 
 const Results = () => {
@@ -13,21 +15,17 @@ const Results = () => {
     "stationnement",
     "parking",
     "cherche",
-    "metro",
-    "arts",
-    "colloc",
-    "plateau",
   ];
 
   React.useEffect(() => formatResults(results, blacklist), []);
 
   return (
-    <div>
-      <div>Results</div>
-      {results.map((ad) => (
+    <Wrapper>
+      <Heading>Results Page</Heading>
+      {formatResults(results, blacklist).map((ad) => (
         <Result ad={ad} />
       ))}
-    </div>
+    </Wrapper>
   );
 };
 

@@ -24,3 +24,15 @@ code {
 link {
   color: #61dafb;
 }
+
+p {
+  text-align: left;
+}
+
+.sel:hover {
+  cursor: pointer;
+}
+.focus:focus {
+  outline: -webkit-focus-ring-color auto 1px;
+  width: fit-content;
+}
