@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 //import Result from '../../Components/Result'
 import { Wrapper } from "./elements";
-import Result from "./resultCard";
+import Result from "./card";
 import { Heading } from "@chakra-ui/core";
 import { formatResults } from "../../Utilities/resultCleanup/index";
 

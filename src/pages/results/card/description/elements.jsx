@@ -9,5 +9,5 @@ export const Wrapper = styled.div`
 `;
 export const Paragraph = styled.p`
   white-space: pre-wrap;
-  line-height: initial;
+  line-height: 1.8rem;
 `;

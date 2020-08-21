@@ -14,3 +14,9 @@ export const Image = styled.img`
     height: ${(props) => (props.focused ? "50vh" : "30vh")};
   }
 `;
+
+export const Wrapper = styled.div`
+  > * {
+    margin-bottom: 1rem;
+  }
+`;

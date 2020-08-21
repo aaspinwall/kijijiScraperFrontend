@@ -9,4 +9,11 @@ export const Wrapper = styled.div`
   hr {
     margin: 1rem;
   }
+  h1,
+  h2,
+  h3 {
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: left;
+  }
 `;

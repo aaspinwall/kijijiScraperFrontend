@@ -132,7 +132,7 @@ export const filterAmenities = (amenities) => {
     concierge: { text: "concierge", value: "", icon: ""  },
     twentyfourhoursecurity: { text: "security", value: "", icon: ""  },
     bicycleparking: { text: "bicycle parking", value: "", icon: ""  },
-    storagelocker: { text: "storagel ocker", value: "", icon: ""  },
+    storagelocker: { text: "storagel locker", value: "", icon: ""  },
     elevator: { text: "elevator", value: "", icon: ""  },
     wheelchairaccessible: { text: "accessible", value: "", icon: ""  },
     braillelabels: { text: "braille labels", value: "", icon: ""  },

@@ -21,4 +21,16 @@ export const Wrapper = styled.div`
   .slideRight {
     padding-left: 0.5rem;
   }
+  .amen-grid {
+    margin: 0 0 1rem;
+    grid-template-columns: 1fr 1fr;
+    > div {
+      :nth-child(1) {
+        text-align: left;
+      }
+      :nth-child(2) {
+        text-align: right;
+      }
+    }
+  }
 `;

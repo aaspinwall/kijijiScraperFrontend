@@ -3,6 +3,7 @@ import Main from "./main";
 import Images from "./images";
 import Amenities from "./amenities";
 import Description from "./description";
+import Location from "./location";
 import Drawer from "../../../Components/buttons/discrete";
 import { Wrapper } from "./elements";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
@@ -23,17 +24,17 @@ const Result = ({ ad }) => {
       <Main
         data={{ title, image, price }}
         focused={isOpen}
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!isOpen)}
       ></Main>
       {isOpen ? (
         <>
-          <Images images={images}>Other Pictures</Images>
+          <Images images={images} />
           <hr></hr>
-          <Amenities data={attributes}>Amenities</Amenities>
+          <Amenities data={attributes} />
           <hr></hr>
           <Description text={description} />
           <hr></hr>
-          <div>Location</div>
+          <Location data={attributes.location} />
         </>
       ) : null}
       <Drawer

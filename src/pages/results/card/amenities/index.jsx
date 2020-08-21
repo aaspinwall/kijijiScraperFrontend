@@ -1,6 +1,6 @@
 import React from "react";
 import { filterAmenities } from "../../../../Utilities/resultCleanup";
-import { Flex, Box, Heading } from "@chakra-ui/core";
+import { Flex, Box, Heading, Grid } from "@chakra-ui/core";
 import { Wrapper } from "./elements";
 import _ from "lodash/capitalize";
 
@@ -9,13 +9,15 @@ const Amenities = ({ data }) => {
 
   return (
     <Wrapper>
-      <Heading as='div'>Amenities</Heading>
-      {amenities.map(([key, value]) => (
-        <Flex>
-          <Box mr='2rem'>{value.text}</Box>
-          <Box>{value.value}</Box>
-        </Flex>
-      ))}
+      <Heading as='h2'>Amenities</Heading>
+      <Grid>
+        {amenities.map(([key, value]) => (
+          <Grid w='100%' className='amen-grid'>
+            <Box mr='2rem'>{value.text}</Box>
+            <Box>{value.value}</Box>
+          </Grid>
+        ))}
+      </Grid>
     </Wrapper>
   );
 };

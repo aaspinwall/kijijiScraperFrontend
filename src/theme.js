@@ -2,5 +2,5 @@ import { theme } from "@chakra-ui/core";
 
 export default {
   ...theme,
-  fonts: { ...theme.fonts, body: "Cabin", heading: "Cabin" },
+  fonts: { ...theme.fonts, body: "Cabin", heading: "Cabin", mono: "Cabin" },
 };
