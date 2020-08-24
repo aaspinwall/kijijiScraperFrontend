@@ -12,11 +12,14 @@ import {
   Image,
   Box,
 } from "@chakra-ui/core";
+import Fade from "react-reveal/Fade";
+
 import { Wrapper } from "./elements";
 
 const Images = ({ images }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [focused, setFocus] = React.useState(null);
+  const wrapper = React.useRef(null);
 
   const openModal = (e) => {
     const id = e.target.id;
@@ -25,16 +28,22 @@ const Images = ({ images }) => {
     onOpen();
   };
 
+  React.useEffect(() => {
+    console.trace(wrapper);
+  }, []);
+
   return (
-    <Wrapper>
-      {images.map((image, i) => (
-        <img
-          src={image}
-          id={`image-k-${i}`}
-          key={`image-k-${i}`}
-          onClick={(e) => openModal(e)}
-        />
-      ))}
+    <Wrapper ref={wrapper}>
+      <Fade>
+        {images.map((image, i) => (
+          <img
+            src={image}
+            id={`image-k-${i}`}
+            key={`image-k-${i}`}
+            onClick={(e) => openModal(e)}
+          />
+        ))}
+      </Fade>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent maxW='700px'>

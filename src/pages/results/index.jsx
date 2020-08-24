@@ -21,7 +21,7 @@ const Results = () => {
 
   return (
     <Wrapper>
-      <Heading>Results Page</Heading>
+      <Heading>SEARCHBAR</Heading>
       {formatResults(results, blacklist).map((ad) => (
         <Result ad={ad} />
       ))}

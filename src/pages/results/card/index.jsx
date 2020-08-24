@@ -1,6 +1,5 @@
 import React from "react";
 import Main from "./main";
-import Images from "./images";
 import Amenities from "./amenities";
 import Description from "./description";
 import Location from "./location";
@@ -22,14 +21,12 @@ const Result = ({ ad }) => {
   return (
     <Wrapper>
       <Main
-        data={{ title, image, price }}
+        data={{ title, image, images, price }}
         focused={isOpen}
         onClick={() => setOpen(!isOpen)}
       ></Main>
       {isOpen ? (
         <>
-          <Images images={images} />
-          <hr></hr>
           <Amenities data={attributes} />
           <hr></hr>
           <Description text={description} />

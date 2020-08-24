@@ -16,4 +16,8 @@ export const Wrapper = styled.div`
     width: 100%;
     text-align: left;
   }
+  svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
 `;

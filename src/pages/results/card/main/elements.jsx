@@ -19,4 +19,16 @@ export const Wrapper = styled.div`
   > * {
     margin-bottom: 1rem;
   }
+  transition: 0.8s ease-in-out;
+
+  .titleandprice {
+    > * {
+      width: 100%;
+      font-size: ${(props) => (props.focused ? "1.5rem" : "1rem")};
+    }
+    > span {
+      text-align: right;
+    }
+    grid-template-columns: ${(props) => (props.focused ? "1fr" : "2fr 1fr")};
+  }
 `;

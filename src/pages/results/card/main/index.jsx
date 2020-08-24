@@ -1,18 +1,22 @@
 import React from "react";
-import { Heading, Text } from "@chakra-ui/core";
+import { Heading, Text, Grid } from "@chakra-ui/core";
+import Images from "../images";
 import { Wrapper, Image } from "./elements";
 
 const Main = ({ data, focused, ...props }) => {
-  const { title, price, image } = data;
+  const { title, price, image, images } = data;
   return (
-    <Wrapper>
+    <Wrapper focused={focused}>
       <Image src={image} focused={focused} {...props} />
-      <Heading as='h1' {...props}>
-        {title}
-      </Heading>
-      <Text fontWeight='bold' {...props}>
-        {`$ ${price} CAD`}
-      </Text>
+      {focused ? <Images images={images} /> : null}
+      <Grid className='titleandprice'>
+        <Heading as='h1' {...props}>
+          {title}
+        </Heading>
+        <Text as='span' fontWeight='bold' {...props}>
+          {`$ ${price} CAD`}
+        </Text>
+      </Grid>
     </Wrapper>
   );
 };
