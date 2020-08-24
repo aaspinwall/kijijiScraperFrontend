@@ -4,7 +4,7 @@ export const Image = styled.img`
   display: flex;
   justify-content: center;
   background-origin: border-box;
-  border-radius: 5px;
+  border-radius: 14px;
   object-fit: ${(props) => (props.focused ? "contain" : "cover")};
   height: ${(props) => (props.focused ? "40vh" : "30vh")};
   width: 100%;
@@ -25,6 +25,9 @@ export const Wrapper = styled.div`
     > * {
       width: 100%;
       font-size: ${(props) => (props.focused ? "1.5rem" : "1rem")};
+    }
+    h1 {
+      font-weight: ${(props) => (props.focused ? "bold" : "normal")};
     }
     > span {
       text-align: right;

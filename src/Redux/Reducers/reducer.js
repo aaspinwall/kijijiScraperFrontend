@@ -1,9 +1,9 @@
 // Reducer
 function reducer(state, action) {
   const payload = action.payload;
+  const id = action.id;
   switch (action.type) {
     case "input":
-      const id = action.id;
       return {
         ...state,
         [id]: payload,
@@ -50,6 +50,11 @@ function reducer(state, action) {
       return {
         ...state,
         focusedResult: { show: payload.show, index: payload.index },
+      };
+    case "focus":
+      return {
+        ...state,
+        display: { ...state["display"], [id]: payload },
       };
     case "floatingVisibility":
       return {

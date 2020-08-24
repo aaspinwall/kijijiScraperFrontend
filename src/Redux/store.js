@@ -2,7 +2,9 @@ import { createStore } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import reducer from "../Redux/Reducers/reducer";
+
 const initialState = {
+  display: {},
   test: "",
   score: 0,
   counter: 0,
@@ -78,6 +80,7 @@ const persistConfig = {
     "lifeCycle",
     "windowInfo",
     "isLive",
+    "display",
   ],
 };
 

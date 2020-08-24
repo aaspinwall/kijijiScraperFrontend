@@ -4,16 +4,17 @@ import Images from "../images";
 import { Wrapper, Image } from "./elements";
 
 const Main = ({ data, focused, ...props }) => {
-  const { title, price, image, images } = data;
+  const { title, price, images } = data;
+
   return (
     <Wrapper focused={focused}>
-      <Image src={image} focused={focused} {...props} />
+      <Image src={images[0]} focused={focused} {...props} />
       {focused ? <Images images={images} /> : null}
       <Grid className='titleandprice'>
-        <Heading as='h1' {...props}>
+        <Heading as='h1' mt='1rem' {...props}>
           {title}
         </Heading>
-        <Text as='span' fontWeight='bold' {...props}>
+        <Text as='span' fontWeight='bold' mt='1rem' {...props}>
           {`$ ${price} CAD`}
         </Text>
       </Grid>
