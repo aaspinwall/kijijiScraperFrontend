@@ -50,7 +50,7 @@ const Result = ({ ad, i }) => {
           <Location data={attributes.location} />
         </>
       ) : null}
-      <Toggler width={"100%"} size={"lg"} p={"1rem"} onClick={toggle}>
+      <Toggler w={"100%"} h='2rem' size={"lg"} p='0' m='0' onClick={toggle}>
         {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
       </Toggler>
     </Wrapper>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Heading, Text, Grid } from "@chakra-ui/core";
+import { Heading, Text, Grid, Flex, Stack } from "@chakra-ui/core";
 import Images from "../images";
 import { Wrapper, Image } from "./elements";
 
@@ -10,14 +10,14 @@ const Main = ({ data, focused, ...props }) => {
     <Wrapper focused={focused}>
       <Image src={images[0]} focused={focused} {...props} />
       {focused ? <Images images={images} /> : null}
-      <Grid className='titleandprice'>
-        <Heading as='h1' mt='1rem' {...props}>
+      <Stack className='titleandprice'>
+        <Heading as='h1' m='0' {...props}>
           {title}
         </Heading>
-        <Text as='span' fontWeight='bold' mt='1rem' {...props}>
+        <Text as='span' fontWeight='bold' {...props}>
           {`$ ${price} CAD`}
         </Text>
-      </Grid>
+      </Stack>
     </Wrapper>
   );
 };

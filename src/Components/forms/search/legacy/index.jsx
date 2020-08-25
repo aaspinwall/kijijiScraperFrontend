@@ -7,24 +7,34 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/core";
-import Button_Action from "../../../Templates/Button_Action";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field } from "formik";
 import { Container, Section, Box } from "./elements";
 
-const Search = () => {
-  React.useEffect(() => preventAutoFill(), []);
+const Search = ({ query, close }) => {
+  const { keywords, minPrice, maxPrice, maxResults } = query;
+  React.useEffect(() => {
+    const catchEsc = (e) => {
+      if (e.key === "Escape") close();
+    };
+    preventAutoFill();
+    document.querySelector("#keywords").focus();
+    window.addEventListener("keydown", catchEsc);
+    return () => {
+      window.removeEventListener("keydown", catchEsc);
+    };
+  }, []);
 
   const initialValues = {
-    keywords: "",
-    minPrice: 1000,
-    maxPrice: 1500,
-    maxResults: 40,
+    keywords: keywords ? keywords : "",
+    minPrice: minPrice ? minPrice : 1000,
+    maxPrice: maxPrice ? maxPrice : 1500,
+    maxResults: maxResults ? maxResults : 20,
   };
   const placeholders = {
     keywords: "Pick your neighbourhood",
     minPrice: 1000,
     maxPrice: 1500,
-    maxResults: 40,
+    maxResults: 20,
   };
 
   const validate = async (values) => {

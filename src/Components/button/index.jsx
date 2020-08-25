@@ -1,8 +1,9 @@
 import React from "react";
 import { Button } from "@chakra-ui/core";
 
-const ButtonStandard = ({ text, isLoading, isDisabled }) => (
+const ButtonStandard = ({ text, isLoading, isDisabled, ...props }) => (
   <Button
+    {...props}
     mt={4}
     variantColor='red'
     isLoading={isLoading}

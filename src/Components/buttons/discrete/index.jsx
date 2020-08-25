@@ -6,7 +6,7 @@ const Discrete = ({ children, ...props }) => {
     <Button
       {...props}
       variant='ghost'
-      m={"1rem 0"}
+      m={props.m ? props.m : "1rem 0"}
       variantColor={"transparent"}
     >
       {children}

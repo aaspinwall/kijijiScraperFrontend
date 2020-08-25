@@ -29,12 +29,15 @@ export default function Walkscore({ locationData }) {
     const url = `/.netlify/functions/hello`;
     const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
     const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
-    console.log("formatted url", formattedUrl);
 
-    //post(url, formattedUrl, writeResponse);
+    post(url, formattedUrl, writeResponse);
   }, []);
 
-  const logo = () => {
+  useEffect(() => {
+    console.log(serverResponse);
+  }, [serverResponse]);
+
+  const Logo = () => {
     return serverResponse.logo_url ? (
       <img src={serverResponse.logo_url}></img>
     ) : (
@@ -42,24 +45,43 @@ export default function Walkscore({ locationData }) {
     );
   };
 
+  const color = (score) => {
+    if (score >= 70) {
+      return "green";
+    } else {
+      if (score > 50) {
+        return "yellow";
+      } else {
+        return "red";
+      }
+    }
+  };
+
   return (
     <Wrapper>
-      {!serverResponse ? (
+      {serverResponse ? (
         <Box>
-          <div
+          <img
             id='walkscoreLogo'
-            style={{ width: "120px", height: "19px", background: "red" }}
-          ></div>
+            style={{ width: "120px", height: "19px" }}
+            src={serverResponse.logo_url}
+          ></img>
+
           <Grid>
-            <Box>89</Box>
-            <Badge variantColor={"green"}>Very walkable</Badge>
+            <Box>{serverResponse.walkscore}</Box>
+            <Badge variantColor={color(serverResponse.walkscore)}>
+              {serverResponse.description}
+            </Badge>
           </Grid>
           <Grid>
             <Flex>
               <MdDirectionsBike className='icn' />
               <Box>Bike score:</Box>
             </Flex>
-            <Box>91</Box>
+            <Box>{serverResponse.bike.score}</Box>
+            <Badge variantColor={color(serverResponse.bike.score)}>
+              {serverResponse.bike.description}
+            </Badge>
           </Grid>
         </Box>
       ) : (

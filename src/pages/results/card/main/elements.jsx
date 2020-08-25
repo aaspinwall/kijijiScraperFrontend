@@ -28,10 +28,10 @@ export const Wrapper = styled.div`
     }
     h1 {
       font-weight: ${(props) => (props.focused ? "bold" : "normal")};
+      margin-bottom: ${(props) => (props.focused ? "1rem" : "0")};
     }
     > span {
-      text-align: right;
+      text-align: ${(props) => (props.focused ? "right" : "left")};
     }
-    grid-template-columns: ${(props) => (props.focused ? "1fr" : "2fr 1fr")};
   }
 `;

@@ -5,6 +5,7 @@ import reducer from "../Redux/Reducers/reducer";
 
 const initialState = {
   display: {},
+  query: {},
   test: "",
   score: 0,
   counter: 0,

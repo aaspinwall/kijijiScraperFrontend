@@ -12,6 +12,9 @@ export const Container = styled.div`
     max-width: 800px;
     margin: auto;
   }
+  .button {
+    max-width: 100% !important;
+  }
 `;
 
 export const Header = styled.div`

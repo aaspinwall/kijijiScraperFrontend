@@ -56,6 +56,11 @@ function reducer(state, action) {
         ...state,
         display: { ...state["display"], [id]: payload },
       };
+    case "query":
+      return {
+        ...state,
+        query: { ...state["query"], [id]: payload },
+      };
     case "floatingVisibility":
       return {
         ...state,
