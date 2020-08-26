@@ -10,7 +10,7 @@ import {
 import { Formik, Field } from "formik";
 import { Container, Section, Box } from "./elements";
 
-const Search = ({ query, close, submit }) => {
+const Search = ({ query, close, submit, toGlobal }) => {
   const { keywords, minPrice, maxPrice, maxResults } = query;
 
   React.useEffect(() => {
@@ -57,8 +57,8 @@ const Search = ({ query, close, submit }) => {
           validateOnMount={true}
           onSubmit={(values, actions) => submit(values)}
         >
-          {({ handleSubmit, isSubmitting, isValid, errors }) => (
-            <form onSubmit={handleSubmit}>
+          {({ handleSubmit, isSubmitting, isValid, errors, values }) => (
+            <form onSubmit={handleSubmit} onBlur={() => toGlobal(values)}>
               <Field name='keywords'>
                 {({ field, form }) => (
                   <FormControl

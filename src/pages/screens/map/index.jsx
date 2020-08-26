@@ -10,12 +10,11 @@ import debounce from "lodash/debounce";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API;
 
 const Map = ({ results }) => {
-  const { focusedResult, display } = useSelector((state) => state);
+  const { display } = useSelector((state) => state);
   const d = useDispatch();
   const [location, changeLocation] = useState({ zoom: 15 });
   const [windowSize, changeHeight] = useState(null);
   const mapElement = useRef();
-  const pinElement = useRef();
 
   useEffect(() => {
     const latitudeArray = [];
@@ -31,7 +30,11 @@ const Map = ({ results }) => {
       }
       const longitudeAvg = median(longitudeArray);
       const latitudeAvg = median(latitudeArray);
-      changeLocation({ ...location, long: longitudeAvg, lat: latitudeAvg });
+      changeLocation({
+        ...location,
+        long: longitudeAvg,
+        lat: latitudeAvg,
+      });
     }
   }, [results]);
 
@@ -45,14 +48,17 @@ const Map = ({ results }) => {
     window.scrollTo(0, mapPosition - 32);
   }, []);
 
+  //Re-center the map every time a new result is focused
   useEffect(() => {
-    if (focusedResult.show) {
-      const { latitude, longitude } = results[
-        focusedResult.index
-      ].attributes.location;
-      changeLocation({ ...location, long: longitude, lat: latitude });
+    if (display.i) {
+      const { longitude, latitude } = results[display.i].attributes.location;
+      changeLocation({
+        ...location,
+        long: longitude - longitude / 10000,
+        lat: latitude - latitude / 8000,
+      });
     }
-  }, [focusedResult]);
+  }, [display]);
 
   const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
@@ -94,7 +100,6 @@ const Map = ({ results }) => {
                   className={`pin ${isActive ? "" : "pinActive"}`}
                   onClick={pinClick}
                   id={"pin" + i}
-                  ref={pinElement}
                 >
                   📍
                 </div>

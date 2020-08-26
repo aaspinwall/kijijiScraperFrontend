@@ -27,4 +27,7 @@ export const Wrapper = styled.div`
       padding: 0 0.5rem;
     }
   }
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+  }
 `;

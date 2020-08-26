@@ -155,6 +155,6 @@ export const filterAmenities = (amenities) => {
     }
   });
 
-  console.log(validKeys);
+  //console.log(validKeys);
   return validKeys;
 };

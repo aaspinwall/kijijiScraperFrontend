@@ -19,7 +19,7 @@ const initialState = {
   windowInfo: {},
   bottomed: false,
   isLive: "one",
-  searchResults: [
+  /*   searchResults: [
     {
       title: "Nothing here",
       images: [],
@@ -33,7 +33,7 @@ const initialState = {
         },
       },
     },
-  ],
+  ], */
   filteredSearch: [
     {
       title: "Nothing here",

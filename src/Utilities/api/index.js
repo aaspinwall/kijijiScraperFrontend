@@ -16,10 +16,25 @@ export const post = async (url, message, callback) => {
   }
 };
 
+export const get = async (url, callback) => {
+  try {
+    const req = await fetch(url, {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+    });
+    const body = await req.json();
+    callback(body);
+  } catch (error) {
+    console.log(
+      `Error connecting to ${url} / Load operation triggered this error`
+    );
+    callback(error);
+  }
+};
+
 export const search = async (
   message,
   resultsToCallback,
-  callbackOnComplete
+  callbackOnComplete = () => {}
 ) => {
   const { keywords, maxPrice, minPrice, maxResults } = message;
 
@@ -42,7 +57,7 @@ export const search = async (
     const req = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: searchQuery,
+      body: JSON.stringify(searchQuery),
     });
     const body = await req.json();
     resultsToCallback(body);

@@ -1,5 +1,6 @@
 import React from "react";
 import Logo from "../../../Components/logo/index";
+import SingleSearch from "../../../Components/forms/search/single";
 import { useSelector, useDispatch } from "react-redux";
 import { Flex, Input, Stack } from "@chakra-ui/core";
 import Button from "../../../Components/buttons/discrete";
@@ -11,26 +12,28 @@ import { search } from "../../../Utilities/api";
 
 const Header = () => {
   const query = useSelector((state) => state.query);
-  const { keywords, minPrice, maxPrice, maxResults } = query;
+  const { keywords } = query;
   const d = useDispatch(null);
 
   const [open, toggle] = React.useState(false);
-  //const [kw, setKW] = React.useState(keywords);
 
   const handleChange = (e) => {
     const value = e.target.value;
     dsp("query", "keywords", value, d);
-    //setKW(value);
   };
 
   const handleSubmit = () => {
-    alert(query);
-    //search(query, (res) => setGlobal("searchResults", res, d));
+    search(
+      query,
+      (res) => setGlobal("searchResults", res, d),
+      () => setGlobal("lifeCycle", "static", d)
+    );
+    setGlobal("lifeCycle", "loading", d);
   };
 
   const isClosed = () => (
     <Stack w='100%'>
-      <Flex justifyContent='space-between' alignItems='center' w='100%'>
+      <Flex justifyContent='space-around' alignItems='center' w='100%'>
         <Logo />
         <Input
           borderRadius='40px'
@@ -40,20 +43,23 @@ const Header = () => {
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleSubmit();
-              //search(query, (res) => setGlobal("searchResults", res, d));
-              //window.alert(JSON.stringify(query));
             }
           }}
         />
+        <SingleSearch
+          initial={{ keywords: query.keywords }}
+          submit={(res) => alert(res)}
+          toGlobal={(val) => dsp("query", "keywords", val.keywords, d)}
+        />
+        <Filter
+          ml='1rem'
+          onClick={() => {
+            toggle(!open);
+          }}
+        >
+          Filters
+        </Filter>
       </Flex>
-      <Filter
-        mt='1rem'
-        onClick={() => {
-          toggle(!open);
-        }}
-      >
-        Filters
-      </Filter>
     </Stack>
   );
 
@@ -71,7 +77,9 @@ const Header = () => {
         submit={(values) => {
           setGlobal("query", values, d);
           toggle(false);
+          handleSubmit();
         }}
+        toGlobal={(values) => setGlobal("query", values, d)}
       />
     </Stack>
   );

@@ -1,12 +1,11 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { Wrapper } from "./elements";
 import { focus } from "../../../results/dispatchers";
 
 const Thumb = ({ focused, i }) => {
-  const dispatch = useDispatch();
-  const d = dispatch;
+  const d = useDispatch();
 
   const close = () => {
     focus(null, d);

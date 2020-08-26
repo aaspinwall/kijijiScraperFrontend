@@ -33,10 +33,6 @@ export default function Walkscore({ locationData }) {
     post(url, formattedUrl, writeResponse);
   }, []);
 
-  useEffect(() => {
-    console.log(serverResponse);
-  }, [serverResponse]);
-
   const Logo = () => {
     return serverResponse.logo_url ? (
       <img src={serverResponse.logo_url}></img>

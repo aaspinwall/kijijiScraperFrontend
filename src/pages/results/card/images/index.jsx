@@ -28,10 +28,6 @@ const Images = ({ images }) => {
     onOpen();
   };
 
-  React.useEffect(() => {
-    console.trace(wrapper);
-  }, []);
-
   return (
     <Wrapper ref={wrapper}>
       <Fade>
