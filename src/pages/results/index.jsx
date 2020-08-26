@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Wrapper, Main } from "./elements";
 import Result from "./card";
@@ -9,31 +9,29 @@ import Map from "../screens/map";
 import { Heading, Grid, Box, Stack, Input } from "@chakra-ui/core";
 import { formatResults } from "../../Utilities/resultCleanup/index";
 
+//prettier-ignore
+const blacklist = ["recherch","office","bureau","stationnement","parking","cherche"];
+
 const Results = () => {
   const results = useSelector((state) => state.searchResults);
-  const blacklist = [
-    "recherch",
-    "office",
-    "bureau",
-    "stationnement",
-    "parking",
-    "cherche",
-  ];
+  const [filteredResults, setFiltered] = useState(
+    formatResults(results, blacklist)
+  );
 
-  React.useEffect(() => formatResults(results, blacklist), [results]);
-
-  const SearchSmall = () => {
-    return <Input />;
+  const format = () => {
+    setFiltered(formatResults(results, blacklist));
   };
+
+  useEffect(() => format(), []);
+  useEffect(() => format(), [results]);
 
   return (
     <Wrapper>
       <Header />
-      {/* {false ? <Search /> : <SearchSmall />} */}
       <Main>
-        <Map />
+        <Map results={filteredResults} />
         <Stack>
-          {formatResults(results, blacklist).map((ad, i) => (
+          {filteredResults.map((ad, i) => (
             <Result ad={ad} i={i} />
           ))}
         </Stack>

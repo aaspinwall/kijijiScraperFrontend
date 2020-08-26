@@ -10,7 +10,7 @@ const median = (arr) => {
   return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 };
 
-const apiKey = "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U";
+const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API;
 
 function Map() {
   const { filteredSearch, focusedResult, windowInfo } = useSelector(

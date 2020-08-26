@@ -15,3 +15,42 @@ export const post = async (url, message, callback) => {
     callback(error);
   }
 };
+
+export const search = async (
+  message,
+  resultsToCallback,
+  callbackOnComplete
+) => {
+  const { keywords, maxPrice, minPrice, maxResults } = message;
+
+  const searchQuery = {
+    params: {
+      keywords: keywords,
+      maxPrice: maxPrice,
+      minPrice: minPrice,
+    },
+    options: { maxResults: maxResults },
+  };
+
+  //Heroku server
+  const hostUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : "https://limitless-cove-26677.herokuapp.com";
+  const url = `${hostUrl}/search`;
+  try {
+    const req = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: searchQuery,
+    });
+    const body = await req.json();
+    resultsToCallback(body);
+  } catch (error) {
+    const message = `Error connecting to ${url} / Search operation triggered this error`;
+    resultsToCallback({ message, error });
+    console.log(message);
+  } finally {
+    callbackOnComplete();
+  }
+};

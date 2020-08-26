@@ -6,22 +6,27 @@ import Button from "../../../Components/buttons/discrete";
 import Filter from "../../../Components/buttons/rounded";
 import Search from "../../../Components/forms/search/legacy";
 import { Wrapper } from "./elements";
-import { dsp } from "../../results/dispatchers";
+import { dsp, setGlobal } from "../../results/dispatchers";
+import { search } from "../../../Utilities/api";
 
 const Header = () => {
   const query = useSelector((state) => state.query);
   const { keywords, minPrice, maxPrice, maxResults } = query;
   const d = useDispatch(null);
+
   const [open, toggle] = React.useState(false);
-  const [kw, setKW] = React.useState(keywords);
+  //const [kw, setKW] = React.useState(keywords);
 
   const handleChange = (e) => {
     const value = e.target.value;
     dsp("query", "keywords", value, d);
-    setKW(value);
+    //setKW(value);
   };
 
-  const handleKey = (e) => {};
+  const handleSubmit = () => {
+    alert(query);
+    //search(query, (res) => setGlobal("searchResults", res, d));
+  };
 
   const isClosed = () => (
     <Stack w='100%'>
@@ -29,11 +34,15 @@ const Header = () => {
         <Logo />
         <Input
           borderRadius='40px'
-          value={kw}
+          value={keywords}
           placeholder='keywords'
           onChange={handleChange}
           onKeyPress={(e) => {
-            if (e.key === "Enter") toggle(!open);
+            if (e.key === "Enter") {
+              handleSubmit();
+              //search(query, (res) => setGlobal("searchResults", res, d));
+              //window.alert(JSON.stringify(query));
+            }
           }}
         />
       </Flex>
@@ -53,7 +62,17 @@ const Header = () => {
       <Flex justifyContent='space-between'>
         <Button onClick={() => toggle(!open)}>X</Button>
       </Flex>
-      <Search query={{ query, keywords: kw }} close={() => toggle(false)} />
+      <Search
+        query={query}
+        close={(values) => {
+          setGlobal("query", values, d);
+          toggle(false);
+        }}
+        submit={(values) => {
+          setGlobal("query", values, d);
+          toggle(false);
+        }}
+      />
     </Stack>
   );
 

@@ -5,7 +5,7 @@ import reducer from "../Redux/Reducers/reducer";
 
 const initialState = {
   display: {},
-  query: {},
+  query: { keywords: "", maxPrice: 1500, minPrice: 1000, maxResults: 20 },
   test: "",
   score: 0,
   counter: 0,

@@ -35,7 +35,7 @@ const Result = ({ ad, i }) => {
   }, [globallyFocused]);
 
   return (
-    <Wrapper isOpen={isOpen} ref={wrapRef}>
+    <Wrapper isOpen={isOpen} ref={wrapRef} id={`result_${i}`}>
       <Main
         data={{ title, images, price }}
         focused={isOpen}

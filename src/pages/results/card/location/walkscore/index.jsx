@@ -27,7 +27,7 @@ export default function Walkscore({ locationData }) {
       longitude: formatCoord(longitude),
     };
     const url = `/.netlify/functions/hello`;
-    const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
+    const apiKey = process.env.REACT_APP_WALKSCORE_API;
     const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
 
     post(url, formattedUrl, writeResponse);
@@ -87,26 +87,6 @@ export default function Walkscore({ locationData }) {
       ) : (
         <Spinner />
       )}
-      {/*       <div className='walk'>
-        <div>
-          {logo()}
-          <div className='score'>{serverResponse.walkscore}</div>
-        </div>
-        <div className='desc'>{serverResponse.description}</div>
-      </div>
-      <div className='bike'>
-        <div>
-          <div className='line'>
-            <MdDirectionsBike className='icn' /> <div>Bike score: </div>
-          </div>
-          <div className='score'>
-            {serverResponse.bike ? serverResponse.bike.score : ""}
-          </div>
-        </div>
-        <div className='desc'>
-          {serverResponse.bike ? serverResponse.bike.description : ""}
-        </div>
-      </div> */}
     </Wrapper>
   );
 }

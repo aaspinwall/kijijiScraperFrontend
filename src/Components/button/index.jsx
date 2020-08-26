@@ -5,7 +5,7 @@ const ButtonStandard = ({ text, isLoading, isDisabled, ...props }) => (
   <Button
     {...props}
     mt={4}
-    variantColor='red'
+    variantColor={props.color ? props.color : "red"}
     isLoading={isLoading}
     isDisabled={isDisabled}
     size={"lg"}

@@ -13,7 +13,7 @@ const readLocalStorage = () => {
     console.log("Error while reading local storage", error);
   }
 };
-const keys = { googleMapsApiKey: "AIzaSyA7G5DGlaGV4O2-Vr6M5b5Odvf6ikYZG_U" };
+const keys = { googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API };
 
 /**
  * Sends search object to the server and returns formatted ads

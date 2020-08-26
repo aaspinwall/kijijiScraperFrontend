@@ -49,7 +49,7 @@ export default function Walkscore(props) {
       longitude: formatCoord(longitude),
     };
     const url = `/.netlify/functions/hello`;
-    const apiKey = "144a9e29e7c6ce77340eb291ef0b23ab";
+    const apiKey = process.env.REACT_APP_WALKSCORE_API;
     const formattedUrl = `http://api.walkscore.com/score?format=json&address=${message.address}&lat=${message.latitude}&lon=${message.longitude}&transit=1&bike=1&wsapikey=${apiKey}`;
     console.log("formatted url", formattedUrl);
 

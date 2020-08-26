@@ -5,3 +5,7 @@ export const focus = (payload, dispatch) => {
 export const dsp = (type, id, payload, dispatch) => {
   dispatch({ type, id, payload });
 };
+
+export const setGlobal = (target, payload, dispatch) => {
+  dispatch({ type: "changeState", target, payload });
+};

@@ -10,17 +10,18 @@ import {
 import { Formik, Field } from "formik";
 import { Container, Section, Box } from "./elements";
 
-const Search = ({ query, close }) => {
+const Search = ({ query, close, submit }) => {
   const { keywords, minPrice, maxPrice, maxResults } = query;
+
   React.useEffect(() => {
-    const catchEsc = (e) => {
+    /* const catchEsc = (e) => {
       if (e.key === "Escape") close();
-    };
+    }; */
     preventAutoFill();
     document.querySelector("#keywords").focus();
-    window.addEventListener("keydown", catchEsc);
-    return () => {
-      window.removeEventListener("keydown", catchEsc);
+    //window.addEventListener("keydown", catchEsc);
+    return (e) => {
+      console.log(e);
     };
   }, []);
 
@@ -52,14 +53,9 @@ const Search = ({ query, close }) => {
       <Section>
         <Formik
           initialValues={initialValues}
-          validateOnMount={true}
           validate={validate}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
+          validateOnMount={true}
+          onSubmit={(values, actions) => submit(values)}
         >
           {({ handleSubmit, isSubmitting, isValid, errors }) => (
             <form onSubmit={handleSubmit}>
@@ -79,23 +75,6 @@ const Search = ({ query, close }) => {
                 )}
               </Field>
 
-              <Field name='minPrice'>
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={form.errors.minPrice && form.touched.minPrice}
-                  >
-                    <FormLabel htmlFor='minPrice'>Min Price</FormLabel>
-                    <Input
-                      {...field}
-                      type='number'
-                      id='minPrice'
-                      placeholder={placeholders.minPrice}
-                    />
-                    <FormErrorMessage>{errors.minPrice}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-
               <Field name='maxPrice'>
                 {({ field, form }) => (
                   <FormControl
@@ -109,6 +88,23 @@ const Search = ({ query, close }) => {
                       placeholder={placeholders.maxPrice}
                     />
                     <FormErrorMessage>{errors.maxPrice}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <Field name='minPrice'>
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.minPrice && form.touched.minPrice}
+                  >
+                    <FormLabel htmlFor='minPrice'>Min Price</FormLabel>
+                    <Input
+                      {...field}
+                      type='number'
+                      id='minPrice'
+                      placeholder={placeholders.minPrice}
+                    />
+                    <FormErrorMessage>{errors.minPrice}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -132,11 +128,18 @@ const Search = ({ query, close }) => {
                 )}
               </Field>
 
-              <Button
-                text={"Search"}
-                isLoading={isSubmitting}
-                isDisabled={!isValid}
-              />
+              <Field>
+                {({ form }) => (
+                  <Button
+                    text={"Search"}
+                    isLoading={isSubmitting}
+                    isDisabled={!isValid}
+                    onClick={() => {
+                      console.log(form);
+                    }}
+                  />
+                )}
+              </Field>
             </form>
           )}
         </Formik>
