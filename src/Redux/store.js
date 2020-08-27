@@ -6,6 +6,8 @@ import reducer from "../Redux/Reducers/reducer";
 const initialState = {
   display: {},
   query: { keywords: "", maxPrice: 1500, minPrice: 1000, maxResults: 20 },
+  //prettier-ignore
+  blacklist: ["recherch","office","bureau","stationnement","parking","cherche"],
   test: "",
   score: 0,
   counter: 0,
@@ -19,21 +21,6 @@ const initialState = {
   windowInfo: {},
   bottomed: false,
   isLive: "one",
-  /*   searchResults: [
-    {
-      title: "Nothing here",
-      images: [],
-      attributes: {
-        location: {
-          latitude: 0,
-          longitude: 0,
-          mapAddress: "",
-          province: "",
-          mapRadius: 0,
-        },
-      },
-    },
-  ], */
   filteredSearch: [
     {
       title: "Nothing here",

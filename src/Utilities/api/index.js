@@ -63,7 +63,7 @@ export const search = async (
     resultsToCallback(body);
   } catch (error) {
     const message = `Error connecting to ${url} / Search operation triggered this error`;
-    resultsToCallback({ message, error });
+    resultsToCallback({ message, error: message });
     console.log(message);
   } finally {
     callbackOnComplete();

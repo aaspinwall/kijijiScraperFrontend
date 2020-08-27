@@ -106,7 +106,6 @@ const Map = ({ results }) => {
           }}
           center={{ lat: location.lat, lng: location.long }}
           defaultZoom={location.zoom}
-          yesIWantToUseGoogleMapApiInternals={true}
         >
           {results.map((result, i) => {
             const testLat = result.attributes.location.latitude;

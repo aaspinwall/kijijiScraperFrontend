@@ -32,7 +32,10 @@ const Header = () => {
 
         <SingleSearch
           initial={{ keywords: query.keywords }}
-          submit={(res) => alert(res)}
+          submit={(res) => {
+            setGlobal("query", res, d);
+            handleSubmit();
+          }}
           toGlobal={(val) => dsp("query", "keywords", val.keywords, d)}
         />
 
@@ -60,8 +63,8 @@ const Header = () => {
             setGlobal("query", values, d);
             toggle(false);
           }}
-          submit={(values) => {
-            setGlobal("query", values, d);
+          submit={(res) => {
+            setGlobal("query", res, d);
             toggle(false);
             handleSubmit();
           }}

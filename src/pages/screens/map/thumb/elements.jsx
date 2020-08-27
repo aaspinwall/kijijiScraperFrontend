@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
     object-fit: cover;
     height: 30vh;
     min-height: 100px;
-    width: 30vw;
+    width: 50vw;
     min-width: 200px;
     max-width: 400px;
   }
@@ -38,5 +38,10 @@ export const Wrapper = styled.div`
     align-items: center;
     top: -1rem;
     right: -1rem;
+  }
+  @media only screen and (min-width: 1024px) {
+    img {
+      width: 30vw;
+    }
   }
 `;
