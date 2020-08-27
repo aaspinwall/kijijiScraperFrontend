@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { preventAutoFill } from "../../../../Utilities/preventAutoFill/index";
 import Button from "../../../../Components/button";
 import {
@@ -7,23 +7,35 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/core";
-import { Formik, Field } from "formik";
+import { Formik, Field, useFormikContext } from "formik";
 import { Container, Section, Box } from "./elements";
 
-const Search = ({ query, close, submit, toGlobal }) => {
+const Search = ({ query, submit, toGlobal, close }) => {
   const { keywords, minPrice, maxPrice, maxResults } = query;
+  const [shouldClose, setClose] = useState(null);
 
-  React.useEffect(() => {
-    /* const catchEsc = (e) => {
-      if (e.key === "Escape") close();
-    }; */
+  useEffect(() => {
     preventAutoFill();
     document.querySelector("#keywords").focus();
-    //window.addEventListener("keydown", catchEsc);
-    return (e) => {
-      console.log(e);
-    };
   }, []);
+
+  const Leech = () => {
+    const { values } = useFormikContext();
+    useEffect(() => {
+      const listenForEsc = (e) => {
+        if (e.key === "Escape") setClose(true);
+      };
+      window.addEventListener("keyup", listenForEsc);
+      return () => window.removeEventListener("keyup", listenForEsc);
+    }, []);
+
+    useEffect(() => {
+      let vals = values;
+      if (shouldClose) close(values);
+    }, [values]);
+
+    return null;
+  };
 
   const initialValues = {
     keywords: keywords ? keywords : "",
@@ -55,10 +67,16 @@ const Search = ({ query, close, submit, toGlobal }) => {
           initialValues={initialValues}
           validate={validate}
           validateOnMount={true}
-          onSubmit={(values, actions) => submit(values)}
+          onSubmit={(values) => submit(values)}
         >
           {({ handleSubmit, isSubmitting, isValid, errors, values }) => (
-            <form onSubmit={handleSubmit} onBlur={() => toGlobal(values)}>
+            <form
+              onSubmit={handleSubmit}
+              onBlur={() => {
+                toGlobal(values);
+                console.log("BLUR");
+              }}
+            >
               <Field name='keywords'>
                 {({ field, form }) => (
                   <FormControl
@@ -140,6 +158,7 @@ const Search = ({ query, close, submit, toGlobal }) => {
                   />
                 )}
               </Field>
+              <Leech />
             </form>
           )}
         </Formik>

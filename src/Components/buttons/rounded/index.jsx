@@ -6,7 +6,7 @@ const Rounded = ({ children, ...props }) => {
     <Button
       size='sm'
       variant='outline'
-      padding='1.2rem'
+      padding='1rem'
       borderRadius={"30px"}
       {...props}
     >

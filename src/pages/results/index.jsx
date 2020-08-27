@@ -7,10 +7,11 @@ import Search from "../screens/search";
 import Header from "../screens/header";
 import Loading from "../screens/loading";
 import Map from "../screens/map";
-import { Heading, Grid, Box, Stack, Input } from "@chakra-ui/core";
+import { Heading, Grid, Box, Stack, Input, Spinner } from "@chakra-ui/core";
 import { formatResults } from "../../Utilities/resultCleanup/index";
 import { setGlobal } from "../results/dispatchers";
 import isEmpty from "lodash/isEmpty";
+import Fade from "react-reveal/Fade";
 
 //prettier-ignore
 const blacklist = ["recherch","office","bureau","stationnement","parking","cherche"];
@@ -26,10 +27,14 @@ const Results = () => {
     setFiltered(formatResults(results, blacklist));
   };
 
-  useEffect(() => format(), []);
+  useEffect(() => {
+    setGlobal("lifeCycle", "static", d);
+    format();
+  }, []);
+
   useEffect(() => format(), [results]);
 
-  const good = () => (
+  const live = () => (
     <Main>
       <Map results={filteredResults} />
       <Stack>
@@ -40,30 +45,21 @@ const Results = () => {
     </Main>
   );
 
-  const searching = () => (
+  const searching = (flag) => (
     <Box minH='50vh'>
-      <Loading />
+      {flag !== "loading" ? <Spinner mt='2rem'></Spinner> : <Loading />}
     </Box>
   );
 
   const status = () => {
     switch (lifeCycle) {
       case "static":
-        return good();
+        return live();
       case "loading":
-        return searching();
+        return searching("loading");
 
       default:
-        return (
-          <>
-            <div onClick={() => setGlobal("lifeCycle", "static", d)}>
-              Static
-            </div>
-            <div onClick={() => setGlobal("lifeCycle", "loading", d)}>
-              Loading
-            </div>
-          </>
-        );
+        return searching();
     }
   };
 

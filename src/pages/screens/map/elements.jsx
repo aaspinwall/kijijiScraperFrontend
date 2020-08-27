@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: ${(props) => (props.mobile ? "static" : "fixed")};
-  top: ${(props) => props.top.topHeight + "px"};
+  top: ${(props) => props.top};
   left: 50%;
   width: ${(props) => (props.mobile ? "auto" : "50%")};
   padding-bottom: ${(props) => (props.mobile ? "1rem" : 0)};

@@ -10,6 +10,9 @@ export const Image = styled.img`
   width: 100%;
   transition: height 0.4s ease-in-out;
 
+  @media only screen and (min-width: 768px) {
+    height: ${(props) => (props.focused ? "50vh" : "40vh")};
+  }
   @media only screen and (min-width: 1024px) {
     height: ${(props) => (props.focused ? "50vh" : "30vh")};
   }

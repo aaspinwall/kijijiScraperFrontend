@@ -14,6 +14,7 @@ const Map = ({ results }) => {
   const d = useDispatch();
   const [location, changeLocation] = useState({ zoom: 15 });
   const [windowSize, changeHeight] = useState(null);
+  const [hasScrolled, setScrolled] = useState(null);
   const mapElement = useRef();
 
   useEffect(() => {
@@ -60,6 +61,23 @@ const Map = ({ results }) => {
     }
   }, [display]);
 
+  const barHeight = document.querySelector("#searchBar").offsetHeight;
+
+  const isScrolling = () => {
+    if (window.pageYOffset > barHeight) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", isScrolling);
+    return () => {
+      window.removeEventListener("scroll", isScrolling);
+    };
+  }, []);
+
   const pinClick = (e) => {
     const index = Number(e.target.id.replace("pin", ""));
     focus(index, d);
@@ -69,7 +87,7 @@ const Map = ({ results }) => {
       ref={mapElement}
       id='mapContainer'
       mobile={window.innerWidth < 1024}
-      top={"4rem"}
+      top={!hasScrolled ? barHeight + "px" : "0"}
     >
       <div
         className='mapContainer'
@@ -88,6 +106,7 @@ const Map = ({ results }) => {
           }}
           center={{ lat: location.lat, lng: location.long }}
           defaultZoom={location.zoom}
+          yesIWantToUseGoogleMapApiInternals={true}
         >
           {results.map((result, i) => {
             const testLat = result.attributes.location.latitude;
