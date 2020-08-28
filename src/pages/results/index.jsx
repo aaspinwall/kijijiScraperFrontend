@@ -5,8 +5,9 @@ import Result from "./card";
 import Footer from "../screens/footer";
 import Header from "../screens/header";
 import Loading from "../screens/loading";
+import Error from "../screens/error";
 import Map from "../screens/map";
-import { Heading, Button, Box, Stack, Input, Spinner } from "@chakra-ui/core";
+import { Heading, Button, Box, Stack, Spinner } from "@chakra-ui/core";
 import { formatResults } from "../../Utilities/resultCleanup/index";
 import { setGlobal } from "../results/dispatchers";
 import { read } from "../../Utilities/database";
@@ -27,9 +28,13 @@ const Results = () => {
     if (flag === "error") {
       setGlobal("lifeCycle", "error", d);
     } else {
+      //set loading
+      //setGlobal("lifeCycle", "loading", d);
       read(`/users/public/latest/results`, (res) => {
+        //set global results
         setGlobal("searchResults", res, d);
-        format(res);
+        //format(res);
+        setGlobal("lifeCycle", "static", d);
       });
     }
   };
@@ -40,14 +45,14 @@ const Results = () => {
       setGlobal("lifeCycle", "static", d);
       format(results);
     } else {
-      fallback("error");
+      fallback();
     }
   }, []);
 
   useEffect(() => {
     console.log("Results changed");
     const isValid = check(results);
-
+    //const isLive = lifeCycle === "static";
     if (isValid) {
       format(results);
     } else {
@@ -55,7 +60,7 @@ const Results = () => {
     }
   }, [results]);
 
-  const live = () => (
+  const isLive = () => (
     <Main>
       <Map results={filteredResults} />
       <Stack>
@@ -66,36 +71,33 @@ const Results = () => {
     </Main>
   );
 
-  const searching = (flag) => (
+  const isSearching = (flag) => (
     <Box minH='50vh'>
       {flag !== "loading" ? <Spinner mt='2rem'></Spinner> : <Loading />}
     </Box>
   );
 
+  const error = () => {
+    return <div>ERROR</div>;
+    return <Error />;
+  };
+
   const status = () => {
     switch (lifeCycle) {
       case "static":
-        return live();
+        return isLive();
       case "loading":
-        return searching("loading");
+        return isSearching("loading");
       case "error":
-        return <div>ERROR</div>;
-
+        return error();
       default:
-        return searching();
+        return isSearching();
     }
   };
 
   return (
     <Wrapper>
       <Header />
-      <Button
-        onClick={() =>
-          d({ type: "changeState", target: "searchResults", payload: {} })
-        }
-      >
-        Dump results
-      </Button>
       <Box minH='80vh'>{status()}</Box>
       <Footer />
     </Wrapper>

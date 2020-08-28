@@ -16,7 +16,7 @@ const Search = ({ initial, submit, toGlobal }) => {
     <Formik
       initialValues={initial}
       onSubmit={(values) => {
-        submit(JSON.stringify(values));
+        submit(values);
       }}
     >
       {({ handleSubmit, values }) => (

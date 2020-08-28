@@ -16,13 +16,32 @@ const Header = () => {
   const [open, toggle] = useState(false);
   const d = useDispatch(null);
 
-  const handleSubmit = () => {
-    search(
-      query,
-      (res) => setGlobal("searchResults", res, d),
-      () => setGlobal("lifeCycle", "static", d)
-    );
+  const handleSuccess = (response) => {
+    setGlobal("lifeCycle", "static", d);
+    setGlobal("searchResults", response, d);
+  };
+
+  const handleError = (error) => {
+    setGlobal("lifeCycle", "error", d);
+  };
+
+  const handleResponse = (response) => {
+    if (response.error) {
+      handleError(response.error);
+    } else {
+      handleSuccess(response);
+    }
+  };
+
+  const handleFinish = () => {
+    console.log("search finished");
+  };
+
+  const handleSubmit = (q) => {
     setGlobal("lifeCycle", "loading", d);
+    if (typeof q === "string") {
+      search({ ...query, keywords: q }, handleResponse, handleFinish);
+    } else search(q ? q : query, handleResponse, handleFinish);
   };
 
   const isClosed = () => (
@@ -33,8 +52,9 @@ const Header = () => {
         <SingleSearch
           initial={{ keywords: query.keywords }}
           submit={(res) => {
-            setGlobal("query", res, d);
-            handleSubmit();
+            dsp("query", "keywords", res, d);
+            //setGlobal("query", res, d);
+            handleSubmit(res);
           }}
           toGlobal={(val) => dsp("query", "keywords", val.keywords, d)}
         />
@@ -66,7 +86,7 @@ const Header = () => {
           submit={(res) => {
             setGlobal("query", res, d);
             toggle(false);
-            handleSubmit();
+            handleSubmit(res);
           }}
           toGlobal={(values) => setGlobal("query", values, d)}
         />

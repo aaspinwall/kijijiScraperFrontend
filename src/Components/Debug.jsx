@@ -20,6 +20,15 @@ export default function Debug() {
   );
 }
 
+/* <Button
+        onClick={() => {
+          setGlobal("lifeCycle", "loading", d);
+          d({ type: "changeState", target: "searchResults", payload: {} });
+        }}
+      >
+        Dump results
+      </Button> */
+
 const Container = styled.div`
   height: 100vh;
 `;

@@ -40,11 +40,11 @@ export const search = async (
 
   const searchQuery = {
     params: {
-      keywords: keywords,
-      maxPrice: maxPrice,
-      minPrice: minPrice,
+      keywords: keywords ? keywords : "plateau",
+      maxPrice: maxPrice ? maxPrice : 1200,
+      minPrice: minPrice ? minPrice : 1000,
     },
-    options: { maxResults: maxResults },
+    options: { maxResults: maxResults ? maxResults : 20 },
   };
 
   //Heroku server
@@ -66,6 +66,6 @@ export const search = async (
     resultsToCallback({ message, error: message });
     console.log(message);
   } finally {
-    callbackOnComplete();
+    callbackOnComplete("check line");
   }
 };
