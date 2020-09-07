@@ -14,16 +14,18 @@ https://www.alejandroaspinwall.ca/projects/movingday/overview/
 
 Clone this repository and run this command on your terminal.
 
+    npm install
 
-  npm install 
 
 Then run 
 
   npm install netlify-cli -g
+  
+    npm install netlify-cli -g
 
 Finally 
 
-  netlify dev
+    netlify dev
 
 The application should run on http://localhost:8888/ and will try to connect to the backend running on port 5000. Make sure you're running it as well. 
 [Backend code](https://github.com/aaspinwall/movingday-backend)
